@@ -9,11 +9,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Home
         extends AppCompatActivity {
     
     private FirebaseAuth mAuth;
+    
+    private FirebaseDatabase database;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,8 @@ public class Home
         
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        // Write a message to the database
+        database = FirebaseDatabase.getInstance();
     }
     
     @Override
@@ -44,6 +49,9 @@ public class Home
                                         "Authentication Succeed userId:" + user.getUid(),
                                         Toast.LENGTH_SHORT)
                               .show();
+                         String userId;
+                         userId = user.getUid();
+                         database.getReference("users").child(userId).child("name").setValue("SDA");
                          
                      } else {
                          Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT)

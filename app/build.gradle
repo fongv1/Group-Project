@@ -30,6 +30,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.4'
     // Firebase Auth Lib
     implementation 'com.google.firebase:firebase-auth:16.0.5'
+    // Firebase Real-time database
+    implementation 'com.google.firebase:firebase-database:16.0.4'
 }
 
 apply plugin: 'com.google.gms.google-services'
