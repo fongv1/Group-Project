@@ -28,6 +28,8 @@ dependencies {
 
     // Firebase Core Library
     implementation 'com.google.firebase:firebase-core:16.0.4'
+    // Firebase Auth Lib
+    implementation 'com.google.firebase:firebase-auth:16.0.5'
 }
 
 apply plugin: 'com.google.gms.google-services'
