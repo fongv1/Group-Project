@@ -20,7 +20,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".GroupsActivity" />
-        <activity android:name=".ContactsActivity"></activity>
+        <activity android:name=".ContactsActivity" />
+        <activity android:name=".CreateGroupActivity" />
+        <activity
+            android:name=".AddMembersActivity"
+            android:label="@string/title_activity_add_members"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".LedgerActivity"
+            android:label="@string/title_activity_ledger" />
+        <activity android:name=".AddExpenseActivity"></activity>
     </application>
 
 </manifest>
