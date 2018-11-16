@@ -59,7 +59,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         CategoryAdapter adapter = new CategoryAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
