@@ -27,7 +27,7 @@ public class AddMemberActivity extends AppCompatActivity {
         // ArrayAdapter(Context context, int resource, int textViewResourceId, List<T> objects)
         adapter = new ArrayAdapter<>(this, R.layout.list_member, R.id.textMember, arrayList);
         listView.setAdapter(adapter);
-        txtInput = (EditText) findViewById(R.id.txtinput);
+        txtInput = (EditText) findViewById(R.id.editTextGroupName);
         Button btAdd = (Button) findViewById(R.id.add_member_button);
         btAdd.setOnClickListener(new View.OnClickListener() {
             @Override
