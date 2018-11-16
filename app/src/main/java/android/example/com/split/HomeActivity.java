@@ -61,13 +61,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        // Firebase UI Authentication
-        // Choose authentication providers
-        List<AuthUI.IdpConfig> providers = Collections.singletonList(new AuthUI.IdpConfig.EmailBuilder().build());
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() != null) {
+            // Signed in
+        } else {
+            // Not signed in
+            // Firebase UI Authentication
+            // Choose authentication providers
+            List<AuthUI.IdpConfig> providers = Collections.singletonList(new AuthUI.IdpConfig.EmailBuilder().build());
 
-        // Create and launch sign-in intent
-        startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers)
-                                     .build(), RC_SIGN_IN);
+            // Create and launch sign-in intent
+            startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers)
+                                         .build(), RC_SIGN_IN);
+        }
     }
 
     @Override
