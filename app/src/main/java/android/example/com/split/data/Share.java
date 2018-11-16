@@ -3,7 +3,7 @@ package android.example.com.split.data;
 /**
  * Share
  */
-class Share {
+class Share implements Payment {
 
     /**
      * True if the share is paid
@@ -27,6 +27,7 @@ class Share {
      *
      * @return boolean True if the share is paid
      */
+    @Override
     public boolean isPaid() {
         return paid;
     }
@@ -36,6 +37,7 @@ class Share {
      *
      * @param paid True to set the share as paid
      */
+    @Override
     public void setPaid(boolean paid) {
         this.paid = paid;
     }
@@ -45,7 +47,8 @@ class Share {
      *
      * @return double the amount of the share
      */
-    public double getShareAmount() {
+    @Override
+    public double getAmount() {
         return shareAmount;
     }
 
@@ -54,7 +57,8 @@ class Share {
      *
      * @param shareAmount Set the share amount
      */
-    public void setShareAmount(double shareAmount) {
+    @Override
+    public void setAmount(double shareAmount) {
         this.shareAmount = shareAmount;
     }
 

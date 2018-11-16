@@ -1,14 +1,17 @@
 package android.example.com.split.data;
 
+import android.example.com.split.data.exception.StringArgumentLengthException;
+import android.support.annotation.Nullable;
+
 /**
  * User
  */
-public class User {
+public class User implements Id, DisplayName, Email, PhoneNumber {
 
     /**
      * User UD
      */
-    private String userId;
+    private String id;
     /**
      * User's first name
      */
@@ -37,17 +40,19 @@ public class User {
      *
      * @return User ID
      */
-    public String getUserId() {
-        return userId;
+    @Override
+    public String getId() {
+        return id;
     }
 
     /**
      * Set user ID
      *
-     * @param userId User ID
+     * @param id User ID
      */
-    public void setUserId(String userId) {
-        this.userId = userId;
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -55,7 +60,12 @@ public class User {
      *
      * @return User's first name
      */
-    public String getFirstName() {
+    @Override
+    @Nullable
+    public String getFirstName() throws Exception {
+        if (firstName == null) {
+            throw new Exception("First name is null");
+        }
         return firstName;
     }
 
@@ -64,7 +74,11 @@ public class User {
      *
      * @param firstName User's last name
      */
-    public void setFirstName(String firstName) {
+    @Override
+    public void setFirstName(String firstName) throws StringArgumentLengthException {
+        if (firstName.length() > 32) {
+            throw new StringArgumentLengthException(32);
+        }
         this.firstName = firstName;
     }
 
@@ -73,6 +87,7 @@ public class User {
      *
      * @return {@link User} User's last name
      */
+    @Override
     public String getLastName() {
         return lastName;
     }
@@ -82,6 +97,7 @@ public class User {
      *
      * @param lastName User's last name
      */
+    @Override
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -91,6 +107,7 @@ public class User {
      *
      * @return user's email
      */
+    @Override
     public String getEmail() {
         return email;
     }
@@ -100,6 +117,7 @@ public class User {
      *
      * @param email email
      */
+    @Override
     public void setEmail(String email) {
         this.email = email;
     }
@@ -109,6 +127,7 @@ public class User {
      *
      * @return User's phone number
      */
+    @Override
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -118,6 +137,7 @@ public class User {
      *
      * @param phoneNumber User's phone number
      */
+    @Override
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }

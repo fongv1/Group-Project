@@ -6,12 +6,12 @@ import java.util.List;
 /**
  * Group
  */
-public class Group {
+public class Group implements Id, Name, Members, Expenses {
 
     /**
      * Group ID
      */
-    private String groupId;
+    private String id;
     /**
      * Group's name
      */
@@ -19,7 +19,7 @@ public class Group {
     /**
      * Members ({@link User}s) in the group
      */
-    private List<User> members;
+    private List<Id> members;
     /**
      * {@link Expense}s in the group
      */
@@ -39,7 +39,8 @@ public class Group {
      *
      * @return {@link List<User>} list of member users in the group
      */
-    public List<User> getMembers() {
+    @Override
+    public List<Id> getMembers() {
         return members;
     }
 
@@ -48,6 +49,7 @@ public class Group {
      *
      * @return {@link List<Expense>} list of expenses in the group
      */
+    @Override
     public List<Expense> getExpenses() {
         return expenses;
     }
@@ -57,17 +59,19 @@ public class Group {
      *
      * @return Group ID
      */
-    public String getGroupId() {
-        return groupId;
+    @Override
+    public String getId() {
+        return id;
     }
 
     /**
      * Set the group ID
      *
-     * @param groupId Group ID
+     * @param id Group ID
      */
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -75,6 +79,7 @@ public class Group {
      *
      * @return Group name
      */
+    @Override
     public String getName() {
         return name;
     }
@@ -84,6 +89,7 @@ public class Group {
      *
      * @param name Group name
      */
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -93,6 +99,7 @@ public class Group {
      *
      * @param expense Group expense
      */
+    @Override
     public void addExpense(Expense expense) {
         expenses.add(expense);
     }
@@ -100,9 +107,10 @@ public class Group {
     /**
      * Add a user as member to the group
      *
-     * @param user User to become member of the group
+     * @param id User to become member of the group
      */
-    public void addMember(User user) {
-        members.add(user);
+    @Override
+    public void addMember(Id id) {
+        members.add(id);
     }
 }

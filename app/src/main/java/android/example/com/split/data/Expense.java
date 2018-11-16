@@ -6,12 +6,12 @@ import java.util.List;
 /**
  * Expense in a {@link Group}
  */
-public class Expense {
+public class Expense implements Id {
 
     /**
      * Expense ID
      */
-    private String expenseId;
+    private String id;
     /**
      * Group ID
      */
@@ -35,7 +35,7 @@ public class Expense {
     /**
      * The shares for all {@link User} members in a group
      */
-    private List<Share> shares;
+    private List<Payment> shares;
 
     /**
      * Expense
@@ -49,17 +49,19 @@ public class Expense {
      *
      * @return Expense ID
      */
-    public String getExpenseId() {
-        return expenseId;
+    @Override
+    public String getId() {
+        return id;
     }
 
     /**
      * Set the expense ID
      *
-     * @param expenseId Expense ID
+     * @param id Expense ID
      */
-    public void setExpenseId(String expenseId) {
-        this.expenseId = expenseId;
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -157,7 +159,7 @@ public class Expense {
      *
      * @return List of members' shares
      */
-    public List<Share> getShares() {
+    public List<Payment> getShares() {
         return shares;
     }
 }
