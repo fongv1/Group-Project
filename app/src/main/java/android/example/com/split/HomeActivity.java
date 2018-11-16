@@ -1,5 +1,6 @@
 package android.example.com.split;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -46,6 +47,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    public void addGroup(View view){
+        Intent addGroup = new Intent(this, CreateGroupActivity.class);
+        startActivity(addGroup);
     }
 
     @Override
