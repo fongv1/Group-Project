@@ -133,6 +133,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_sign_out) {
+            signOut();
         }
 
         return super.onOptionsItemSelected(item);

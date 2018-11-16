@@ -20,4 +20,5 @@
     <string name="button_lable_addmember">Add member</string>
     <string name="button_lable_done">Done</string>
     <string name="hint_add_member">Enter name</string>
+    <string name="action_sign_out">Sign Out</string>
 </resources>
