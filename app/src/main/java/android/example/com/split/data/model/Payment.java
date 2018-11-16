@@ -1,6 +1,6 @@
-package android.example.com.split.data;
+package android.example.com.split.data.model;
 
-interface Payment {
+public interface Payment {
 
     boolean isPaid();
 

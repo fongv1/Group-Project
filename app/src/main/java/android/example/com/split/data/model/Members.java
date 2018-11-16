@@ -1,8 +1,8 @@
-package android.example.com.split.data;
+package android.example.com.split.data.model;
 
 import java.util.List;
 
-interface Members {
+public interface Members {
 
     List<Id> getMembers();
 

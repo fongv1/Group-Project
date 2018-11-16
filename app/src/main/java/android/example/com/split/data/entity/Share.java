@@ -1,4 +1,6 @@
-package android.example.com.split.data;
+package android.example.com.split.data.entity;
+
+import android.example.com.split.data.model.Payment;
 
 /**
  * Share

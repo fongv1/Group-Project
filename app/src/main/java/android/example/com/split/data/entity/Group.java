@@ -1,4 +1,9 @@
-package android.example.com.split.data;
+package android.example.com.split.data.entity;
+
+import android.example.com.split.data.model.Expenses;
+import android.example.com.split.data.model.Id;
+import android.example.com.split.data.model.Members;
+import android.example.com.split.data.model.Name;
 
 import java.util.ArrayList;
 import java.util.List;

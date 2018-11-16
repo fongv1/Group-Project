@@ -1,11 +1,16 @@
-package android.example.com.split.data;
+package android.example.com.split.data.entity;
 
-import android.example.com.split.data.exception.StringArgumentLengthException;
+import android.example.com.split.data.model.DisplayName;
+import android.example.com.split.data.model.Email;
+import android.example.com.split.data.model.Id;
+import android.example.com.split.data.model.PhoneNumber;
 import android.support.annotation.Nullable;
+import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
  * User
  */
+@IgnoreExtraProperties
 public class User implements Id, DisplayName, Email, PhoneNumber {
 
     /**
@@ -75,9 +80,9 @@ public class User implements Id, DisplayName, Email, PhoneNumber {
      * @param firstName User's last name
      */
     @Override
-    public void setFirstName(String firstName) throws StringArgumentLengthException {
+    public void setFirstName(String firstName) throws IllegalArgumentException {
         if (firstName.length() > 32) {
-            throw new StringArgumentLengthException(32);
+            throw new IllegalArgumentException("First name must not exceed 32 characters.");
         }
         this.firstName = firstName;
     }
