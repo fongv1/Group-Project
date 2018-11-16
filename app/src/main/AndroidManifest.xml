@@ -26,7 +26,12 @@
             android:name=".LedgerActivity"
             android:label="@string/title_activity_ledger" />
         <activity android:name=".AddExpenseActivity" />
-        <activity android:name=".AddMemberActivity"></activity>
+        <activity android:name=".AddMemberActivity" />
+        <activity
+            android:name=".FullscreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_fullscreen"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>
