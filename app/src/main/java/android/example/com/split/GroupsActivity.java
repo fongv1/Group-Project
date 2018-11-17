@@ -8,9 +8,13 @@ public class GroupsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.category_tab);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, new GroupsFragment())
-                .commit();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, new GroupsFragment())
+                    .commit();
+        }
+
     }
 }
