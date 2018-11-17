@@ -30,8 +30,8 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Create a group", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent addGroup = new Intent(HomeActivity.this, CreateGroupActivity.class);
+                startActivity(addGroup);
             }
         });
 
@@ -50,11 +50,6 @@ public class HomeActivity extends AppCompatActivity
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-    }
-
-    public void addGroup(View view){
-        Intent addGroup = new Intent(this, CreateGroupActivity.class);
-        startActivity(addGroup);
     }
 
     @Override
