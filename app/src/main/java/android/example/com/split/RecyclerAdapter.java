@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -15,14 +16,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.GroupR
 
     // Provides reference to the views for each data item
     // When create more complex group view, it should be removed in a separate java file
-    public static class GroupRowViewHolder extends RecyclerView.ViewHolder {
+    class GroupRowViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        // each group data item is just a String presented as a textView in this case
+        // Each group data item is just a String presented as a textView in this case
         public TextView mTextView;
-
-        public GroupRowViewHolder(View v) {
+        final RecyclerAdapter mAdapter;
+        // Initializes the ViewHolder TextView from the group_row_view XML resource
+        public GroupRowViewHolder(View v, RecyclerAdapter adapter) {
             super(v);
             mTextView = (TextView) v.findViewById(R.id.groupRowView);
+            this.mAdapter = adapter;
+            v.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            // Get the position of the item that was clicked.
+            int mPosition = getLayoutPosition();
+            // Use that to access the affected item in mDataset.
+            String element = mDataset.get(mPosition);
+            // Show toast when clicked
+            Toast.makeText(v.getContext(), "Clicked " + element, Toast.LENGTH_SHORT).show();
+            // Notify the adapter, that the data has changed so it can
+            // update the RecyclerView to display the data.
+            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -38,7 +55,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.GroupR
         View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.group_row_view, parent, false);
 
-        GroupRowViewHolder vh = new GroupRowViewHolder(v);
+        GroupRowViewHolder vh = new GroupRowViewHolder(v, this);
         return vh;
     }
 
