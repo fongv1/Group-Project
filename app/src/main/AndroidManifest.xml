@@ -23,7 +23,8 @@
         <activity android:name=".ContactsActivity" />
         <activity android:name=".CreateGroupActivity" />
         <activity android:name=".AddExpenseActivity" />
-        <activity android:name=".AddMemberActivity"></activity>
+        <activity android:name=".AddMemberActivity" />
+        <activity android:name=".LedgerActivity"></activity>
     </application>
 
 </manifest>
