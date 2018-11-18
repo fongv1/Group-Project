@@ -22,9 +22,6 @@
         <activity android:name=".GroupsActivity" />
         <activity android:name=".ContactsActivity" />
         <activity android:name=".CreateGroupActivity" />
-        <activity
-            android:name=".LedgerActivity"
-            android:label="@string/title_activity_ledger" />
         <activity android:name=".AddExpenseActivity" />
         <activity android:name=".AddMemberActivity"></activity>
     </application>
