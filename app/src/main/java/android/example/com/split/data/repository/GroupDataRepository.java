@@ -1,33 +1,31 @@
 package android.example.com.split.data.repository;
 
-import android.example.com.split.data.entity.User;
-import android.support.annotation.NonNull;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+import android.example.com.split.data.entity.Group;
+import android.util.Log;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.*;
 
 import javax.annotation.Nullable;
+public class GroupDataRepository {
 
-public class DataRepository {
-
+    private static final String TAG = "DataRepository";
     public void getUser() {
 
     }
 
-    public void createNewUser(User user) {
+
+
+
+    public void createNewGroup(Group group){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").document(user.getId()).set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+        db.collection("groups").add(group).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                } else {
-                }
+            public void onSuccess(DocumentReference documentReference) {
+                Log.d(TAG, "onSuccess: " + documentReference.getId());
             }
         });
     }
+
 
     public void getUserById(String id) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -40,23 +38,26 @@ public class DataRepository {
     }
 
 
-    //        FirebaseAuth auth = FirebaseAuth.getInstance();
+    //               FirebaseAuth auth = FirebaseAuth.getInstance();
     //        auth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
     //            @Override
     //            public void onComplete(@NonNull Task<AuthResult> task) {
     //                if (task.isSuccessful()) {
+    //
     //                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     //
     //                    User myUser = new User();
-    //                    myUser.setId(user.getUid());
-    //                    myUser.setEmail("ahmed@alaskalany.com");
-    //                    myUser.setFirstName("Ahmed");
-    //                    myUser.setLastName("AlAskalamny");
-    //                    myUser.setPhoneNumber("0734894796");
+    //                    myUser.setId("12345678");
+    //                    myUser.setEmail("saleh@ibra.com");
+    //                    myUser.setFirstName("Saleh");
+    //                    myUser.setLastName("Ibrahim");
+    //                    myUser.setPhoneNumber("0732222222");
     //
     //                    DataRepository dataRepository = new DataRepository();
     //                    dataRepository.createNewUser(myUser);
+    //                    Toast.makeText(HomeActivity.this,"HELL",Toast.LENGTH_LONG).show();
     //                } else {
+    //                    Toast.makeText(HomeActivity.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
     //                }
     //            }
     //        });
