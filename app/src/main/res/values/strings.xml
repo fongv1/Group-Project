@@ -27,5 +27,11 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="group_row_view">Group</string>
     <string name="groupname">Group Name</string>
+    <string name="enter_contact">Contact Name</string>
+    <string name="hint_add_contact">Enter contact name</string>
+    <string name="save_contact">Save</string>
+    <string name="enter_group">Group Name</string>
+    <string name="hint_add_group">Enter group name</string>
+    <string name="save_group">Save</string>
 
 </resources>
