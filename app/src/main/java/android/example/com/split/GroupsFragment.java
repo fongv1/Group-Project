@@ -33,7 +33,7 @@ public class GroupsFragment extends Fragment {
     private void initDataset() {
         dataset = new ArrayList<>();
         for(int i = 0; i < 100; i++) {
-            dataset.add("Element " + i);
+            dataset.add("Group " + i);
         }
     }
 
