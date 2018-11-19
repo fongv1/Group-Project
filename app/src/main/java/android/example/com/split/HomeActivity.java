@@ -131,7 +131,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
         auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() == null) {
+        if (false/*auth.getCurrentUser() == null*/) {
             Intent intent = new Intent(this, FullscreenActivity.class);
             startActivity(intent);
             finish();
