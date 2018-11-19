@@ -10,7 +10,7 @@ public class ContactsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.category_tab);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, new GroupsFragment())
+                .replace(R.id.container, new ContactsFragment())
                 .commit();
     }
 }
