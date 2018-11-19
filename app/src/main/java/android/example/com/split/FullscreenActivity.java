@@ -204,8 +204,6 @@ public class FullscreenActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Toast.makeText(this, "Signed in as " + user.getDisplayName(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(FullscreenActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
