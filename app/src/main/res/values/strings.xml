@@ -26,6 +26,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="group_row_view">Group</string>
+    <string name="contact_row_view">Contact</string>
     <string name="groupname">Group Name</string>
     <string name="enter_contact">Contact Name</string>
     <string name="hint_add_contact">Enter contact name</string>
