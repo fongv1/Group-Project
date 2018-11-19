@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -98,7 +97,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(HomeActivity.this, "add contact", Toast.LENGTH_LONG).show();
+                    FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                    floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            createContactPopupDialog();
+                            //Toast.makeText(HomeActivity.this, "add contact", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             });
 
