@@ -45,7 +45,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
 
         auth = FirebaseAuth.getInstance();
-        if (false/*auth.getCurrentUser() == null*/) {
+        if (auth.getCurrentUser() == null) {
             Intent intent = new Intent(this, FullscreenActivity.class);
             startActivity(intent);
             finish();
@@ -80,7 +80,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
             tabLayout.setupWithViewPager(viewPager);
 
-            /*authStateListener = new FirebaseAuth.AuthStateListener() {
+            authStateListener = new FirebaseAuth.AuthStateListener() {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                     if (auth.getCurrentUser() != null) {
@@ -92,7 +92,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
             };
-            auth.addAuthStateListener(authStateListener);*/
+            auth.addAuthStateListener(authStateListener);
         }
     }
 
@@ -127,18 +127,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
-    /*@Override
+    @Override
     protected void onResume() {
         super.onResume();
         auth = FirebaseAuth.getInstance();
-        if (false*//*auth.getCurrentUser() == null*//*) {
+        if (auth.getCurrentUser() == null) {
             Intent intent = new Intent(this, FullscreenActivity.class);
             startActivity(intent);
             finish();
         }
-    }*/
+    }
 
-    /*private void signOut() {
+    private void signOut() {
         AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
             public void onComplete(@NonNull Task<Void> task) {
                 // ...
@@ -146,7 +146,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-    }*/
+    }
 
     @Override
     public void onBackPressed() {
@@ -176,7 +176,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_sign_out) {
-            /*signOut();*/
+            signOut();
         }
 
         return super.onOptionsItemSelected(item);
