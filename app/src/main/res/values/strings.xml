@@ -26,5 +26,6 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="group_row_view">Group</string>
+    <string name="groupname">Group Name</string>
 
 </resources>
