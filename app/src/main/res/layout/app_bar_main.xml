@@ -20,53 +20,32 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
+            android:id="@+id/tabLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="@color/colorPrimary"
-            app:tabBackground="@color/colorPrimaryDark"
-            app:tabIndicatorColor="@color/colorAccent" />
+            android:layout_height="match_parent">
+
+        </android.support.design.widget.TabLayout>
 
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_anchor="@id/appBarLayout">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     </android.support.v4.view.ViewPager>
 
-    <ImageView
-        android:id="@+id/addList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="addGroup"
-        app:layout_anchor="@+id/fab"
-        app:layout_anchorGravity="right|center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/baseline_add_circle_outline_black_24dp" />
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:onClick="addGroup"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:backgroundTint="@color/colorPrimary"
+        app:fabSize="normal"
         app:srcCompat="@drawable/ic_add_white_24dp" />
-
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </android.support.design.widget.CoordinatorLayout>
