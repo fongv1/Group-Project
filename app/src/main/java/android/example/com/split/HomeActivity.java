@@ -45,7 +45,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
 
         auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() == null) {
+        if (false/*auth.getCurrentUser() == null*/) {
             Intent intent = new Intent(this, FullscreenActivity.class);
             startActivity(intent);
             finish();
@@ -80,7 +80,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
             tabLayout.setupWithViewPager(viewPager);
 
-            authStateListener = new FirebaseAuth.AuthStateListener() {
+            /*authStateListener = new FirebaseAuth.AuthStateListener() {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                     if (auth.getCurrentUser() != null) {
@@ -92,7 +92,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
             };
-            auth.addAuthStateListener(authStateListener);
+            auth.addAuthStateListener(authStateListener);*/
         }
     }
 
