@@ -1,6 +1,7 @@
 package android.example.com.split;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,6 +30,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private static final int RC_SIGN_IN = 0;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
+
+    // Fab functionality
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private EditText contactItem;
+    private EditText contactName;
+    private Button saveButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +56,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
 
         auth = FirebaseAuth.getInstance();
-        if (false/*auth.getCurrentUser() == null*/) {
+        if (auth.getCurrentUser() == null) {
             Intent intent = new Intent(this, FullscreenActivity.class);
             startActivity(intent);
             finish();
@@ -58,8 +69,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent addGroup = new Intent(HomeActivity.this, CreateGroupActivity.class);
-                    startActivity(addGroup);
+                    //Intent addGroup = new Intent(HomeActivity.this, CreateGroupActivity.class);
+                    //startActivity(addGroup);
+
+                    /*Fragment f = getSupportFragmentManager().findFragmentById(R.id.tabLayout);
+
+                    if (f instanceof GroupsFragment){
+                        Toast.makeText(getBaseContext(), "Groups", Toast.LENGTH_LONG).show();
+                    }
+
+                    else{
+                        Toast.makeText(getBaseContext(), "Contacts", Toast.LENGTH_LONG).show();
+                    }*/
                 }
             });
 
@@ -77,10 +98,61 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             CategoryAdapter adapter = new CategoryAdapter(this, getSupportFragmentManager());
             viewPager.setAdapter(adapter);
 
+            FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                    floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            createContactPopupDialog();
+                            //Toast.makeText(HomeActivity.this, "add contact", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
+
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
             tabLayout.setupWithViewPager(viewPager);
+            tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    if (tab.getPosition() == 0) {
+                        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                createContactPopupDialog();
+                                //Toast.makeText(HomeActivity.this, "add contact", Toast.LENGTH_LONG).show();
+                            }
+                        });
 
-            /*authStateListener = new FirebaseAuth.AuthStateListener() {
+                    } else if (tab.getPosition() == 1) {
+                        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                createGroupPopupDialog();
+                                //Toast.makeText(HomeActivity.this, "add groups", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+
+
+            authStateListener = new FirebaseAuth.AuthStateListener() {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                     if (auth.getCurrentUser() != null) {
@@ -92,7 +164,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
             };
-            auth.addAuthStateListener(authStateListener);*/
+            auth.addAuthStateListener(authStateListener);
         }
     }
 
@@ -127,18 +199,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
-    /*@Override
+    @Override
     protected void onResume() {
         super.onResume();
         auth = FirebaseAuth.getInstance();
-        if (false*//*auth.getCurrentUser() == null*//*) {
+        if (auth.getCurrentUser() == null) {
             Intent intent = new Intent(this, FullscreenActivity.class);
             startActivity(intent);
             finish();
         }
-    }*/
+    }
 
-    /*private void signOut() {
+    private void signOut() {
         AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
             public void onComplete(@NonNull Task<Void> task) {
                 // ...
@@ -146,7 +218,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-    }*/
+    }
 
     @Override
     public void onBackPressed() {
@@ -176,7 +248,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_sign_out) {
-            /*signOut();*/
+            signOut();
         }
 
         return super.onOptionsItemSelected(item);
@@ -205,5 +277,29 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void createContactPopupDialog() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.add_contact_popup, null);
+        contactItem = (EditText) findViewById(R.id.contactItem);
+        saveButton = (Button) findViewById(R.id.saveContactButton);
+
+        dialogBuilder.setView(view);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+    }
+
+    private void createGroupPopupDialog() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.add_group_popup, null);
+        contactItem = (EditText) findViewById(R.id.groupItem);
+        saveButton = (Button) findViewById(R.id.saveGroupButton);
+
+        dialogBuilder.setView(view);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
     }
 }
