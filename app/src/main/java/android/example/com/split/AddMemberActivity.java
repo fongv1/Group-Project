@@ -49,7 +49,7 @@ public class AddMemberActivity extends AppCompatActivity {
     }
 
     public void done(View view) {
-        Intent done = new Intent(this, LedgerActivity.class);
+        Intent done = new Intent(this, Group.class);
         startActivity(done);
     }
 
