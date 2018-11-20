@@ -1,168 +1,76 @@
 package android.example.com.split.data.entity;
 
-import android.example.com.split.data.model.Id;
-import android.example.com.split.data.model.Payment;
-
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Expense in a {@link Group}
- */
-public class Expense implements Id {
+public class Expense  {
 
     /**
      * Expense ID
      */
     private String id;
     /**
-     * Group ID
-     */
-    private String groupId;
-    /**
      * User who paid for the expense
      */
-    private String payee;
+    private String payeeId;
+
+    private String payeeName;
     /**
      * The amount of the payment made for the expense
      */
     private double paymentAmount;
-    /**
-     * The name of the payment
-     */
-    private String paymentName;
-    /**
-     * The amount left to be paid
-     */
-    private double unpaidTotal;
-    /**
-     * The shares for all {@link User} members in a group
-     */
-    private List<Payment> shares;
 
+    /**
+     * Expense tittle
+     */
+    private String tittle;
     /**
      * Expense
      */
-    public Expense() {
-        shares = new ArrayList<>();
+
+    public Expense(String id, String payeeId, double paymentAmount, String tittle , String payeeName) {
+        this.id = id;
+        this.payeeId = payeeId;
+        this.paymentAmount = paymentAmount;
+        this.tittle = tittle;
+        this.payeeName = payeeName;
     }
 
-    /**
-     * Get the expense ID
-     *
-     * @return Expense ID
-     */
-    @Override
+
     public String getId() {
         return id;
     }
 
-    /**
-     * Set the expense ID
-     *
-     * @param id Expense ID
-     */
-    @Override
     public void setId(String id) {
         this.id = id;
     }
 
-    /**
-     * Get the expense's group ID
-     *
-     * @return {@link String} Group ID
-     */
-    public String getGroupId() {
-        return groupId;
+    public String getPayeeId() {
+        return payeeId;
     }
 
-    /**
-     * Set the expense's group ID
-     *
-     * @param groupId
-     */
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
+    public void setPayeeId(String payeeId) {
+        this.payeeId = payeeId;
     }
 
-    /**
-     * Get the user ID for the user who paid for the expense
-     *
-     * @return
-     */
-    public String getPayee() {
-        return payee;
+    public String getPayeeName() {
+        return payeeName;
     }
 
-    /**
-     * Set the user ID for the user who paid for the group
-     *
-     * @param payee The user ID for the user who paid for the expense
-     */
-    public void setPayee(String payee) {
-        this.payee = payee;
+    public void setPayeeName(String payeeName) {
+        this.payeeName = payeeName;
     }
 
-    /**
-     * Get payment amount
-     *
-     * @return double Payment amount
-     */
     public double getPaymentAmount() {
         return paymentAmount;
     }
 
-    /**
-     * Set the payment amount
-     *
-     * @param paymentAmount Payment amount
-     */
     public void setPaymentAmount(double paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
 
-    /**
-     * Get the payment name
-     *
-     * @return Payment name
-     */
-    public String getPaymentName() {
-        return paymentName;
+    public String getTittle() {
+        return tittle;
     }
 
-    /**
-     * Set the payment name
-     *
-     * @param paymentName Payment name
-     */
-    public void setPaymentName(String paymentName) {
-        this.paymentName = paymentName;
-    }
-
-    /**
-     * Get the amount unpaid of the expense
-     *
-     * @return The amount of the expense still unpaid
-     */
-    public double getUnpaidTotal() {
-        return unpaidTotal;
-    }
-
-    /**
-     * Set the unpaid amount of the expense
-     *
-     * @param unpaidTotal The amount of the expense still unpaid
-     */
-    public void setUnpaidTotal(double unpaidTotal) {
-        this.unpaidTotal = unpaidTotal;
-    }
-
-    /**
-     * Get expense shares
-     *
-     * @return List of members' shares
-     */
-    public List<Payment> getShares() {
-        return shares;
+    public void setTittle(String tittle) {
+        this.tittle = tittle;
     }
 }
