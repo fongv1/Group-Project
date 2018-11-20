@@ -24,6 +24,7 @@ public class Expense  {
     /**
      * Expense
      */
+    public Expense(){}
 
     public Expense(String id, String payeeId, double paymentAmount, String tittle , String payeeName) {
         this.id = id;

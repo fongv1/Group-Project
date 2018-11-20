@@ -1,5 +1,6 @@
 package android.example.com.split;
 
+import android.example.com.split.data.entity.User;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +17,7 @@ import java.util.List;
 public class MemberFragment extends Fragment {
 
     private static final String TAG = "MemberFragment";
-    private List<String> dataset;
+    private List<User> dataset;
 
 
     @Nullable
@@ -32,7 +33,7 @@ public class MemberFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset, R.layout.contact_row_view);
+        ContactsRecyclerAdapter mAdapter = new ContactsRecyclerAdapter(dataset);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
@@ -42,7 +43,9 @@ public class MemberFragment extends Fragment {
     private void initDataset() {
         dataset = new ArrayList<>();
         for(int i = 0; i < 3; i++) {
-            dataset.add("Member " + i);
+            User user = new User();
+            user.setFirstName("Member " + i);
+            dataset.add(user);
         }
     }
 }
