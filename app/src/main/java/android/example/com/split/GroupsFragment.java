@@ -47,7 +47,7 @@ public class GroupsFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset);
+        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset, R.layout.group_row_view);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
