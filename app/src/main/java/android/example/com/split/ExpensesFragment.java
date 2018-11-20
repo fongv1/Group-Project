@@ -32,7 +32,7 @@ public class ExpensesFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset);
+        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset,R.layout.expense_row_view);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
@@ -41,7 +41,7 @@ public class ExpensesFragment extends Fragment {
     // Create dummy data
     private void initDataset() {
         dataset = new ArrayList<>();
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < 3; i++) {
             dataset.add("Expense " + i);
         }
     }
