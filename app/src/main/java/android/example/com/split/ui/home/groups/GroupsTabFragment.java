@@ -56,9 +56,9 @@ public class GroupsTabFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_tab_contacts, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_tab_groups, container, false);
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_fragment_tab_groups);
         mRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());

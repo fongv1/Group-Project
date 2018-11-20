@@ -3,6 +3,7 @@ package android.example.com.split.data.entity;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * User
  */
 @IgnoreExtraProperties
-public class User {
+public class User implements Serializable {
 
     // firebase authentiction id
     private String authId;

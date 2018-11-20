@@ -59,10 +59,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             finish();
         } else {
 
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_app_bar_main);
             setSupportActionBar(toolbar);
 
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_app_bar_main);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -88,18 +88,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             drawer.addDrawerListener(toggle);
             toggle.syncState();
 
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_activity_home);
             navigationView.setNavigationItemSelectedListener(this);
 
-            ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+            ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_app_bar_main);
             HomeTabsAdapter adapter = new HomeTabsAdapter(this, getSupportFragmentManager());
             viewPager.setAdapter(adapter);
 
-            FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+            FloatingActionButton floatingActionButton = findViewById(R.id.fab_app_bar_main);
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                    FloatingActionButton floatingActionButton = findViewById(R.id.fab_app_bar_main);
                     floatingActionButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -110,13 +110,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
 
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout_app_bar_main);
             tabLayout.setupWithViewPager(viewPager);
             tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
                     if (tab.getPosition() == 0) {
-                        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                        FloatingActionButton floatingActionButton = findViewById(R.id.fab_app_bar_main);
                         floatingActionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -126,7 +126,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         });
 
                     } else if (tab.getPosition() == 1) {
-                        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                        FloatingActionButton floatingActionButton = findViewById(R.id.fab_app_bar_main);
                         floatingActionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -279,8 +279,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void createContactPopupDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_add_contact, null);
-        contactItem = (EditText) findViewById(R.id.contactItem);
-        saveButton = (Button) findViewById(R.id.saveContactButton);
+        contactItem = (EditText) findViewById(R.id.editText_dialog_add_contact);
+        saveButton = (Button) findViewById(R.id.button_dialog_add_contact_save);
 
         dialogBuilder.setView(view);
         dialog = dialogBuilder.create();
@@ -291,8 +291,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void createGroupPopupDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_add_group, null);
-        contactItem = (EditText) findViewById(R.id.groupItem);
-        saveButton = (Button) findViewById(R.id.saveGroupButton);
+        contactItem = (EditText) findViewById(R.id.editText_dialog_add_group);
+        saveButton = (Button) findViewById(R.id.button_dialog_add_group_save);
 
         dialogBuilder.setView(view);
         dialog = dialogBuilder.create();

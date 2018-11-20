@@ -3,6 +3,7 @@ package android.example.com.split.data.entity;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,7 @@ import java.util.List;
  * Group
  */
 @IgnoreExtraProperties
-
-public class Group {
+public class Group implements Serializable {
 
     /**
      * Group ID

@@ -47,6 +47,12 @@ public class FullscreenActivity extends AppCompatActivity {
                     View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);*/
         }
     };
+    private final Runnable mHideRunnable = new Runnable() {
+        @Override
+        public void run() {
+            hide();
+        }
+    };
     private View mControlsView;
     private final Runnable mShowPart2Runnable = new Runnable() {
         @Override
@@ -59,19 +65,13 @@ public class FullscreenActivity extends AppCompatActivity {
             mControlsView.setVisibility(View.VISIBLE);
         }
     };
-    private final Runnable mHideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            hide();
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show();
         setContentView(R.layout.activity_fullscreen);
-        ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
+        ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout_activity_fullscreen);
         constraintLayout.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
@@ -80,7 +80,7 @@ public class FullscreenActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
-        final Button signInButton = (Button) findViewById(R.id.button_sign_in);
+        final Button signInButton = (Button) findViewById(R.id.button_sign_in_activity_fullscreen);
         signInButton.setVisibility(View.GONE);
         final FirebaseAuth auth = FirebaseAuth.getInstance();
         Handler authenticationHandler = new Handler();

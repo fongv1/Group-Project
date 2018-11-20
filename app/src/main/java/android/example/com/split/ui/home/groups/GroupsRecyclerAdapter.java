@@ -15,9 +15,9 @@ import java.util.List;
 
 
 // Simple implementation for a data set that consists of a List of Groups displayed using TextView widgets
-public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.GroupRowViewHolder> {
+public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.GroupViewHolder> {
 
-    private List<android.example.com.split.data.entity.Group> mDataset;
+    private List<Group> mDataset;
 
     // Create the adapter with a dataset
     public GroupsRecyclerAdapter(List<Group> myDataset) {
@@ -26,19 +26,19 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
 
     // Create new views (invoked by the layout manager)
     @Override
-    public GroupRowViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public GroupViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_group, parent, false);
-        GroupRowViewHolder vh = new GroupRowViewHolder(v, this);
+        GroupViewHolder vh = new GroupViewHolder(v, this);
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(GroupRowViewHolder holder, int position) {
+    public void onBindViewHolder(GroupViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        android.example.com.split.data.entity.Group group = mDataset.get(position);
+        Group group = mDataset.get(position);
         holder.mTextView.setText(group.getName());
         holder.expenseTextView.setText("" + group.getExpenses().get(0).getPaymentAmount());
     }
@@ -54,7 +54,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
 
     // Provides reference to the views for each data item
     // When create more complex group view, it should be removed in a separate java file
-    class GroupRowViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class GroupViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final GroupsRecyclerAdapter mAdapter;
         // Each group data item is just a String presented as a textView in this case
@@ -62,10 +62,10 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         public TextView expenseTextView;
 
         // Initializes the ViewHolder TextView from the item_group XML resource
-        public GroupRowViewHolder(View v, GroupsRecyclerAdapter adapter) {
+        public GroupViewHolder(View v, GroupsRecyclerAdapter adapter) {
             super(v);
-            mTextView = (TextView) v.findViewById(R.id.groupRowView);
-            expenseTextView = (TextView) v.findViewById(R.id.groupExpense);
+            mTextView = (TextView) v.findViewById(R.id.textView_group_item);
+            expenseTextView = (TextView) v.findViewById(R.id.textView_group_item_expense_total);
             this.mAdapter = adapter;
             v.setOnClickListener(this);
         }
@@ -75,10 +75,10 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             // Get the position of the item that was clicked.
             int mPosition = getLayoutPosition();
             // Use that to access the affected item in mDataset.
-            android.example.com.split.data.entity.Group group = mDataset.get(mPosition);
+            Group group = mDataset.get(mPosition);
             // Show toast when clicked
             Intent intent = new Intent(v.getContext(), GroupDetailActivity.class);
-            //intent.put("group name", mDataset.get(mPosition));
+            intent.putExtra("group name", mDataset.get(mPosition));
             // Notify the adapter, that the data has changed so it can
             // update the RecyclerView to display the data.
             mAdapter.notifyDataSetChanged();

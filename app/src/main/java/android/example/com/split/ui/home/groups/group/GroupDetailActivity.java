@@ -43,25 +43,25 @@ public class GroupDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_group);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_activity_detail_group);
         setSupportActionBar(toolbar);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        mViewPager = findViewById(R.id.viewPager);
+        mViewPager = findViewById(R.id.viewPager_activity_detail_group);
         setUpViewPager(mViewPager);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_activity_detail_group);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_activity_detail_group);
         tabLayout.setupWithViewPager(mViewPager);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                    FloatingActionButton floatingActionButton = findViewById(R.id.fab_activity_detail_group);
                     floatingActionButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -70,7 +70,7 @@ public class GroupDetailActivity extends AppCompatActivity {
                     });
 
                 } else if (tab.getPosition() == 1) {
-                    FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                    FloatingActionButton floatingActionButton = findViewById(R.id.fab_activity_detail_group);
                     floatingActionButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

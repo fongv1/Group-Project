@@ -2,7 +2,6 @@ package android.example.com.split.ui.home.groups.group.members;
 
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
-import android.example.com.split.ui.home.contacts.ContactsRecyclerAdapter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,13 +28,13 @@ public class MembersTabFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_tab_members, container, false);
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.memberRecycler);
+        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_fragment_tab_members);
         mRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ContactsRecyclerAdapter mAdapter = new ContactsRecyclerAdapter(dataset);
+        MembersRecyclerAdapter mAdapter = new MembersRecyclerAdapter(dataset);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
