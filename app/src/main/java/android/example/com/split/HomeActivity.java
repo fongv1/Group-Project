@@ -1,9 +1,9 @@
 package android.example.com.split;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -16,10 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import android.widget.Button;
+import android.widget.EditText;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,6 +25,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private static final int RC_SIGN_IN = 0;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
+
+    // Fab functionality
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private EditText contactItem;
+    private EditText contactName;
+    private Button saveButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +64,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent addGroup = new Intent(HomeActivity.this, CreateGroupActivity.class);
-                    startActivity(addGroup);
+                    //Intent addGroup = new Intent(HomeActivity.this, CreateGroupActivity.class);
+                    //startActivity(addGroup);
+
+                    /*Fragment f = getSupportFragmentManager().findFragmentById(R.id.tabLayout);
+
+                    if (f instanceof GroupsFragment){
+                        Toast.makeText(getBaseContext(), "Groups", Toast.LENGTH_LONG).show();
+                    }
+
+                    else{
+                        Toast.makeText(getBaseContext(), "Contacts", Toast.LENGTH_LONG).show();
+                    }*/
                 }
             });
 
@@ -77,8 +93,59 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             CategoryAdapter adapter = new CategoryAdapter(this, getSupportFragmentManager());
             viewPager.setAdapter(adapter);
 
+            FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                    floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            createContactPopupDialog();
+                            //Toast.makeText(HomeActivity.this, "add contact", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
+
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
             tabLayout.setupWithViewPager(viewPager);
+            tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    if (tab.getPosition() == 0) {
+                        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                createContactPopupDialog();
+                                //Toast.makeText(HomeActivity.this, "add contact", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                    } else if (tab.getPosition() == 1) {
+                        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                createGroupPopupDialog();
+                                //Toast.makeText(HomeActivity.this, "add groups", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+
 
             /*authStateListener = new FirebaseAuth.AuthStateListener() {
                 @Override
@@ -205,5 +272,29 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void createContactPopupDialog() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.add_contact_popup, null);
+        contactItem = (EditText) findViewById(R.id.contactItem);
+        saveButton = (Button) findViewById(R.id.saveContactButton);
+
+        dialogBuilder.setView(view);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+    }
+
+    private void createGroupPopupDialog() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.add_group_popup, null);
+        contactItem = (EditText) findViewById(R.id.groupItem);
+        saveButton = (Button) findViewById(R.id.saveGroupButton);
+
+        dialogBuilder.setView(view);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
     }
 }
