@@ -2,6 +2,8 @@ package android.example.com.split;
 
 
 import android.content.Context;
+import android.example.com.split.data.entity.Expense;
+import android.example.com.split.data.entity.Group;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,11 +15,12 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class GroupsFragment extends Fragment {
 
-    private List<String> dataset;
+    private List<Group> dataset;
 
     public GroupsFragment() {
         // Required empty public constructor
@@ -34,15 +37,20 @@ public class GroupsFragment extends Fragment {
     // Create dummy data
     private void initDataset() {
         dataset = new ArrayList<>();
+        Random rand = new Random();
         for(int i = 0; i < 100; i++) {
-            dataset.add("Group " + i);
+            Group group = new Group();
+            group.setName("Dummy Group " + i);
+            Expense expense = new Expense();
+            expense.setPaymentAmount(rand.nextInt(1000));
+            group.addExpense(expense);
+            dataset.add(group);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
     }
 
     @Override
@@ -55,7 +63,7 @@ public class GroupsFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset, R.layout.group_row_view);
+        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(dataset);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;

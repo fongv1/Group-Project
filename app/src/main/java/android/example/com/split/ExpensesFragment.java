@@ -1,5 +1,7 @@
 package android.example.com.split;
 
+import android.example.com.split.data.entity.Expense;
+import android.example.com.split.data.entity.Group;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,11 +14,13 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ExpensesFragment extends Fragment {
 
     private static final String TAG = "ExpensesFragment";
-    private List<String> dataset;
+    private List<Group> dataset;
+    private List<Expense> expList;
 
 
     @Nullable
@@ -32,7 +36,7 @@ public class ExpensesFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset,R.layout.expense_row_view);
+        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(dataset);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
@@ -40,9 +44,12 @@ public class ExpensesFragment extends Fragment {
 
     // Create dummy data
     private void initDataset() {
-        dataset = new ArrayList<>();
+        expList = new ArrayList<>();
+        Random rand = new Random();
         for(int i = 0; i < 3; i++) {
-            dataset.add("Expense " + i);
+            Expense expense = new Expense();
+            expense.setPaymentAmount(rand.nextInt(1000));
+            expList.add(expense);
         }
     }
 }
