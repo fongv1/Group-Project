@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -47,7 +48,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             // Notify the adapter, that the data has changed so it can
             // update the RecyclerView to display the data.
             mAdapter.notifyDataSetChanged();
-            //v.getContext().startActivity(intent);
+            v.getContext().startActivity(intent);
         }
     }
 
@@ -78,6 +79,9 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
+        if(mDataset==null){
+            mDataset = new ArrayList<>();
+        }
         return mDataset.size();
     }
 }
