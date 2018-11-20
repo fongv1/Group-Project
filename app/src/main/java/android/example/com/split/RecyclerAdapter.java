@@ -1,5 +1,6 @@
 package android.example.com.split;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,9 +40,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.GroupR
             String element = mDataset.get(mPosition);
             // Show toast when clicked
             Toast.makeText(v.getContext(), "Clicked " + element, Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(v.getContext(), GroupDetailActivity.class);
+            intent.putExtra("group name", mDataset.get(mPosition));
+
             // Notify the adapter, that the data has changed so it can
             // update the RecyclerView to display the data.
             mAdapter.notifyDataSetChanged();
+            v.getContext().startActivity(intent);
         }
     }
 
