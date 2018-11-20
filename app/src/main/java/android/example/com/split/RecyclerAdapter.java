@@ -26,7 +26,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.GroupR
         // Initializes the ViewHolder TextView from the group_row_view XML resource
         public GroupRowViewHolder(View v, RecyclerAdapter adapter) {
             super(v);
-            mTextView = (TextView) v.findViewById(R.id.groupRowView);
+            mTextView = (TextView) v.findViewById(R.id.title);
             this.mAdapter = adapter;
             v.setOnClickListener(this);
         }
@@ -65,6 +65,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.GroupR
     public void onBindViewHolder(GroupRowViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+//        holder.mTextView.setText("asd");
         holder.mTextView.setText(mDataset.get(position));
     }
 
