@@ -10,10 +10,6 @@ public class GroupDataRepository {
 
     private static final String TAG = "DataRepository";
 
-    public void getUser() {
-
-    }
-
 
     public void createNewGroup(Group group) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
