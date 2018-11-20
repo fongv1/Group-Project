@@ -31,7 +31,7 @@
         <activity android:name=".AddMemberActivity" />
         <activity android:name=".LedgerActivity" />
         <activity
-            android:name=".Group"
+            android:name=".GroupDetailActivity"
             android:label="@string/title_activity_group"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
