@@ -114,4 +114,7 @@ public class User {
         contactList.add(user);
     }
 
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 }
