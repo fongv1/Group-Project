@@ -1,5 +1,6 @@
 package android.example.com.split.data.entity;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class Group {
         this.groupId = groupId;
         this.name = name;
     }
-
+    @Exclude
     public String getGroupId() {
         return groupId;
     }

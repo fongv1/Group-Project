@@ -3,16 +3,14 @@ package android.example.com.split.data.repository;
 import android.example.com.split.data.entity.Group;
 import android.util.Log;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.*;
-
-import javax.annotation.Nullable;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 public class GroupDataRepository {
 
     private static final String TAG = "DataRepository";
     public void getUser() {
 
     }
-
 
 
 
@@ -27,15 +25,7 @@ public class GroupDataRepository {
     }
 
 
-    public void getUserById(String id) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").document(id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
 
-            }
-        });
-    }
 
 
     //               FirebaseAuth auth = FirebaseAuth.getInstance();
