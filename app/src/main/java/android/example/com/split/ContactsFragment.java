@@ -2,6 +2,7 @@ package android.example.com.split;
 
 
 import android.content.Context;
+import android.example.com.split.data.entity.User;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 public class ContactsFragment extends Fragment {
 
-    private List<String> dataset;
+    private List<User> dataset;
 
     public ContactsFragment() {
         // Required empty public constructor
@@ -35,15 +36,20 @@ public class ContactsFragment extends Fragment {
     // Create dummy data
     private void initDataset() {
         dataset = new ArrayList<>();
-        for(int i = 0; i < 3; i++) {
-            dataset.add("Contact " + i);
+        for(int i = 0; i < 100; i++) {
+            User user = new User();
+            user.setFirstName("Dummy Contact " + i);
+            dataset.add(user);
         }
     }
 
-    // To be changed in future
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.category_tab, container, false);
 
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
@@ -52,7 +58,7 @@ public class ContactsFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset, R.layout.contact_row_view);
+        ContactsRecyclerAdapter mAdapter = new ContactsRecyclerAdapter(dataset);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
@@ -61,13 +67,6 @@ public class ContactsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
 
     }
 
