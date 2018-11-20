@@ -31,7 +31,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_menu_share" />
+                app:srcCompat="@drawable/ic_person_black_24dp" />
 
             <TextView
                 android:id="@+id/title"
@@ -39,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:paddingLeft="20dp"
-                android:text="@string/group_row_view"
+                android:text="@string/contact_row_view"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
         </LinearLayout>

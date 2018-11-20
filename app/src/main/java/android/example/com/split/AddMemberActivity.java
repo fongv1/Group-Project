@@ -25,7 +25,7 @@ public class AddMemberActivity extends AppCompatActivity {
         arrayList = new ArrayList<>();
 
         // ArrayAdapter(Context context, int resource, int textViewResourceId, List<T> objects)
-        adapter = new ArrayAdapter<>(this, R.layout.list_member, R.id.textMember, arrayList);
+        adapter = new ArrayAdapter<>(this, R.layout.list_member, R.id.title, arrayList);
         listView.setAdapter(adapter);
         txtInput = (EditText) findViewById(R.id.editTextGroupName);
         Button btAdd = (Button) findViewById(R.id.add_member_button);
@@ -49,7 +49,7 @@ public class AddMemberActivity extends AppCompatActivity {
     }
 
     public void done(View view) {
-        Intent done = new Intent(this, LedgerActivity.class);
+        Intent done = new Intent(this, Group.class);
         startActivity(done);
     }
 
