@@ -1,6 +1,7 @@
 package android.example.com.split;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -62,8 +63,8 @@ public class Group extends AppCompatActivity {
 
     private void setUpViewPager(ViewPager viewPager){
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MemberFragment());
-        adapter.addFragment(new ExpensesFragment());
+        adapter.addFragment(new MemberFragment(), "Members");
+        adapter.addFragment(new ExpensesFragment(), "Expenses");
         viewPager.setAdapter(adapter);
     }
 
@@ -97,13 +98,15 @@ public class Group extends AppCompatActivity {
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         private final List <Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mTitleList = new ArrayList<>();
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
-        public void addFragment (Fragment fragment){
+        public void addFragment (Fragment fragment, String title){
             mFragmentList.add(fragment);
+            mTitleList.add(title);
         }
 
         @Override
@@ -111,6 +114,13 @@ public class Group extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             return mFragmentList.get(position);
+        }
+
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mTitleList.get(position);
         }
 
         @Override
