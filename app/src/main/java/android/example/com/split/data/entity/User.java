@@ -3,6 +3,9 @@ package android.example.com.split.data.entity;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * User
  */
@@ -32,19 +35,37 @@ public class User {
      */
     private String phoneNumber;
 
+    private List<String> contactList;
+
+    public List<String> getContactList() {
+        return contactList;
+    }
+
     /**
      * User
      */
+
     public User() {
+
+    }
+    //
+    public User(String firstName, String lastName, String email, String phoneNumber) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        contactList = new ArrayList<String>();
     }
 
-
+    // constructor with auth id
     public User(String authId, String firstName, String lastName, String email, String phoneNumber) {
         this.authId = authId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        contactList = new ArrayList<String>();
     }
 
     @Exclude
@@ -52,6 +73,9 @@ public class User {
         return id;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getAuthId() {
         return authId;
@@ -85,4 +109,9 @@ public class User {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+    // add new member to my contact list
+    public void addToContactList(String user){
+        contactList.add(user);
+    }
+
 }
