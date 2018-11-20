@@ -26,6 +26,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="group_row_view">Group</string>
+    <string name="contact_row_view">Contact</string>
     <string name="groupname">Group Name</string>
     <string name="title_activity_group">Group</string>
     <string name="tab_text_1">Tab 1</string>
@@ -34,5 +35,13 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="members">Members</string>
     <string name="expenses">Expenses</string>
+
+    <string name="enter_contact">Contact Name</string>
+    <string name="hint_add_contact">Enter contact name</string>
+    <string name="save_contact">Save</string>
+    <string name="enter_group">Group Name</string>
+    <string name="hint_add_group">Enter group name</string>
+    <string name="save_group">Save</string>
+
 
 </resources>

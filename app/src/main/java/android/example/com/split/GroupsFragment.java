@@ -1,7 +1,9 @@
 package android.example.com.split;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,6 +40,12 @@ public class GroupsFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.category_tab, container, false);
 
@@ -47,10 +55,21 @@ public class GroupsFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset);
+        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset, R.layout.group_row_view);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
 }
