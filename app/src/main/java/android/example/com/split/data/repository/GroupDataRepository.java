@@ -1,62 +1,52 @@
 package android.example.com.split.data.repository;
 
 import android.example.com.split.data.entity.Group;
-import android.util.Log;
-import com.google.android.gms.tasks.OnSuccessListener;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.NonNull;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-public class GroupDataRepository {
+
+public class GroupDataRepository extends Repository<Group> {
 
     private static final String TAG = "DataRepository";
-    public void getUser() {
 
-    }
-
-
-
-    public void createNewGroup(Group group){
+    @Override
+    void createItem(Group group, final Handler.Callback listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("groups").add(group).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        db.collection("groups").add(group).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Log.d(TAG, "onSuccess: " + documentReference.getId());
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()) {
+                    DocumentReference documentReference = task.getResult();
+                    String documentId = documentReference.getId();
+                    Message message = new Message();
+                    final Bundle data = new Bundle();
+                    data.putBoolean("success", false);
+                    data.putString("group-id", documentId);
+                    message.setData(data);
+                    listener.handleMessage(message);
+                } else {
+                    Message message = new Message();
+                    final Bundle data = new Bundle();
+                    data.putBoolean("success", false);
+                    message.setData(data);
+                    listener.handleMessage(message);
+                }
             }
         });
     }
 
+    @Override
+    void getItem(String itemId) {
 
+    }
 
+    @Override
+    void updateItem(String itemId) {
 
-
-    //               FirebaseAuth auth = FirebaseAuth.getInstance();
-    //        auth.signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-    //            @Override
-    //            public void onComplete(@NonNull Task<AuthResult> task) {
-    //                if (task.isSuccessful()) {
-    //
-    //                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    //
-    //                    User myUser = new User();
-    //                    myUser.setId("12345678");
-    //                    myUser.setEmail("saleh@ibra.com");
-    //                    myUser.setFirstName("Saleh");
-    //                    myUser.setLastName("Ibrahim");
-    //                    myUser.setPhoneNumber("0732222222");
-    //
-    //                    DataRepository dataRepository = new DataRepository();
-    //                    dataRepository.createNewUser(myUser);
-    //                    Toast.makeText(HomeActivity.this,"HELL",Toast.LENGTH_LONG).show();
-    //                } else {
-    //                    Toast.makeText(HomeActivity.this,task.getException().getMessage(),Toast.LENGTH_LONG).show();
-    //                }
-    //            }
-    //        });
-
-    //        FirebaseFirestore db = FirebaseFirestore.getInstance();
-    //        db.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-    //            @Override
-    //            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-    //
-    //            }
-    //        });
+    }
 }
