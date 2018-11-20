@@ -1,6 +1,8 @@
-package android.example.com.split;
+package android.example.com.split.ui.home.groups.group;
 
-import android.app.AlertDialog;
+import android.example.com.split.R;
+import android.example.com.split.ui.home.groups.group.expenses.ExpensesTabFragment;
+import android.example.com.split.ui.home.groups.group.members.MembersTabFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -15,8 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,27 +41,27 @@ public class GroupDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group);
+        setContentView(R.layout.activity_detail_group);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_activity_detail_group);
         setSupportActionBar(toolbar);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.viewPager_activity_detail_group);
         setUpViewPager(mViewPager);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_activity_detail_group);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_activity_detail_group);
         tabLayout.setupWithViewPager(mViewPager);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                    FloatingActionButton floatingActionButton = findViewById(R.id.fab_activity_detail_group);
                     floatingActionButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -70,7 +70,7 @@ public class GroupDetailActivity extends AppCompatActivity {
                     });
 
                 } else if (tab.getPosition() == 1) {
-                    FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                    FloatingActionButton floatingActionButton = findViewById(R.id.fab_activity_detail_group);
                     floatingActionButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -95,16 +95,17 @@ public class GroupDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null)
+                        .show();
             }
         });
 
     }
 
-    private void setUpViewPager(ViewPager viewPager){
+    private void setUpViewPager(ViewPager viewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MemberFragment(), "Members");
-        adapter.addFragment(new ExpensesFragment(), "Expenses");
+        adapter.addFragment(new MembersTabFragment(), "Members");
+        adapter.addFragment(new ExpensesTabFragment(), "Expenses");
         viewPager.setAdapter(adapter);
     }
 
@@ -137,14 +138,14 @@ public class GroupDetailActivity extends AppCompatActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private final List <Fragment> mFragmentList = new ArrayList<>();
+        private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mTitleList = new ArrayList<>();
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
-        public void addFragment (Fragment fragment, String title){
+        public void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mTitleList.add(title);
         }

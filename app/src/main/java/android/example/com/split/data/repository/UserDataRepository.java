@@ -12,10 +12,8 @@ import javax.annotation.Nullable;
 
 public class UserDataRepository {
 
-    public OnUserId listener;
-
     private static final String TAG = "UserDataRepository";
-
+    public OnUserId listener;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 

@@ -1,7 +1,9 @@
-package android.example.com.split;
+package android.example.com.split.ui.home.contacts;
 
 
 import android.content.Context;
+import android.example.com.split.R;
+import android.example.com.split.data.entity.User;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,13 +19,14 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ContactsFragment extends Fragment {
+public class ContactsTabFragment extends Fragment {
 
-    private List<String> dataset;
+    private List<User> dataset;
 
-    public ContactsFragment() {
+    public ContactsTabFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,24 +38,29 @@ public class ContactsFragment extends Fragment {
     // Create dummy data
     private void initDataset() {
         dataset = new ArrayList<>();
-        for(int i = 0; i < 3; i++) {
-            dataset.add("Contact " + i);
+        for (int i = 0; i < 100; i++) {
+            User user = new User();
+            user.setFirstName("Dummy Contact " + i);
+            dataset.add(user);
         }
     }
 
-    // To be changed in future
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.category_tab, container, false);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_tab_contacts, container, false);
+
+        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_fragment_tab_contacts);
         mRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        RecyclerAdapter mAdapter = new RecyclerAdapter(dataset, R.layout.contact_row_view);
+        ContactsRecyclerAdapter mAdapter = new ContactsRecyclerAdapter(dataset);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
@@ -61,13 +69,6 @@ public class ContactsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
 
     }
 

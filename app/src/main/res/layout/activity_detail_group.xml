@@ -2,21 +2,21 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_content"
+    android:id="@+id/main_content_activity_detail_group"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".GroupDetailActivity">
+    tools:context=".ui.home.groups.group.GroupDetailActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/appbar_activity_detail_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_activity_detail_group"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
@@ -28,19 +28,18 @@
         </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
+            android:id="@+id/tabs_activity_detail_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TabItem
-                android:id="@+id/membersTab"
+                android:id="@+id/tab_activity_detail_group_members"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/members"
-                />
+                android:text="@string/members" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/expensesTab"
+                android:id="@+id/tab_activity_detail_group_expenses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/expenses" />
@@ -49,13 +48,13 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/container"
+        android:id="@+id/viewPager_activity_detail_group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fab_activity_detail_group"
         style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".HomeActivity"
+            android:name=".ui.home.HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -24,14 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GroupsActivity" />
-        <activity android:name=".ContactsActivity" />
-        <activity android:name=".CreateGroupActivity" />
-        <activity android:name=".AddExpenseActivity" />
-        <activity android:name=".AddMemberActivity" />
-        <activity android:name=".LedgerActivity" />
         <activity
-            android:name=".GroupDetailActivity"
+            android:name=".ui.home.groups.group.GroupDetailActivity"
             android:label="@string/title_activity_group"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

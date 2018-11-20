@@ -3,6 +3,7 @@ package android.example.com.split.data.entity;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,8 @@ import java.util.List;
  * User
  */
 @IgnoreExtraProperties
-public class User {
+public class User implements Serializable {
+
     // firebase authentiction id
     private String authId;
 
@@ -37,10 +39,6 @@ public class User {
 
     private List<String> contactList;
 
-    public List<String> getContactList() {
-        return contactList;
-    }
-
     /**
      * User
      */
@@ -48,6 +46,7 @@ public class User {
     public User() {
 
     }
+
     //
     public User(String firstName, String lastName, String email, String phoneNumber) {
 
@@ -68,6 +67,10 @@ public class User {
         contactList = new ArrayList<String>();
     }
 
+    public List<String> getContactList() {
+        return contactList;
+    }
+
     @Exclude
     public String getId() {
         return id;
@@ -86,13 +89,13 @@ public class User {
 
     }
 
-
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
     public String getLastName() {
         return lastName;
     }
-
-
 
     public String getEmail() {
         return email;
@@ -109,9 +112,9 @@ public class User {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
     // add new member to my contact list
-    public void addToContactList(String user){
+    public void addToContactList(String user) {
         contactList.add(user);
     }
-
 }

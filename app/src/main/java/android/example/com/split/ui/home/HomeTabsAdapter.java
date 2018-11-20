@@ -1,11 +1,14 @@
-package android.example.com.split;
+package android.example.com.split.ui.home;
 
 import android.content.Context;
+import android.example.com.split.R;
+import android.example.com.split.ui.home.contacts.ContactsTabFragment;
+import android.example.com.split.ui.home.groups.GroupsTabFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-public class CategoryAdapter extends FragmentPagerAdapter {
+public class HomeTabsAdapter extends FragmentPagerAdapter {
 
     /**
      * Context of the app
@@ -13,13 +16,13 @@ public class CategoryAdapter extends FragmentPagerAdapter {
     private Context mContext;
 
     /**
-     * Create a new {@link CategoryAdapter} object.
+     * Create a new {@link HomeTabsAdapter} object.
      *
      * @param context is the context of the app
      * @param fm      is the fragment manager that will keep each fragment's state in the adapter
      *                across swipes.
      */
-    public CategoryAdapter(Context context, FragmentManager fm) {
+    public HomeTabsAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
@@ -30,9 +33,9 @@ public class CategoryAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new ContactsFragment();
+            return new ContactsTabFragment();
         } else {
-            return new GroupsFragment();
+            return new GroupsTabFragment();
         }
     }
 

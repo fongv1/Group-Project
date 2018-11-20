@@ -1,10 +1,11 @@
-package android.example.com.split;
+package android.example.com.split.ui.home;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.example.com.split.R;
+import android.example.com.split.ui.FullscreenActivity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -19,10 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -56,16 +53,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
 
         auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() == null) {
+        if (false/*auth.getCurrentUser() == null*/) {
             Intent intent = new Intent(this, FullscreenActivity.class);
             startActivity(intent);
             finish();
         } else {
 
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_app_bar_main);
             setSupportActionBar(toolbar);
 
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_app_bar_main);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -74,7 +71,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
                     /*Fragment f = getSupportFragmentManager().findFragmentById(R.id.tabLayout);
 
-                    if (f instanceof GroupsFragment){
+                    if (f instanceof GroupsTabFragment){
                         Toast.makeText(getBaseContext(), "Groups", Toast.LENGTH_LONG).show();
                     }
 
@@ -91,18 +88,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             drawer.addDrawerListener(toggle);
             toggle.syncState();
 
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_activity_home);
             navigationView.setNavigationItemSelectedListener(this);
 
-            ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-            CategoryAdapter adapter = new CategoryAdapter(this, getSupportFragmentManager());
+            ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_app_bar_main);
+            HomeTabsAdapter adapter = new HomeTabsAdapter(this, getSupportFragmentManager());
             viewPager.setAdapter(adapter);
 
-            FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+            FloatingActionButton floatingActionButton = findViewById(R.id.fab_app_bar_main);
             floatingActionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                    FloatingActionButton floatingActionButton = findViewById(R.id.fab_app_bar_main);
                     floatingActionButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -113,13 +110,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
 
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout_app_bar_main);
             tabLayout.setupWithViewPager(viewPager);
             tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
                     if (tab.getPosition() == 0) {
-                        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                        FloatingActionButton floatingActionButton = findViewById(R.id.fab_app_bar_main);
                         floatingActionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -129,7 +126,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         });
 
                     } else if (tab.getPosition() == 1) {
-                        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
+                        FloatingActionButton floatingActionButton = findViewById(R.id.fab_app_bar_main);
                         floatingActionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -152,7 +149,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             });
 
 
-            authStateListener = new FirebaseAuth.AuthStateListener() {
+            /*authStateListener = new FirebaseAuth.AuthStateListener() {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                     if (auth.getCurrentUser() != null) {
@@ -164,7 +161,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
             };
-            auth.addAuthStateListener(authStateListener);
+            auth.addAuthStateListener(authStateListener);*/
         }
     }
 
@@ -203,14 +200,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
         auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() == null) {
+        if (false/*auth.getCurrentUser() == null*/) {
             Intent intent = new Intent(this, FullscreenActivity.class);
             startActivity(intent);
             finish();
         }
     }
 
-    private void signOut() {
+    /*private void signOut() {
         AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
             public void onComplete(@NonNull Task<Void> task) {
                 // ...
@@ -218,7 +215,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -248,7 +245,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_sign_out) {
-            signOut();
+            /*signOut();*/
         }
 
         return super.onOptionsItemSelected(item);
@@ -281,9 +278,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void createContactPopupDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.add_contact_popup, null);
-        contactItem = (EditText) findViewById(R.id.contactItem);
-        saveButton = (Button) findViewById(R.id.saveContactButton);
+        View view = getLayoutInflater().inflate(R.layout.dialog_add_contact, null);
+        contactItem = (EditText) findViewById(R.id.editText_dialog_add_contact);
+        saveButton = (Button) findViewById(R.id.button_dialog_add_contact_save);
 
         dialogBuilder.setView(view);
         dialog = dialogBuilder.create();
@@ -293,9 +290,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void createGroupPopupDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.add_group_popup, null);
-        contactItem = (EditText) findViewById(R.id.groupItem);
-        saveButton = (Button) findViewById(R.id.saveGroupButton);
+        View view = getLayoutInflater().inflate(R.layout.dialog_add_group, null);
+        contactItem = (EditText) findViewById(R.id.editText_dialog_add_group);
+        saveButton = (Button) findViewById(R.id.button_dialog_add_group_save);
 
         dialogBuilder.setView(view);
         dialog = dialogBuilder.create();

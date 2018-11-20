@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout_item_group_member"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height"
     android:layout_marginLeft="@dimen/margin_medium"
@@ -10,9 +9,8 @@
     android:gravity="center_vertical">
 
     <!-- A CardView that contains a TextView -->
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardView_item_group_member"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -26,22 +24,22 @@
 
             <!-- dummy ImageView - to be changed in future -->
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageView_item_group_member"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_menu_share" />
+                app:srcCompat="@drawable/ic_person_black_24dp" />
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/textView_item_group_member"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:paddingLeft="20dp"
-                android:text="@string/group_row_view"
+                android:text="@string/contact_row_view"
                 android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:paddingLeft="20dp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
