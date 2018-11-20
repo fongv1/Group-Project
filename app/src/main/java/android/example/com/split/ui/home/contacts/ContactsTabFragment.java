@@ -1,9 +1,9 @@
-package android.example.com.split;
+package android.example.com.split.ui.home.contacts;
 
 
 import android.content.Context;
-import android.example.com.split.data.entity.Expense;
-import android.example.com.split.data.entity.Group;
+import android.example.com.split.R;
+import android.example.com.split.data.entity.User;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,14 +15,15 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class ContactsTabFragment extends Fragment {
 
-public class GroupsFragment extends Fragment {
+    private List<User> dataset;
 
-    private List<Group> dataset;
-
-    public GroupsFragment() {
+    public ContactsTabFragment() {
         // Required empty public constructor
     }
 
@@ -37,14 +38,10 @@ public class GroupsFragment extends Fragment {
     // Create dummy data
     private void initDataset() {
         dataset = new ArrayList<>();
-        Random rand = new Random();
-        for(int i = 0; i < 100; i++) {
-            Group group = new Group();
-            group.setName("Dummy Group " + i);
-            Expense expense = new Expense();
-            expense.setPaymentAmount(rand.nextInt(1000));
-            group.addExpense(expense);
-            dataset.add(group);
+        for (int i = 0; i < 100; i++) {
+            User user = new User();
+            user.setFirstName("Dummy Contact " + i);
+            dataset.add(user);
         }
     }
 
@@ -55,7 +52,7 @@ public class GroupsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.category_tab, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_tab_contacts, container, false);
 
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -63,7 +60,7 @@ public class GroupsFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(dataset);
+        ContactsRecyclerAdapter mAdapter = new ContactsRecyclerAdapter(dataset);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;

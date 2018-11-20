@@ -1,8 +1,10 @@
-package android.example.com.split;
+package android.example.com.split.ui.home.groups;
 
 
 import android.content.Context;
-import android.example.com.split.data.entity.User;
+import android.example.com.split.R;
+import android.example.com.split.data.entity.Expense;
+import android.example.com.split.data.entity.Group;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,17 +16,17 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ContactsFragment extends Fragment {
 
-    private List<User> dataset;
+public class GroupsTabFragment extends Fragment {
 
-    public ContactsFragment() {
+    private List<Group> dataset;
+
+    public GroupsTabFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +38,14 @@ public class ContactsFragment extends Fragment {
     // Create dummy data
     private void initDataset() {
         dataset = new ArrayList<>();
-        for(int i = 0; i < 100; i++) {
-            User user = new User();
-            user.setFirstName("Dummy Contact " + i);
-            dataset.add(user);
+        Random rand = new Random();
+        for (int i = 0; i < 100; i++) {
+            Group group = new Group();
+            group.setName("Dummy Group " + i);
+            Expense expense = new Expense();
+            expense.setPaymentAmount(rand.nextInt(1000));
+            group.addExpense(expense);
+            dataset.add(group);
         }
     }
 
@@ -50,7 +56,7 @@ public class ContactsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.category_tab, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_tab_contacts, container, false);
 
         RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -58,7 +64,7 @@ public class ContactsFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ContactsRecyclerAdapter mAdapter = new ContactsRecyclerAdapter(dataset);
+        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(dataset);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;

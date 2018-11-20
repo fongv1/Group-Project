@@ -1,6 +1,6 @@
 package android.example.com.split.data.entity;
 
-public class Expense  {
+public class Expense {
 
     /**
      * Expense ID
@@ -21,12 +21,14 @@ public class Expense  {
      * Expense tittle
      */
     private String tittle;
+
     /**
      * Expense
      */
-    public Expense(){}
+    public Expense() {
+    }
 
-    public Expense(String id, String payeeId, double paymentAmount, String tittle , String payeeName) {
+    public Expense(String id, String payeeId, double paymentAmount, String tittle, String payeeName) {
         this.id = id;
         this.payeeId = payeeId;
         this.paymentAmount = paymentAmount;

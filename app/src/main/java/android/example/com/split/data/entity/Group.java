@@ -43,6 +43,7 @@ public class Group {
         this.groupId = groupId;
         this.name = name;
     }
+
     @Exclude
     public String getGroupId() {
         return groupId;
@@ -71,7 +72,6 @@ public class Group {
     public List<Expense> getExpenses() {
         return expenses;
     }
-
 
 
     public void addExpense(Expense expense) {

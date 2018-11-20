@@ -1,7 +1,8 @@
-package android.example.com.split;
+package android.example.com.split.ui.home.groups.group.members;
 
-import android.example.com.split.data.entity.Expense;
-import android.example.com.split.data.entity.Group;
+import android.example.com.split.R;
+import android.example.com.split.data.entity.User;
+import android.example.com.split.ui.home.contacts.ContactsRecyclerAdapter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,13 +15,11 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public class ExpensesFragment extends Fragment {
+public class MembersTabFragment extends Fragment {
 
-    private static final String TAG = "ExpensesFragment";
-    private List<Group> dataset;
-    private List<Expense> expList;
+    private static final String TAG = "MembersTabFragment";
+    private List<User> dataset;
 
 
     @Nullable
@@ -28,15 +27,15 @@ public class ExpensesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         initDataset();
 
-        View rootView = inflater.inflate(R.layout.fragment_expenses, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_tab_members, container, false);
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.expensesRecycler);
+        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.memberRecycler);
         mRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(dataset);
+        ContactsRecyclerAdapter mAdapter = new ContactsRecyclerAdapter(dataset);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
@@ -44,12 +43,11 @@ public class ExpensesFragment extends Fragment {
 
     // Create dummy data
     private void initDataset() {
-        expList = new ArrayList<>();
-        Random rand = new Random();
-        for(int i = 0; i < 3; i++) {
-            Expense expense = new Expense();
-            expense.setPaymentAmount(rand.nextInt(1000));
-            expList.add(expense);
+        dataset = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            User user = new User();
+            user.setFirstName("Member " + i);
+            dataset.add(user);
         }
     }
 }

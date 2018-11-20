@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".GroupDetailActivity">
+    tools:context=".ui.home.groups.group.GroupDetailActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -36,8 +36,7 @@
                 android:id="@+id/membersTab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/members"
-                />
+                android:text="@string/members" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/expensesTab"
