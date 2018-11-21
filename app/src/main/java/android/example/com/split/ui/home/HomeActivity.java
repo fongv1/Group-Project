@@ -73,6 +73,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
     private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     @Contract(pure = true)
     @NonNull
@@ -141,7 +142,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         viewPager = findViewById(R.id.viewpager_app_bar_main);
         HomeTabsAdapter adapter = new HomeTabsAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-        TabLayout tabLayout = findViewById(R.id.tabLayout_app_bar_main);
+        tabLayout = findViewById(R.id.tabLayout_app_bar_main);
         tabLayout.setupWithViewPager(viewPager);
         FloatingActionButton fab = findViewById(R.id.fab_app_bar_main);
         fab.setOnClickListener(addContactFabListener);
