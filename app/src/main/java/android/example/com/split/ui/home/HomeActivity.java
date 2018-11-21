@@ -70,6 +70,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private TabLayout.BaseOnTabSelectedListener onTabSelectedListener;
     private DrawerLayout drawer;
     private Toolbar toolbar;
+    private NavigationView navigationView;
 
     @Contract(pure = true)
     @NonNull
@@ -133,7 +134,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                                                  R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = findViewById(R.id.nav_view_activity_home);
+        navigationView = findViewById(R.id.nav_view_activity_home);
         navigationView.setNavigationItemSelectedListener(this);
         ViewPager viewPager = findViewById(R.id.viewpager_app_bar_main);
         HomeTabsAdapter adapter = new HomeTabsAdapter(this, getSupportFragmentManager());
