@@ -69,6 +69,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private EditText contactName;
     private TabLayout.BaseOnTabSelectedListener onTabSelectedListener;
     private DrawerLayout drawer;
+    private Toolbar toolbar;
 
     @Contract(pure = true)
     @NonNull
@@ -125,7 +126,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (actionBar != null) {
             actionBar.hide();
         }
-        Toolbar toolbar = findViewById(R.id.toolbar_app_bar_main);
+        toolbar = findViewById(R.id.toolbar_app_bar_main);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
