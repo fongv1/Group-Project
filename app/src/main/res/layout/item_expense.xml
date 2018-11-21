@@ -15,31 +15,55 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         card_view:cardUseCompatPadding="true"
-        card_view:contentPadding="20dp">
+        card_view:contentPadding="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <!-- dummy ImageView - to be changed in future -->
-            <ImageView
-                android:id="@+id/imageView_expense_item"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_menu_share" />
-
-            <TextView
-                android:id="@+id/textView_expense_item"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingLeft="20dp"
-                android:text="@string/group_row_view"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView_expense_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:text="Expense" />
+
+                <TextView
+                    android:id="@+id/textView_amount_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:text="Amount" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageView_delete_expense_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
+
+            <ImageView
+                android:id="@+id/imageView_edit_expense_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_clear_black_24dp" />
+
+
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

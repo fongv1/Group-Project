@@ -47,6 +47,7 @@ public class ExpensesTabFragment extends Fragment {
         Random rand = new Random();
         for (int i = 0; i < 3; i++) {
             Expense expense = new Expense();
+            expense.setTittle("Expense " + i);
             expense.setPaymentAmount(rand.nextInt(1000));
             dataset.add(expense);
         }

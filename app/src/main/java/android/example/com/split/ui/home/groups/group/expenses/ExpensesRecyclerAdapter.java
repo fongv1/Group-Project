@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -38,7 +37,8 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         Expense expense = mDataset.get(position);
-        holder.mTextView.setText(expense.getTittle());
+        holder.expenseTextView.setText(expense.getTittle());
+        holder.amountTextView.setText("" + expense.getPaymentAmount());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -53,12 +53,14 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
 
         final ExpensesRecyclerAdapter mAdapter;
         // Each group data item is just a String presented as a textView in this case
-        public TextView mTextView;
+        public TextView expenseTextView;
+        public TextView amountTextView;
 
         // Initializes the ViewHolder TextView from the item_group XML resource
         public ExpenseViewHolder(View v, ExpensesRecyclerAdapter adapter) {
             super(v);
-            mTextView = (TextView) v.findViewById(R.id.textView_expense_item);
+            expenseTextView = (TextView) v.findViewById(R.id.textView_expense_item);
+            amountTextView = (TextView) v.findViewById(R.id.textView_amount_item);
             this.mAdapter = adapter;
             v.setOnClickListener(this);
         }
