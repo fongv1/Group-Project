@@ -26,7 +26,7 @@ public class ContactDetailActivity extends AppCompatActivity {
             lastName.setText(bundle.getString("last name"));
             email.setText(bundle.getString("email"));
         }
-        
+
 
     }
 }

@@ -97,6 +97,10 @@ public class User implements Serializable {
         return lastName;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -117,4 +121,5 @@ public class User implements Serializable {
     public void addToContactList(String user) {
         contactList.add(user);
     }
+
 }
