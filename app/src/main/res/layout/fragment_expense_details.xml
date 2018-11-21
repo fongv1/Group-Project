@@ -22,7 +22,7 @@
         android:background="?attr/colorPrimary"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/AppTheme.PopupOverlay"
-        app:title="@string/app_name">
+        app:title="Expenses">
 
     </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
@@ -44,7 +44,7 @@
                 android:id="@+id/imageView_delete_expense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/ic_delete_black_24dp" />
 
@@ -56,7 +56,8 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_gravity="center"
                 android:textStyle="bold"
-                android:text="Expense" />
+                android:text="Expense"
+                android:layout_marginLeft="8dp"/>
 
             <TextView
                 android:id="@+id/textView_group_item_expense_total"
@@ -71,16 +72,15 @@
     </android.support.v7.widget.CardView>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_activity_detail_group"
+        android:id="@+id/fab_activity_detail_expense"
         style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
         android:visibility="visible"
         app:backgroundTint="@color/colorPrimary"
         app:fabSize="normal"
-        app:srcCompat="@drawable/ic_add_white_24dp" />
+        app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
 
 </LinearLayout>
 

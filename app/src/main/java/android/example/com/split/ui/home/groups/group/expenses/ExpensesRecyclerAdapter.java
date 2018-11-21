@@ -69,10 +69,9 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             int mPosition = getLayoutPosition();
             // Use that to access the affected item in mDataset.
             Expense expense = mDataset.get(mPosition);
-            // Show toast when clicked
+
             Intent intent = new Intent(v.getContext(), ExpensesDetailActivity.class);
-            //intent.putExtra("Expense amount", mDataset.get(mPosition));
-            //Toast.makeText(v.getContext(), "Clicked " + expense.getTittle(), Toast.LENGTH_SHORT).show();
+            intent.putExtra("Expense", expense.getPaymentAmount());
             // Notify the adapter, that the data has changed so it can
             // update the RecyclerView to display the data.
             mAdapter.notifyDataSetChanged();
