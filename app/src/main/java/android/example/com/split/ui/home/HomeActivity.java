@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.example.com.split.FeatureFlags;
 import android.example.com.split.R;
+import android.example.com.split.data.entity.User;
+import android.example.com.split.data.repository.UserDataRepository;
 import android.example.com.split.ui.FullscreenActivity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,7 +28,11 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import org.jetbrains.annotations.Contract;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -102,6 +108,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             auth.addAuthStateListener(authStateListener);
             if (auth.getCurrentUser() == null) {
                 startSignInActivity();
+            } else {
+                final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                // to check if authenticated user exists on data base
+                handleUserDatabase(firebaseUser);
             }
         }
         View decorView = getWindow().getDecorView();
@@ -133,6 +143,47 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         onTabSelectedListener = getOnTabSelectedListener(fab, addContactFabListener, addGroupFabListener);
         tabLayout.addOnTabSelectedListener(onTabSelectedListener);
     }
+
+    private void handleUserDatabase(final FirebaseUser firebaseUser) {
+        final String currentUserId = firebaseUser.getUid();
+        if (firebaseUser != null) {
+
+            final UserDataRepository userRepository = new UserDataRepository();
+            userRepository.isUserExist(currentUserId, new UserDataRepository.IsUserExist() {
+
+                @Override
+                public void isUserExist(Boolean userExist) {
+                    Toast.makeText(HomeActivity.this, "Checking", Toast.LENGTH_SHORT).show();
+                    if (userExist == false) {
+                        User user = getUser();
+                        userRepository.createNewUser(user, currentUserId, new UserDataRepository.OnUserCreated() {
+                            @Override
+                            public void onUserCreated(Boolean userCreated) {
+                                if (userCreated == true)
+                                    Toast.makeText(HomeActivity.this, "Current user added", Toast.LENGTH_SHORT).show();
+                                else
+                                    Toast.makeText(HomeActivity.this, "Current user error", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(HomeActivity.this, "User exists", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @NonNull
+                private User getUser() {
+                    String name = firebaseUser.getDisplayName();
+                    String[] nameArray = name.split("\\s+");
+                    List<String> fullName = Arrays.asList(nameArray);
+
+                    String mail = firebaseUser.getEmail();
+                    String phone = firebaseUser.getPhoneNumber();
+                    return new User(currentUserId, fullName.get(0), fullName.get(1), mail, phone);
+                }
+            });
+        }
+    }
+
 
     private void startSignInActivity() {
         Intent intent = new Intent(this, FullscreenActivity.class);
