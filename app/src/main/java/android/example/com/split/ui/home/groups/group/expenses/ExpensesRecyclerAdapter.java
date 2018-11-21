@@ -1,13 +1,14 @@
 package android.example.com.split.ui.home.groups.group.expenses;
 
-import android.content.Intent;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -72,12 +73,22 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             // Use that to access the affected item in mDataset.
             Expense expense = mDataset.get(mPosition);
 
-            Intent intent = new Intent(v.getContext(), ExpensesDetailActivity.class);
-            intent.putExtra("Expense", expense.getPaymentAmount());
+            //Intent intent = new Intent(v.getContext(), ExpensesDetailActivity.class);
+            //intent.putExtra("Expense", expense.getPaymentAmount());
+
+            ImageView editImageView = (ImageView) v.findViewById(R.id.imageView_edit_expense_item);
+            editImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "Edit expense", Toast.LENGTH_LONG).show();
+
+                }
+            });
             // Notify the adapter, that the data has changed so it can
             // update the RecyclerView to display the data.
             mAdapter.notifyDataSetChanged();
-            v.getContext().startActivity(intent);
+
+            // v.getContext().startActivity(intent);
         }
     }
 }

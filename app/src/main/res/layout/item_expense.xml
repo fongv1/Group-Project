@@ -46,7 +46,7 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/imageView_delete_expense_item"
+                android:id="@+id/imageView_edit_expense_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -55,7 +55,7 @@
                 app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
 
             <ImageView
-                android:id="@+id/imageView_edit_expense_item"
+                android:id="@+id/imageView_delete_expense_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
