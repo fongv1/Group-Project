@@ -11,6 +11,9 @@ import android.widget.TextView;
 public class MembersDetailActivity extends AppCompatActivity {
 
     private User user;
+    private TextView firstName;
+    private TextView lastName;
+    private TextView email;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -22,13 +25,20 @@ public class MembersDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_members);
 
+
         Bundle bundle = getIntent().getExtras();
 
-        if (bundle != null){
-           user =  (User) bundle.get("user");
+        if (bundle != null) {
+            user = (User) bundle.get("user");
         }
 
-        TextView textView = findViewById(R.id.member_detail_name);
-        textView.setText(user.getFirstName());
+        firstName = findViewById(R.id.member_detail_first_name);
+        firstName.setText(user.getFirstName());
+
+        lastName = findViewById(R.id.member_detail_last_name);
+        lastName.setText(user.getLastName());
+
+        email = findViewById(R.id.member_detail_email);
+        email.setText(user.getEmail());
     }
 }

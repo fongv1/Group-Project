@@ -33,11 +33,15 @@
             android:label="@string/title_activity_group"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
+            android:name=".ui.home.groups.group.members.MembersDetailActivity"
+            android:label="@string/title_activity_group"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".ui.FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/FullscreenTheme" />
-        
+
         <activity android:name=".ui.home.contacts.ContactDetailActivity"></activity>
     </application>
 
