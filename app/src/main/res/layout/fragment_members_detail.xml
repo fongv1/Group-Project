@@ -6,7 +6,7 @@
 
 
     <TextView
-        android:id="@+id/textView_test"
+        android:id="@+id/textView_member_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="this is the members detail " />
