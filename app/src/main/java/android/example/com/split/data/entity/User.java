@@ -37,7 +37,17 @@ public class User implements Serializable {
      */
     private String phoneNumber;
 
-    private List<String> contactList;
+    private List<String> contacts;
+
+
+    public List<String> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<String> contacts) {
+        this.contacts = contacts;
+    }
+
 
     /**
      * User
@@ -54,7 +64,7 @@ public class User implements Serializable {
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        contactList = new ArrayList<String>();
+        contacts = new ArrayList<String>();
     }
 
     // constructor with auth id
@@ -64,12 +74,10 @@ public class User implements Serializable {
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        contactList = new ArrayList<String>();
+        contacts = new ArrayList<String>();
     }
 
-    public List<String> getContactList() {
-        return contactList;
-    }
+
 
     @Exclude
     public String getId() {
@@ -113,8 +121,8 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    // add new member to my contact list
-    public void addToContactList(String user) {
-        contactList.add(user);
+    public void addToContactList(String newUser){
+        contacts.add(newUser);
     }
+
 }
