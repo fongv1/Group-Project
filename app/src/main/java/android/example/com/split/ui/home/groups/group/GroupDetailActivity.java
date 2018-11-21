@@ -1,5 +1,6 @@
 package android.example.com.split.ui.home.groups.group;
 
+import android.app.AlertDialog;
 import android.example.com.split.R;
 import android.example.com.split.ui.home.groups.group.expenses.ExpensesTabFragment;
 import android.example.com.split.ui.home.groups.group.members.MembersTabFragment;
@@ -20,11 +21,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GroupDetailActivity extends AppCompatActivity {
+
+    // add member and expense
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private EditText memberName;
+    private Button addMemberButton;
+
+    private EditText expenseTitle;
+    private EditText expenseAmount;
+    //private EditText expensePayee;
+    private Button addExpenseButton;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -55,6 +69,17 @@ public class GroupDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_group);
+
+        // add member and expense
+        memberName = (EditText) findViewById(R.id.editText_dialog_add_member);
+        addMemberButton = (Button) findViewById(R.id.button_dialog_add_member_save);
+
+        expenseTitle = (EditText) findViewById(R.id.editText_dialog_add_expense_title);
+        expenseAmount= (EditText) findViewById(R.id.editText_dialog_add_expense_amount);
+        //expensePayee = (EditText) findViewById(R.id.);
+        addExpenseButton = (Button) findViewById(R.id.button_dialog_add_expense_save);
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_activity_detail_group);
         setSupportActionBar(toolbar);
@@ -87,6 +112,7 @@ public class GroupDetailActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             //Toast.makeText(HomeActivity.this, "add contact", Toast.LENGTH_LONG).show();
+                            addMemberPopupDialog();
                         }
                     });
 
@@ -96,6 +122,7 @@ public class GroupDetailActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             //Toast.makeText(HomeActivity.this, "add groups", Toast.LENGTH_LONG).show();
+                            addExpensePopupDialog();
                         }
                     });
                 }
@@ -192,4 +219,19 @@ public class GroupDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void addMemberPopupDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.dialog_add_member, null);
+        dialogBuilder.setView(view);
+        dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
+    private void addExpensePopupDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.dialog_add_expense, null);
+        dialogBuilder.setView(view);
+        dialog = dialogBuilder.create();
+        dialog.show();
+    }
 }
