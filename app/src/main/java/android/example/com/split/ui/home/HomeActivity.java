@@ -301,7 +301,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void createContactPopupDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_add_contact, null);
-        contactItem = (EditText) findViewById(R.id.editText_dialog_add_contact);
+        contactItem = (EditText) findViewById(R.id.editText_dialog_add_contact_firstName);
         saveButton = (Button) findViewById(R.id.button_dialog_add_contact_save);
 
         dialogBuilder.setView(view);
