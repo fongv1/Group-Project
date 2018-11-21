@@ -75,6 +75,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private FloatingActionButton fab;
+    private ActionBar actionBar;
 
     @Contract(pure = true)
     @NonNull
@@ -127,7 +128,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         decorView.setSystemUiVisibility(uiOptions);
         // Remember that you should never show the action bar if the
         // status bar is hi
-        ActionBar actionBar = getActionBar();
+        actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }
