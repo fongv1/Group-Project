@@ -20,170 +20,131 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import org.jetbrains.annotations.Contract;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final boolean AUTHENTICATION = FeatureFlags.AUTHENTICATION;
+    public static final int TAB_CONTACTS = 0;
+    public static final int TAB_GROUPS = 1;
     @SuppressWarnings("unused")
     private static final int RC_SIGN_IN = 0;
     private FirebaseAuth auth;
-    private FirebaseAuth.AuthStateListener authStateListener;
-
+    private final FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
+        @Override
+        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            if (auth.getCurrentUser() == null) {
+                startSignInActivity();
+            }
+        }
+    };
     // Fab functionality
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-    @SuppressWarnings("unused")
     private EditText contactItem;
-    @SuppressWarnings("unused")
+    private final View.OnClickListener addContactFabListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            createContactPopupDialog();
+        }
+    };
+    private final View.OnClickListener addGroupFabListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            createGroupPopupDialog();
+        }
+    };
     private EditText contactName;
-    @SuppressWarnings("unused")
-    private Button saveButton;
+    private TabLayout.BaseOnTabSelectedListener onTabSelectedListener;
 
+    @Contract(pure = true)
+    @NonNull
+    private static TabLayout.BaseOnTabSelectedListener getOnTabSelectedListener(final FloatingActionButton fab, final View.OnClickListener addContactFabListener, final View.OnClickListener addGroupFabListener) {
+        return new TabLayout.BaseOnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == TAB_CONTACTS) {
+                    fab.setOnClickListener(addContactFabListener);
+
+                } else if (tab.getPosition() == TAB_GROUPS) {
+                    fab.setOnClickListener(addGroupFabListener);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        };
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        if (AUTHENTICATION) {
+            if (auth == null) {
+                auth = FirebaseAuth.getInstance();
+            }
+            auth.addAuthStateListener(authStateListener);
+            if (auth.getCurrentUser() == null) {
+                startSignInActivity();
+            }
+        }
         View decorView = getWindow().getDecorView();
         // Hide the status bar.
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         // Remember that you should never show the action bar if the
-        // status bar is hidden, so hide that too if necessary.
+        // status bar is hi
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }
+        Toolbar toolbar = findViewById(R.id.toolbar_app_bar_main);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
+                                                                 R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = findViewById(R.id.nav_view_activity_home);
+        navigationView.setNavigationItemSelectedListener(this);
+        ViewPager viewPager = findViewById(R.id.viewpager_app_bar_main);
+        HomeTabsAdapter adapter = new HomeTabsAdapter(this, getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        TabLayout tabLayout = findViewById(R.id.tabLayout_app_bar_main);
+        tabLayout.setupWithViewPager(viewPager);
+        FloatingActionButton fab = findViewById(R.id.fab_app_bar_main);
+        fab.setOnClickListener(addContactFabListener);
+        onTabSelectedListener = getOnTabSelectedListener(fab, addContactFabListener, addGroupFabListener);
+        tabLayout.addOnTabSelectedListener(onTabSelectedListener);
+    }
 
-        if (FeatureFlags.AUTHENTICATION) {
-            auth = FirebaseAuth.getInstance();
-        }
-        if (FeatureFlags.AUTHENTICATION && (auth.getCurrentUser() == null)) {
-            Intent intent = new Intent(this, FullscreenActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_app_bar_main);
-            setSupportActionBar(toolbar);
-
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_app_bar_main);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //Intent addGroup = new Intent(HomeActivity.this, CreateGroupActivity.class);
-                    //startActivity(addGroup);
-
-                    /*Fragment f = getSupportFragmentManager().findFragmentById(R.id.tabLayout);
-
-                    if (f instanceof GroupsTabFragment){
-                        Toast.makeText(getBaseContext(), "Groups", Toast.LENGTH_LONG).show();
-                    }
-
-                    else{
-                        Toast.makeText(getBaseContext(), "Contacts", Toast.LENGTH_LONG).show();
-                    }*/
-                }
-            });
-
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                                                                     R.string.navigation_drawer_open,
-                                                                     R.string.navigation_drawer_close);
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
-
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_activity_home);
-            navigationView.setNavigationItemSelectedListener(this);
-
-            ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_app_bar_main);
-            HomeTabsAdapter adapter = new HomeTabsAdapter(this, getSupportFragmentManager());
-            viewPager.setAdapter(adapter);
-
-            FloatingActionButton floatingActionButton = findViewById(R.id.fab_app_bar_main);
-            floatingActionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FloatingActionButton floatingActionButton = findViewById(R.id.fab_app_bar_main);
-                    floatingActionButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            createContactPopupDialog();
-                            //Toast.makeText(HomeActivity.this, "add contact", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-            });
-
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout_app_bar_main);
-            tabLayout.setupWithViewPager(viewPager);
-            tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    if (tab.getPosition() == 0) {
-                        FloatingActionButton floatingActionButton = findViewById(R.id.fab_app_bar_main);
-                        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                createContactPopupDialog();
-                                //Toast.makeText(HomeActivity.this, "add contact", Toast.LENGTH_LONG).show();
-                            }
-                        });
-
-                    } else if (tab.getPosition() == 1) {
-                        FloatingActionButton floatingActionButton = findViewById(R.id.fab_app_bar_main);
-                        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                createGroupPopupDialog();
-                                //Toast.makeText(HomeActivity.this, "add groups", Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }
-                }
-
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
-
-                }
-
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
-
-                }
-            });
-
-
-            if (FeatureFlags.AUTHENTICATION) {
-                authStateListener = new FirebaseAuth.AuthStateListener() {
-                    @Override
-                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        if (auth.getCurrentUser() != null) {
-                            // Signed in
-                        } else {
-                            Intent intent = new Intent(HomeActivity.this, FullscreenActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
-                };
-                auth.addAuthStateListener(authStateListener);
-            }
-        }
+    private void startSignInActivity() {
+        Intent intent = new Intent(this, FullscreenActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
-            if (FeatureFlags.AUTHENTICATION) {
+            if (AUTHENTICATION) {
                 //hideSystemUI();
             }
         }
@@ -215,18 +176,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
-        if (FeatureFlags.AUTHENTICATION) {
-            auth = FirebaseAuth.getInstance();
+        if (AUTHENTICATION) {
+            if (auth == null) {
+                auth = FirebaseAuth.getInstance();
+            }
             if (auth.getCurrentUser() == null) {
-                Intent intent = new Intent(this, FullscreenActivity.class);
-                startActivity(intent);
-                finish();
+                startSignInActivity();
             }
         }
     }
 
     private void signOut() {
-        if (FeatureFlags.AUTHENTICATION) {
+        if (AUTHENTICATION) {
             AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
                 public void onComplete(@NonNull Task<Void> task) {
                     // ...
@@ -239,7 +200,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -265,7 +226,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_sign_out) {
-            if (FeatureFlags.AUTHENTICATION) {
+            if (AUTHENTICATION) {
                 signOut();
             }
         }
@@ -293,7 +254,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -301,8 +262,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void createContactPopupDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_add_contact, null);
-        contactItem = (EditText) findViewById(R.id.editText_dialog_add_contact);
-        saveButton = (Button) findViewById(R.id.button_dialog_add_contact_save);
+        contactItem = findViewById(R.id.editText_dialog_add_contact);
 
         dialogBuilder.setView(view);
         dialog = dialogBuilder.create();
@@ -313,8 +273,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void createGroupPopupDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_add_group, null);
-        contactItem = (EditText) findViewById(R.id.editText_dialog_add_group);
-        saveButton = (Button) findViewById(R.id.button_dialog_add_group_save);
+        contactItem = findViewById(R.id.editText_dialog_add_group);
 
         dialogBuilder.setView(view);
         dialog = dialogBuilder.create();
