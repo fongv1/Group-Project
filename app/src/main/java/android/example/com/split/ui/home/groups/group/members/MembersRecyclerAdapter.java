@@ -3,6 +3,7 @@ package android.example.com.split.ui.home.groups.group.members;
 import android.content.Intent;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
+import android.example.com.split.ui.home.HomeActivity;
 import android.example.com.split.ui.home.groups.group.GroupDetailActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -76,8 +77,8 @@ public class MembersRecyclerAdapter extends RecyclerView.Adapter<MembersRecycler
             // update the RecyclerView to display the data.
 
 
-            Intent intent = new Intent(v.getContext(), MembersDetailFragment.class);
-            intent.putExtra("position", mPosition);
+            Intent intent = new Intent(v.getContext(), MembersDetailActivity.class);
+            intent.putExtra("user", user);
             mAdapter.notifyDataSetChanged();
             v.getContext().startActivity(intent);
         }
