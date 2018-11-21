@@ -68,6 +68,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     };
     private EditText contactName;
     private TabLayout.BaseOnTabSelectedListener onTabSelectedListener;
+    private DrawerLayout drawer;
 
     @Contract(pure = true)
     @NonNull
@@ -126,7 +127,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         Toolbar toolbar = findViewById(R.id.toolbar_app_bar_main);
         setSupportActionBar(toolbar);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
                                                                  R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -251,7 +252,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
