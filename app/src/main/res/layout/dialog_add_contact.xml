@@ -27,18 +27,31 @@
 
 
             <EditText
-                android:id="@+id/editText_dialog_add_contact"
+                android:id="@+id/editText_dialog_add_contact_firstName"
                 android:layout_below="@id/textView_dialog_add_contact"
                 android:layout_width="match_parent"
-                android:hint="@string/hint_add_contact"
+                android:hint="@string/hint_add_contact_firstName"
                 android:layout_height="wrap_content" />
 
+            <EditText
+                android:id="@+id/editText_dialog_add_contact_lastName"
+                android:layout_below="@id/editText_dialog_add_contact_firstName"
+                android:layout_width="match_parent"
+                android:hint="@string/hint_add_contact_lastName"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/editText_dialog_add_contact_email"
+                android:layout_below="@id/editText_dialog_add_contact_lastName"
+                android:layout_width="match_parent"
+                android:hint="@string/hint_add_contact_email"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:id="@+id/button_dialog_add_contact_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/editText_dialog_add_contact"
+                android:layout_below="@id/editText_dialog_add_contact_email"
                 android:layout_marginTop="5dp"
                 android:background="@color/colorPrimaryDark"
                 android:text="@string/save_contact"
