@@ -72,6 +72,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
+    private ViewPager viewPager;
 
     @Contract(pure = true)
     @NonNull
@@ -137,7 +138,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         navigationView = findViewById(R.id.nav_view_activity_home);
         navigationView.setNavigationItemSelectedListener(this);
-        ViewPager viewPager = findViewById(R.id.viewpager_app_bar_main);
+        viewPager = findViewById(R.id.viewpager_app_bar_main);
         HomeTabsAdapter adapter = new HomeTabsAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = findViewById(R.id.tabLayout_app_bar_main);
