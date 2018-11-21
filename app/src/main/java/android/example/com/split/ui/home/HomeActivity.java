@@ -22,6 +22,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -61,7 +65,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (FeatureFlags.AUTHENTICATION) {
             auth = FirebaseAuth.getInstance();
         }
-        if (FeatureFlags.AUTHENTICATION && auth.getCurrentUser() == null) {
+        if (FeatureFlags.AUTHENTICATION && (auth.getCurrentUser() == null)) {
             Intent intent = new Intent(this, FullscreenActivity.class);
             startActivity(intent);
             finish();
@@ -179,7 +183,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
-            //hideSystemUI();
+            if (FeatureFlags.AUTHENTICATION) {
+                //hideSystemUI();
+            }
         }
     }
 
@@ -219,15 +225,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    /*private void signOut() {
-        AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
-            public void onComplete(@NonNull Task<Void> task) {
-                // ...
-                Toast.makeText(HomeActivity.this, "Signed out", Toast.LENGTH_LONG).show();
-            }
-        });
+    private void signOut() {
+        if (FeatureFlags.AUTHENTICATION) {
+            AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
+                public void onComplete(@NonNull Task<Void> task) {
+                    // ...
+                    Toast.makeText(HomeActivity.this, "Signed out", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
 
-    }*/
+    }
 
     @Override
     public void onBackPressed() {
@@ -258,12 +266,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             return true;
         } else if (id == R.id.action_sign_out) {
             if (FeatureFlags.AUTHENTICATION) {
-                auth = FirebaseAuth.getInstance();
-                if (auth.getCurrentUser() == null) {
-                    Intent intent = new Intent(this, FullscreenActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+                signOut();
             }
         }
 
