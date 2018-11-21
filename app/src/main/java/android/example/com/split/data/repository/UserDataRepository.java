@@ -8,7 +8,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.*;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class UserDataRepository {
@@ -17,7 +16,7 @@ public class UserDataRepository {
     public OnUserId listener;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
- // create new Auth user
+    // create new Auth user
     public void createNewUser(User user, String userAuthId, final OnUserCreated listener) {
 
         db.collection("users").document(userAuthId).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -34,7 +33,7 @@ public class UserDataRepository {
 
     }
 
-     // create new user and add it to Auth user's list
+    // create new user and add it to Auth user's list
     public void addNewContact(final User user, final String userAuthId, final OnContactCreated listener) {
 
         db.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -78,7 +77,7 @@ public class UserDataRepository {
     }
 
 
-// get the document is of the current auth user
+    // get the document is of the current auth user
     public void getDocumentId(String user_auth_id, final OnUserId listener) {
         final String[] data = {""};
         db.collection("users").limit(1).whereEqualTo("id", user_auth_id).get()
@@ -119,14 +118,25 @@ public class UserDataRepository {
         return id[0];*/
 
 
-    public void getUserById(String id) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users").document(id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+    public void isUserExist(String id, final IsUserExist listener) {
 
+        db.collection("users").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            // if got document or connected to collection ref but document not exists
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists())
+                    listener.isUserExist(true);
+                else
+                    listener.isUserExist(false);
             }
-        });
+        })
+          // if fail to connect or get collection ref
+          .addOnFailureListener(new OnFailureListener() {
+              @Override
+              public void onFailure(@NonNull Exception e) {
+                  listener.isUserExist(false);
+              }
+          });
     }
 
     // create new user and add it to Auth user's list
@@ -137,7 +147,7 @@ public class UserDataRepository {
             public void onSuccess(DocumentReference documentReference) {
                 final String userId = documentReference.getId();
                 db.collection("users").document(userAuthId).
-                        update("contacts",userId).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        update("contacts", userId).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         listener.onContactCreated(true);
@@ -155,15 +165,37 @@ public class UserDataRepository {
 
     // get list of user's contact
 
-    public void getContactlist(final String userAuthId , final OnGetContact listener) {
-        db.collection("users").document(userAuthId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-              if (documentSnapshot.exists()){
-                 User user = documentSnapshot.toObject(User.class);
-                  List<String> contactList = user.getContacts();
-                  listener.onGetContact(contactList);
+    public void getContactlist(final String userAuthId, final OnGetContact listener) {
+        db.collection("users").document(userAuthId).get()
+          .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+              @Override
+              public void onSuccess(DocumentSnapshot documentSnapshot) {
+                  if (documentSnapshot.exists()) {
+                      User user = documentSnapshot.toObject(User.class);
+                      List<String> contactList = user.getContacts();
+                      listener.onGetContact(contactList);
+                  }
+
               }
+          });
+    }
+
+    // get user details
+
+    public void getUserDetail(final String userAuthId, final OnUserDetails listener) {
+        db.collection("users").document(userAuthId).get()
+          .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+              @Override
+              public void onSuccess(DocumentSnapshot documentSnapshot) {
+                  if (documentSnapshot.exists()) {
+                      User user = documentSnapshot.toObject(User.class);
+                      listener.onUserDetails(user);
+                  }
+
+              }
+          }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
 
             }
         });
@@ -172,6 +204,8 @@ public class UserDataRepository {
     public interface OnUserId {
 
         void onUserId(String userId);
+
+
     }
 
     public interface OnUserCreated {
@@ -184,8 +218,19 @@ public class UserDataRepository {
         void onContactCreated(Boolean contactCreated);
     }
 
-    public interface OnGetContact{
+    public interface OnGetContact {
+
         void onGetContact(List<String> contact);
+    }
+
+    public interface IsUserExist {
+
+        void isUserExist(Boolean userExist);
+    }
+
+    public interface OnUserDetails {
+
+        void onUserDetails(User user);
     }
 
 }

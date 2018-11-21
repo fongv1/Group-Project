@@ -64,12 +64,11 @@ public class User implements Serializable {
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        contacts = new ArrayList<String>();
     }
 
     // constructor with auth id
-    public User(String authId, String firstName, String lastName, String email, String phoneNumber) {
-        this.authId = authId;
+    public User(String id, String firstName, String lastName, String email, String phoneNumber) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -79,7 +78,7 @@ public class User implements Serializable {
 
 
 
-    @Exclude
+
     public String getId() {
         return id;
     }
@@ -88,6 +87,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
+    @Exclude
     public String getAuthId() {
         return authId;
     }
