@@ -28,6 +28,10 @@
             android:name=".ui.home.groups.group.GroupDetailActivity"
             android:label="@string/title_activity_group"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ui.home.groups.group.expenses.ExpensesDetailActivity"
+            android:label="@string/title_activity_group"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
