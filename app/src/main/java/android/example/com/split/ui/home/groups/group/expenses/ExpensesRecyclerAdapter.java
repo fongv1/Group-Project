@@ -1,14 +1,16 @@
 package android.example.com.split.ui.home.groups.group.expenses;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -16,10 +18,12 @@ import java.util.List;
 // Simple implementation for a data set that consists of a List of Strings displayed using TextView widgets
 public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecyclerAdapter.ExpenseViewHolder> {
 
+    private Context context;
     private List<Expense> mDataset;
 
     // Create the adapter with a dataset
-    public ExpensesRecyclerAdapter(List<Expense> myDataset) {
+    public ExpensesRecyclerAdapter(Context context, List<Expense> myDataset) {
+        this.context = context;
         mDataset = myDataset;
     }
 
@@ -71,7 +75,7 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             // Get the position of the item that was clicked.
             int mPosition = getLayoutPosition();
             // Use that to access the affected item in mDataset.
-            Expense expense = mDataset.get(mPosition);
+            final Expense expense = mDataset.get(mPosition);
 
             //Intent intent = new Intent(v.getContext(), ExpensesDetailActivity.class);
             //intent.putExtra("Expense", expense.getPaymentAmount());
@@ -80,8 +84,7 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             editImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Edit expense", Toast.LENGTH_LONG).show();
-
+                    editExpensePopupDialog(expense);
                 }
             });
             // Notify the adapter, that the data has changed so it can
@@ -89,6 +92,18 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             mAdapter.notifyDataSetChanged();
 
             // v.getContext().startActivity(intent);
+        }
+
+        private void editExpensePopupDialog(Expense expense) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mAdapter.context);
+            View view = LayoutInflater.from(mAdapter.context).inflate(R.layout.dialog_add_expense, null);
+            EditText editTitle = (EditText) view.findViewById(R.id.editText_dialog_add_expense_title);
+            editTitle.setText(expense.getTittle());
+            EditText editAmount = (EditText) view.findViewById(R.id.editText_dialog_add_expense_amount);
+            editAmount.setText("" + expense.getPaymentAmount());
+            dialogBuilder.setView(view);
+            AlertDialog dialog = dialogBuilder.create();
+            dialog.show();
         }
     }
 }

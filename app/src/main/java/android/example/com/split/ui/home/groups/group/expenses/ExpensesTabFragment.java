@@ -35,7 +35,7 @@ public class ExpensesTabFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ExpensesRecyclerAdapter mAdapter = new ExpensesRecyclerAdapter(dataset);
+        ExpensesRecyclerAdapter mAdapter = new ExpensesRecyclerAdapter(this.getContext(), dataset);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
