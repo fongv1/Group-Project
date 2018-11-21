@@ -3,9 +3,11 @@ package android.example.com.split.ui.home;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.example.com.split.FeatureFlags;
 import android.example.com.split.R;
 import android.example.com.split.ui.FullscreenActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -20,10 +22,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    @SuppressWarnings("unused")
     private static final int RC_SIGN_IN = 0;
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -31,8 +38,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     // Fab functionality
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
+    @SuppressWarnings("unused")
     private EditText contactItem;
+    @SuppressWarnings("unused")
     private EditText contactName;
+    @SuppressWarnings("unused")
     private Button saveButton;
 
 
@@ -52,8 +62,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             actionBar.hide();
         }
 
-        auth = FirebaseAuth.getInstance();
-        if (false/*auth.getCurrentUser() == null*/) {
+        if (FeatureFlags.AUTHENTICATION) {
+            auth = FirebaseAuth.getInstance();
+        }
+        if (FeatureFlags.AUTHENTICATION && (auth.getCurrentUser() == null)) {
             Intent intent = new Intent(this, FullscreenActivity.class);
             startActivity(intent);
             finish();
@@ -149,19 +161,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             });
 
 
-            /*authStateListener = new FirebaseAuth.AuthStateListener() {
-                @Override
-                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                    if (auth.getCurrentUser() != null) {
-                        // Signed in
-                    } else {
-                        Intent intent = new Intent(HomeActivity.this, FullscreenActivity.class);
-                        startActivity(intent);
-                        finish();
+            if (FeatureFlags.AUTHENTICATION) {
+                authStateListener = new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        if (auth.getCurrentUser() != null) {
+                            // Signed in
+                        } else {
+                            Intent intent = new Intent(HomeActivity.this, FullscreenActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
-                }
-            };
-            auth.addAuthStateListener(authStateListener);*/
+                };
+                auth.addAuthStateListener(authStateListener);
+            }
         }
     }
 
@@ -169,7 +183,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
-            //hideSystemUI();
+            if (FeatureFlags.AUTHENTICATION) {
+                //hideSystemUI();
+            }
         }
     }
 
@@ -199,23 +215,27 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
-        auth = FirebaseAuth.getInstance();
-        if (false/*auth.getCurrentUser() == null*/) {
-            Intent intent = new Intent(this, FullscreenActivity.class);
-            startActivity(intent);
-            finish();
+        if (FeatureFlags.AUTHENTICATION) {
+            auth = FirebaseAuth.getInstance();
+            if (auth.getCurrentUser() == null) {
+                Intent intent = new Intent(this, FullscreenActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
     }
 
-    /*private void signOut() {
-        AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
-            public void onComplete(@NonNull Task<Void> task) {
-                // ...
-                Toast.makeText(HomeActivity.this, "Signed out", Toast.LENGTH_LONG).show();
-            }
-        });
+    private void signOut() {
+        if (FeatureFlags.AUTHENTICATION) {
+            AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
+                public void onComplete(@NonNull Task<Void> task) {
+                    // ...
+                    Toast.makeText(HomeActivity.this, "Signed out", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
 
-    }*/
+    }
 
     @Override
     public void onBackPressed() {
@@ -245,7 +265,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_sign_out) {
-            /*signOut();*/
+            if (FeatureFlags.AUTHENTICATION) {
+                signOut();
+            }
         }
 
         return super.onOptionsItemSelected(item);
