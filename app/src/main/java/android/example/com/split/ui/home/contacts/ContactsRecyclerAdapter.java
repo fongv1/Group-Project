@@ -70,11 +70,9 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
             // Use that to access the affected item in mDataset.
             User user = mDataset.get(mPosition);
             // Show toast when clicked
-            Toast.makeText(v.getContext(), "Clicked " + user.getFirstName(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(v.getContext(), "Clicked " + user.getFirstName(), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(v.getContext(), ContactDetailActivity.class);
-            intent.putExtra("first name", mDataset.get(mPosition).getFirstName());
-            intent.putExtra("last name", mDataset.get(mPosition).getLastName());
-            intent.putExtra("email", mDataset.get(mPosition).getEmail());
+            intent.putExtra("user", user);
 
             // Notify the adapter, that the data has changed so it can
             // update the RecyclerView to display the data.
