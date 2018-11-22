@@ -40,16 +40,17 @@ public class GroupsTabFragment extends Fragment {
     private void initDataset() {
         dataset = new ArrayList<>();
         Random rand = new Random();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 20; i++) {
             Group group = new Group();
             group.setName("Dummy Group " + i);
 
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < 8; j++) {
                 Expense expense = new Expense();
                 expense.setPaymentAmount(rand.nextInt(1000));
+                expense.setTittle("Expense " + j);
                 group.addExpense(expense);
             }
-            for(int j = 0; j < 3; j++){
+            for(int j = 0; j < 5; j++){
                 User user = new User();
                 user.setFirstName("Dummy Member ");
                 user.setLastName("" + j);

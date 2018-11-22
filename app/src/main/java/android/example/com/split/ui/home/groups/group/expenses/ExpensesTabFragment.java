@@ -13,9 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ExpensesTabFragment extends Fragment {
 
@@ -27,7 +25,6 @@ public class ExpensesTabFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        initDataset();
 
         View rootView = inflater.inflate(R.layout.fragment_tab_expenses, container, false);
 
@@ -41,6 +38,9 @@ public class ExpensesTabFragment extends Fragment {
         Bundle bundle = getArguments();
         group = (Group) bundle.get("group");
 
+        //gets the expenses from the group
+        dataset = group.getExpenses();
+
         expensesRecyclerAdapter = new ExpensesRecyclerAdapter(this.getContext(), dataset, group);
         mRecyclerView.setAdapter(expensesRecyclerAdapter);
 
@@ -51,15 +51,4 @@ public class ExpensesTabFragment extends Fragment {
         return expensesRecyclerAdapter;
     }
 
-    // Create dummy data
-    private void initDataset() {
-        dataset = new ArrayList<>();
-        Random rand = new Random();
-        for (int i = 0; i < 3; i++) {
-            Expense expense = new Expense();
-            expense.setTittle("Expense " + i);
-            expense.setPaymentAmount(rand.nextInt(1000));
-            dataset.add(expense);
-        }
-    }
 }
