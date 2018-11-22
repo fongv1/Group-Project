@@ -1,5 +1,7 @@
 package com.alaskalany.lib;
 
+import com.alaskalany.lib.entity.UserEntity;
+import com.alaskalany.lib.model.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +14,8 @@ public class SplitTest {
 
     @Before
     public void setUp() throws Exception {
-        split = Split.getInstance();
+        User user = new UserEntity();
+        split = Split.getInstance(user);
     }
 
     @After
@@ -22,7 +25,8 @@ public class SplitTest {
     @Test
     public void getInstance() {
         Split expected = split;
-        Split actual = Split.getInstance();
+        User user = new UserEntity();
+        Split actual = Split.getInstance(user);
         assertEquals(expected, actual);
     }
 }
