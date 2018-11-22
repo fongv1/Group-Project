@@ -100,8 +100,17 @@ public class GroupDetailActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_activity_detail_group);
         tabLayout.setupWithViewPager(mViewPager);
 
+        //Setting up Fab functionality
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_activity_detail_group);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addMemberPopupDialog();
+            }
+        });
+
         tabLayout.setupWithViewPager(mViewPager);
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
             @Override
@@ -136,15 +145,6 @@ public class GroupDetailActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
-            }
-        });
-
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null)
-                        .show();
             }
         });
 
