@@ -12,7 +12,7 @@
 
         <RelativeLayout
             android:id="@+id/relativeLayout_dialog_add_expense"
-            android:padding="25dp"
+            android:padding="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -31,7 +31,9 @@
                 android:layout_below="@id/textView_dialog_add_expense"
                 android:layout_width="match_parent"
                 android:hint="@string/hint_add_expense"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp" />
 
             <EditText
                 android:id="@+id/editText_dialog_add_expense_amount"
@@ -41,16 +43,42 @@
                 android:layout_height="wrap_content" />
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="2dp"
+                android:layout_alignBottom="@id/button_dialog_add_expense_save"
+                android:layout_below="@+id/editText_dialog_add_expense_amount"
+                android:layout_marginBottom="61dp">
+
+                <TextView
+                    android:id="@+id/textView_choose_member"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:hint="Choose Member"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_choose_member"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
             <Button
                 android:id="@+id/button_dialog_add_expense_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/editText_dialog_add_expense_amount"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="88dp"
                 android:background="@color/colorPrimaryDark"
                 android:text="@string/save_expense"
                 android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true" />
 
 
         </RelativeLayout>
