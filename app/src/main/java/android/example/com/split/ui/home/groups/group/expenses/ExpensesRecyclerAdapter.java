@@ -8,9 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 
 import java.util.List;
 
@@ -60,49 +58,61 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
         // Each group data item is just a String presented as a textView in this case
         public TextView expenseTextView;
         public TextView amountTextView;
+        public ImageView editButton;
 
         // Initializes the ViewHolder TextView from the item_group XML resource
         public ExpenseViewHolder(View v, ExpensesRecyclerAdapter adapter) {
             super(v);
             expenseTextView = (TextView) v.findViewById(R.id.textView_expense_item);
             amountTextView = (TextView) v.findViewById(R.id.textView_amount_item);
+            editButton = (ImageView) v.findViewById(R.id.imageView_edit_expense_item);
             this.mAdapter = adapter;
             v.setOnClickListener(this);
+            editButton.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             // Get the position of the item that was clicked.
-            int mPosition = getLayoutPosition();
+            final int mPosition = getLayoutPosition();
             // Use that to access the affected item in mDataset.
             final Expense expense = mDataset.get(mPosition);
 
+            if (v.getId() == R.id.imageView_edit_expense_item) {
+                editExpensePopupDialog(expense, mPosition);
+            }
+
             //Intent intent = new Intent(v.getContext(), ExpensesDetailActivity.class);
             //intent.putExtra("Expense", expense.getPaymentAmount());
-
-            ImageView editImageView = (ImageView) v.findViewById(R.id.imageView_edit_expense_item);
-            editImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    editExpensePopupDialog(expense);
-                }
-            });
-            // Notify the adapter, that the data has changed so it can
-            // update the RecyclerView to display the data.
-            mAdapter.notifyDataSetChanged();
-
             // v.getContext().startActivity(intent);
         }
 
-        private void editExpensePopupDialog(Expense expense) {
+        private void editExpensePopupDialog(final Expense expense, final int position) {
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mAdapter.context);
             View view = LayoutInflater.from(mAdapter.context).inflate(R.layout.dialog_add_expense, null);
-            EditText editTitle = (EditText) view.findViewById(R.id.editText_dialog_add_expense_title);
-            editTitle.setText(expense.getTittle());
-            EditText editAmount = (EditText) view.findViewById(R.id.editText_dialog_add_expense_amount);
-            editAmount.setText("" + expense.getPaymentAmount());
+
             dialogBuilder.setView(view);
-            AlertDialog dialog = dialogBuilder.create();
+            final AlertDialog dialog = dialogBuilder.create();
+
+            final EditText editTitle = (EditText) view.findViewById(R.id.editText_dialog_add_expense_title);
+            editTitle.setText(expense.getTittle());
+            final EditText editAmount = (EditText) view.findViewById(R.id.editText_dialog_add_expense_amount);
+            editAmount.setText("" + expense.getPaymentAmount());
+
+            Button saveButton = (Button) view.findViewById(R.id.button_dialog_add_expense_save);
+            saveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String newTitle = editTitle.getText().toString();
+                    expense.setTittle(newTitle);
+                    Double newAmount = Double.parseDouble(editAmount.getText().toString());
+                    expense.setPaymentAmount(newAmount);
+                    Toast.makeText(v.getContext(), "Saved!", Toast.LENGTH_SHORT).show();
+                    notifyItemChanged(position);
+                    dialog.dismiss();
+                }
+            });
+
             dialog.show();
         }
     }
