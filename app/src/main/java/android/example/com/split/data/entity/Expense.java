@@ -24,6 +24,7 @@ public class Expense implements Serializable {
      */
     private String tittle;
 
+    private User user;
 
     public Expense() {
 
@@ -80,5 +81,13 @@ public class Expense implements Serializable {
 
     public void setTittle(String tittle) {
         this.tittle = tittle;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

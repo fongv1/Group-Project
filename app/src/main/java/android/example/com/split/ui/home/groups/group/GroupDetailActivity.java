@@ -266,6 +266,10 @@ public class GroupDetailActivity extends AppCompatActivity {
                 expenseAmount = (EditText) view.findViewById(R.id.editText_dialog_add_expense_amount);
                 Double newAmount = Double.parseDouble(expenseAmount.getText().toString());
                 expense.setPaymentAmount(newAmount);
+                // takes the selected member from its position in the spinner
+                int memberPosition = expenseSpinner.getSelectedItemPosition();
+                User member = group.getMembers().get(memberPosition);
+                expense.setUser(member);
 
                 // add the new expense to the dataset in the ExpensesRecyclerAdapter
                 List<Expense> dataset = expensesTabFragment.getAdapter().getDataset();
