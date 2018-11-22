@@ -1,5 +1,14 @@
 package com.alaskalany.lib;
 
-public class Split {
 
+class Split {
+
+    private static final Split ourInstance = new Split();
+
+    private Split() {
+    }
+
+    static Split getInstance() {
+        return ourInstance;
+    }
 }

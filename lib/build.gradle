@@ -1,7 +1,13 @@
 apply plugin: 'java-library'
 
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
 }
 
 sourceCompatibility = "7"
