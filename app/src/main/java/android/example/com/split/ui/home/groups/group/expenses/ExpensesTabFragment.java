@@ -35,7 +35,7 @@ public class ExpensesTabFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ExpensesRecyclerAdapter mAdapter = new ExpensesRecyclerAdapter(dataset);
+        ExpensesRecyclerAdapter mAdapter = new ExpensesRecyclerAdapter(this.getContext(), dataset);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
@@ -47,6 +47,7 @@ public class ExpensesTabFragment extends Fragment {
         Random rand = new Random();
         for (int i = 0; i < 3; i++) {
             Expense expense = new Expense();
+            expense.setTittle("Expense " + i);
             expense.setPaymentAmount(rand.nextInt(1000));
             dataset.add(expense);
         }
