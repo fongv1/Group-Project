@@ -1,7 +1,6 @@
 package android.example.com.split.data.entity;
 
-import com.alaskalany.lib.model.IExpense;
-import com.alaskalany.lib.model.IGroup;
+import com.alaskalany.lib.model.Expense;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -13,7 +12,7 @@ import java.util.List;
  * Group
  */
 @IgnoreExtraProperties
-public class Group implements Serializable, IGroup {
+public class Group implements Serializable, com.alaskalany.lib.model.Group {
 
     /**
      * Group ID
@@ -29,9 +28,9 @@ public class Group implements Serializable, IGroup {
     private List<String> members;
 
     /**
-     * {@link Expense}s in the group
+     * {@link android.example.com.split.data.entity.Expense}s in the group
      */
-    private List<IExpense> expens;
+    private List<Expense> expens;
 
 
     public Group() {
@@ -77,14 +76,14 @@ public class Group implements Serializable, IGroup {
 
     // return the list of group expenses
     @Override
-    public List<IExpense> getExpenses() {
+    public List<Expense> getExpenses() {
         return expens;
     }
 
 
     @Override
-    public void addExpense(IExpense IExpense) {
-        expens.add(IExpense);
+    public void addExpense(Expense Expense) {
+        expens.add(Expense);
     }
 
     /**

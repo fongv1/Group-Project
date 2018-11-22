@@ -1,6 +1,5 @@
 package android.example.com.split.data.entity;
 
-import com.alaskalany.lib.model.IUser;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -12,7 +11,7 @@ import java.util.List;
  * User
  */
 @IgnoreExtraProperties
-public class User implements Serializable, IUser {
+public class User implements Serializable, com.alaskalany.lib.model.User {
 
     // firebase authentiction id
     @Exclude

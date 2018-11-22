@@ -1,6 +1,6 @@
 package com.alaskalany.lib.model;
 
-public interface IShare {
+public interface Share {
 
     boolean isPaid();
 

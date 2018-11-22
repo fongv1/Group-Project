@@ -1,6 +1,6 @@
 package com.alaskalany.lib.model;
 
-public interface IExpense {
+public interface Expense {
 
     String getId();
 

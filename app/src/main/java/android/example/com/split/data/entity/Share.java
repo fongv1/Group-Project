@@ -1,14 +1,13 @@
 package android.example.com.split.data.entity;
 
 import android.example.com.split.data.model.Payment;
-import com.alaskalany.lib.model.IShare;
 
 import java.io.Serializable;
 
 /**
  * Share
  */
-class Share implements Payment, Serializable, IShare {
+class Share implements Payment, Serializable, com.alaskalany.lib.model.Share {
 
     /**
      * True if the share is paid

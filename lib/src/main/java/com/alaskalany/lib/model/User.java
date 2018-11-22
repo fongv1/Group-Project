@@ -2,7 +2,7 @@ package com.alaskalany.lib.model;
 
 import java.util.List;
 
-public interface IUser {
+public interface User {
 
     List<String> getContacts();
 

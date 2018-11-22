@@ -1,10 +1,8 @@
 package android.example.com.split.data.entity;
 
-import com.alaskalany.lib.model.IExpense;
-
 import java.io.Serializable;
 
-public class Expense implements Serializable, IExpense {
+public class Expense implements Serializable, com.alaskalany.lib.model.Expense {
 
     /**
      * Expense ID

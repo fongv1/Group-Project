@@ -2,7 +2,7 @@ package com.alaskalany.lib.model;
 
 import java.util.List;
 
-public interface IGroup {
+public interface Group {
 
     String getGroupId();
 
@@ -15,9 +15,9 @@ public interface IGroup {
     List<String> getMembers();
 
     // return the list of group expenses
-    List<IExpense> getExpenses();
+    List<Expense> getExpenses();
 
-    void addExpense(IExpense IExpense);
+    void addExpense(Expense Expense);
 
     void addMember(String memberId);
 }
