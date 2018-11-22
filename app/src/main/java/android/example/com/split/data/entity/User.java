@@ -37,7 +37,17 @@ public class User implements Serializable {
      */
     private String phoneNumber;
 
-    private List<String> contactList;
+    private List<String> contacts;
+
+
+    public List<String> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<String> contacts) {
+        this.contacts = contacts;
+    }
+
 
     /**
      * User
@@ -54,24 +64,21 @@ public class User implements Serializable {
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        contactList = new ArrayList<String>();
     }
 
     // constructor with auth id
-    public User(String authId, String firstName, String lastName, String email, String phoneNumber) {
-        this.authId = authId;
+    public User(String id, String firstName, String lastName, String email, String phoneNumber) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        contactList = new ArrayList<String>();
+        contacts = new ArrayList<String>();
     }
 
-    public List<String> getContactList() {
-        return contactList;
-    }
 
-    @Exclude
+
+
     public String getId() {
         return id;
     }
@@ -80,6 +87,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
+    @Exclude
     public String getAuthId() {
         return authId;
     }
@@ -95,6 +103,10 @@ public class User implements Serializable {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -113,8 +125,8 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    // add new member to my contact list
-    public void addToContactList(String user) {
-        contactList.add(user);
+    public void addToContactList(String newUser){
+        contacts.add(newUser);
     }
+
 }

@@ -45,7 +45,9 @@ public class MembersTabFragment extends Fragment {
         dataset = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             User user = new User();
-            user.setFirstName("Member " + i);
+            user.setFirstName("Dummy Member first name " + i);
+            user.setLastName("Dummy Member last name " + i);
+            user.setEmail("Dummy Member email " + i);
             dataset.add(user);
         }
     }

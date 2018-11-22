@@ -1,5 +1,6 @@
 package android.example.com.split.ui.home.contacts;
 
+import android.content.Intent;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
 import android.support.v7.widget.RecyclerView;
@@ -70,9 +71,16 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
             User user = mDataset.get(mPosition);
             // Show toast when clicked
             Toast.makeText(v.getContext(), "Clicked " + user.getFirstName(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(v.getContext(), ContactDetailActivity.class);
+            intent.putExtra("first name", mDataset.get(mPosition).getFirstName());
+            intent.putExtra("last name", mDataset.get(mPosition).getLastName());
+            intent.putExtra("email", mDataset.get(mPosition).getEmail());
+
             // Notify the adapter, that the data has changed so it can
             // update the RecyclerView to display the data.
             mAdapter.notifyDataSetChanged();
+            v.getContext().startActivity(intent);
+
         }
     }
 }

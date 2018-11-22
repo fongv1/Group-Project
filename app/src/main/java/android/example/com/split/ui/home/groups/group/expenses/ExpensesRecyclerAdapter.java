@@ -1,5 +1,6 @@
 package android.example.com.split.ui.home.groups.group.expenses;
 
+import android.content.Intent;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.support.v7.widget.RecyclerView;
@@ -68,11 +69,13 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             int mPosition = getLayoutPosition();
             // Use that to access the affected item in mDataset.
             Expense expense = mDataset.get(mPosition);
-            // Show toast when clicked
-            Toast.makeText(v.getContext(), "Clicked " + expense.getTittle(), Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(v.getContext(), ExpensesDetailActivity.class);
+            intent.putExtra("Expense", expense.getPaymentAmount());
             // Notify the adapter, that the data has changed so it can
             // update the RecyclerView to display the data.
             mAdapter.notifyDataSetChanged();
+            v.getContext().startActivity(intent);
         }
     }
 }
