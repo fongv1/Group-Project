@@ -19,7 +19,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="button_lable_addmember">Add member</string>
     <string name="button_lable_done">Done</string>
-    <string name="hint_add_member">Enter name</string>
+    <string name="hint_add_member">Enter member name</string>
     <string name="action_sign_out">Sign Out</string>
 
     <string name="title_activity_fullscreen">FullscreenActivity</string>
@@ -42,6 +42,16 @@
     <string name="enter_group">Group Name</string>
     <string name="hint_add_group">Enter group name</string>
     <string name="save_group">Save</string>
+    <string name="enter_member">Member name</string>
+    <string name="save_member">Save</string>
+    <string name="enter_expense">Expense</string>
+    <string name="hint_add_expense">Enter title</string>
+    <string name="save_expense">save</string>
+    <string name="hint_add_expense_payee">Enter name</string>
+    <string name="hint_add_expense_amount">Enter amount</string>
+    <string name="hint_add_contact_lastName">Enter last name</string>
+    <string name="hint_add_contact_firstName">Enter first name (mandatory)</string>
+    <string name="hint_add_contact_email">Enter email</string>
 
 
 </resources>

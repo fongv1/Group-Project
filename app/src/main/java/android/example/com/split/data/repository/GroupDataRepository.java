@@ -15,7 +15,7 @@ public class GroupDataRepository extends Repository<Group> {
     private static final String TAG = "DataRepository";
 
     @Override
-    void createItem(Group group, final Handler.Callback listener) {
+    public void createItem(Group group, final Handler.Callback listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("groups").add(group).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
@@ -41,12 +41,12 @@ public class GroupDataRepository extends Repository<Group> {
     }
 
     @Override
-    void getItem(String itemId) {
+    public void getItem(String itemId) {
 
     }
 
     @Override
-    void updateItem(String itemId) {
+    public void updateItem(String itemId) {
 
     }
 }

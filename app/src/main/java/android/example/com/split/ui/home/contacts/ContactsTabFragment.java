@@ -40,7 +40,9 @@ public class ContactsTabFragment extends Fragment {
         dataset = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             User user = new User();
-            user.setFirstName("Dummy Contact " + i);
+            user.setFirstName("Dummy Contact first name " + i);
+            user.setLastName("Dummy Contact last name " + i);
+            user.setEmail("Dummy Contact email " + i);
             dataset.add(user);
         }
     }
