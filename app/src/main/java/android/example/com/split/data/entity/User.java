@@ -14,6 +14,7 @@ import java.util.List;
 public class User implements Serializable {
 
     // firebase authentiction id
+    @Exclude
     private String authId;
 
     /**

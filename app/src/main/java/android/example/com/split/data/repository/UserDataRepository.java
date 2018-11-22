@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDataRepository {
@@ -166,14 +167,29 @@ public class UserDataRepository {
     // get list of user's contact
 
     public void getContactlist(final String userAuthId, final OnGetContact listener) {
+
         db.collection("users").document(userAuthId).get()
           .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
               @Override
               public void onSuccess(DocumentSnapshot documentSnapshot) {
+                  final List<User> contactUserList = new ArrayList<>();
                   if (documentSnapshot.exists()) {
                       User user = documentSnapshot.toObject(User.class);
+                      // list of users document id
                       List<String> contactList = user.getContacts();
-                      listener.onGetContact(contactList);
+                      for (int i = 0 ; i < contactList.size() - 1 ; i++) {
+                          db.collection("users").document(contactList.get(i)).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                              @Override
+                              public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                  // list of contact usersList<User> contactUserList;
+
+                                 User contactUser = documentSnapshot.toObject(User.class);
+                                 contactUserList.add(contactUser);
+                              }
+                          });
+                      }
+
+                      listener.onGetContact(contactUserList);
                   }
 
               }
@@ -220,7 +236,7 @@ public class UserDataRepository {
 
     public interface OnGetContact {
 
-        void onGetContact(List<String> contact);
+        void onGetContact(List<User> contactUser);
     }
 
     public interface IsUserExist {
