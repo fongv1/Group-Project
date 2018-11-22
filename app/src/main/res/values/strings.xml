@@ -46,12 +46,14 @@
     <string name="save_member">Save</string>
     <string name="enter_expense">Expense</string>
     <string name="hint_add_expense">Enter title</string>
-    <string name="save_expense">save</string>
+    <string name="choose_member">Member:</string>
+    <string name="save_expense">>save</string>
     <string name="hint_add_expense_payee">Enter name</string>
     <string name="hint_add_expense_amount">Enter amount</string>
     <string name="hint_add_contact_lastName">Enter last name</string>
     <string name="hint_add_contact_firstName">Enter first name (mandatory)</string>
     <string name="hint_add_contact_email">Enter email</string>
-
+    <string name="textView_expense_item">Expense</string>
+    <string name="textView_amount_item">Amount</string>
 
 </resources>

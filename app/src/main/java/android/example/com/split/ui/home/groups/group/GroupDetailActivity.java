@@ -3,12 +3,12 @@ package android.example.com.split.ui.home.groups.group;
 import android.app.AlertDialog;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
+import android.example.com.split.data.entity.Group;
 import android.example.com.split.ui.home.groups.group.expenses.ExpensesTabFragment;
 import android.example.com.split.ui.home.groups.group.members.MembersTabFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,8 +22,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +42,12 @@ public class GroupDetailActivity extends AppCompatActivity {
     private EditText expenseAmount;
     //private EditText expensePayee;
     private Button addExpenseButton;
+    private Spinner expenseSpinner;
 
     private ExpensesTabFragment expensesTabFragment;
     private MembersTabFragment membersTabFragment;
+
+    private Group group;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -74,16 +79,19 @@ public class GroupDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_group);
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            group = (Group) bundle.get("selected_group");
+        }
+
         // add member and expense
         memberName = (EditText) findViewById(R.id.editText_dialog_add_member);
         addMemberButton = (Button) findViewById(R.id.button_dialog_add_member_save);
 
         expenseTitle = (EditText) findViewById(R.id.editText_dialog_add_expense_title);
-        expenseAmount= (EditText) findViewById(R.id.editText_dialog_add_expense_amount);
+        expenseAmount = (EditText) findViewById(R.id.editText_dialog_add_expense_amount);
         //expensePayee = (EditText) findViewById(R.id.);
         addExpenseButton = (Button) findViewById(R.id.button_dialog_add_expense_save);
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_activity_detail_group);
         setSupportActionBar(toolbar);
@@ -238,6 +246,18 @@ public class GroupDetailActivity extends AppCompatActivity {
         final View view = getLayoutInflater().inflate(R.layout.dialog_add_expense, null);
         dialogBuilder.setView(view);
         dialog = dialogBuilder.create();
+
+        expenseSpinner = (Spinner) view.findViewById(R.id.spinner_choose_member);
+        List<String> memberNames = new ArrayList<>();
+        /*
+        for (User user : group.getMembers()) {
+            memberNames.add(user.getFirstName() + " " + user.getLastName())
+        }
+        */
+        memberNames = group.getMembers();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, memberNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        expenseSpinner.setAdapter(adapter);
 
         Button saveButton = (Button) view.findViewById(R.id.button_dialog_add_expense_save);
         saveButton.setOnClickListener(new View.OnClickListener() {
