@@ -2,6 +2,7 @@ package android.example.com.split.ui.home.groups.group.expenses;
 
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
+import android.example.com.split.data.entity.Group;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,7 +22,7 @@ public class ExpensesTabFragment extends Fragment {
     private static final String TAG = "ExpensesTabFragment";
     private List<Expense> dataset;
     private ExpensesRecyclerAdapter expensesRecyclerAdapter;
-
+    private Group group;
 
     @Nullable
     @Override
@@ -36,7 +37,11 @@ public class ExpensesTabFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        expensesRecyclerAdapter = new ExpensesRecyclerAdapter(this.getContext(), dataset);
+        // Create bundle to get the group passed from the GroupDetailActivity
+        Bundle bundle = getArguments();
+        group = (Group) bundle.get("group");
+
+        expensesRecyclerAdapter = new ExpensesRecyclerAdapter(this.getContext(), dataset, group);
         mRecyclerView.setAdapter(expensesRecyclerAdapter);
 
         return rootView;

@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
+import android.example.com.split.data.entity.Group;
+import android.example.com.split.data.entity.User;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +20,13 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
 
     private Context context;
     private List<Expense> mDataset;
+    private Group group;
 
     // Create the adapter with a dataset
-    public ExpensesRecyclerAdapter(Context context, List<Expense> myDataset) {
+    public ExpensesRecyclerAdapter(Context context, List<Expense> myDataset, Group group) {
         this.context = context;
         mDataset = myDataset;
+        this.group = group;
     }
 
     public List<Expense> getDataset() {
@@ -93,7 +97,7 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
 
         private void editExpensePopupDialog(final Expense expense, final int position) {
             AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mAdapter.context);
-            View view = LayoutInflater.from(mAdapter.context).inflate(R.layout.dialog_add_expense, null);
+            final View view = LayoutInflater.from(mAdapter.context).inflate(R.layout.dialog_add_expense, null);
 
             dialogBuilder.setView(view);
             final AlertDialog dialog = dialogBuilder.create();
@@ -103,6 +107,17 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             //takes the already existing amount and sets it to the amount field
             final EditText editAmount = (EditText) view.findViewById(R.id.editText_dialog_add_expense_amount);
             editAmount.setText("" + expense.getPaymentAmount());
+
+            // set the spinner with all the members of this group
+            final Spinner expenseSpinner = (Spinner) view.findViewById(R.id.spinner_choose_member);
+            ArrayAdapter<User> adapter = new ArrayAdapter<User>(view.getContext(), android.R.layout.simple_spinner_item, group.getMembers());
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            expenseSpinner.setAdapter(adapter);
+            // select the correct member in the spinner
+            // get the position in the member list of the user responsible for this expense
+            // the group contains the member list and the expense contains the user
+            int expenseMemberPosition = group.getMembers().indexOf(expense.getUser());
+            expenseSpinner.setSelection(expenseMemberPosition);
 
             Button saveButton = (Button) view.findViewById(R.id.button_dialog_add_expense_save);
             saveButton.setOnClickListener(new View.OnClickListener() {
@@ -116,19 +131,17 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
                     Double newAmount = Double.parseDouble(editAmount.getText().toString());
                     //updates the amount
                     expense.setPaymentAmount(newAmount);
+                    // takes the selected member from its position in the spinner
+                    int memberPosition = expenseSpinner.getSelectedItemPosition();
+                    User member = group.getMembers().get(memberPosition);
+                    expense.setUser(member);
+
                     Toast.makeText(v.getContext(), "Saved!", Toast.LENGTH_SHORT).show();
                     // Notifies tha adapter that the item at that position is changed
                     notifyItemChanged(position);
                     dialog.dismiss();
                 }
             });
-
-            /* members = group.getMembers();
-            Spinner spinner = (Spinner) view.findViewById(R.id.spinner_choose_member);
-            spinner.setDropDownVerticalOffset(android.R.layout.simple_spinner_dropdown_item);
-            ArrayAdapter<User> adapter = new ArrayAdapter<User>(view.getContext(), R.layout.item_group_member);
-            adapter.addAll(new User());
-            spinner.setAdapter(adapter);*/
 
             dialog.show();
         }
