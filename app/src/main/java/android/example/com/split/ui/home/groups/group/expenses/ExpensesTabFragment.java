@@ -20,6 +20,7 @@ public class ExpensesTabFragment extends Fragment {
 
     private static final String TAG = "ExpensesTabFragment";
     private List<Expense> dataset;
+    private ExpensesRecyclerAdapter expensesRecyclerAdapter;
 
 
     @Nullable
@@ -35,10 +36,14 @@ public class ExpensesTabFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ExpensesRecyclerAdapter mAdapter = new ExpensesRecyclerAdapter(this.getContext(), dataset);
-        mRecyclerView.setAdapter(mAdapter);
+        expensesRecyclerAdapter = new ExpensesRecyclerAdapter(this.getContext(), dataset);
+        mRecyclerView.setAdapter(expensesRecyclerAdapter);
 
         return rootView;
+    }
+
+    public ExpensesRecyclerAdapter getAdapter() {
+        return expensesRecyclerAdapter;
     }
 
     // Create dummy data

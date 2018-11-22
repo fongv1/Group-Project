@@ -25,6 +25,10 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
         mDataset = myDataset;
     }
 
+    public List<Expense> getDataset() {
+        return mDataset;
+    }
+
     // Create new views (invoked by the layout manager)
     @Override
     public ExpenseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -93,9 +97,10 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
 
             dialogBuilder.setView(view);
             final AlertDialog dialog = dialogBuilder.create();
-
+            //takes the already existing title and sets it to the text field
             final EditText editTitle = (EditText) view.findViewById(R.id.editText_dialog_add_expense_title);
             editTitle.setText(expense.getTittle());
+            //takes the already existing amount and sets it to the amount field
             final EditText editAmount = (EditText) view.findViewById(R.id.editText_dialog_add_expense_amount);
             editAmount.setText("" + expense.getPaymentAmount());
 
@@ -103,15 +108,27 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //takes the title input from the text field
                     String newTitle = editTitle.getText().toString();
+                    // updates the title
                     expense.setTittle(newTitle);
+                    //takes the amount input from the text field
                     Double newAmount = Double.parseDouble(editAmount.getText().toString());
+                    //updates the amount
                     expense.setPaymentAmount(newAmount);
                     Toast.makeText(v.getContext(), "Saved!", Toast.LENGTH_SHORT).show();
+                    // Notifies tha adapter that the item at that position is changed
                     notifyItemChanged(position);
                     dialog.dismiss();
                 }
             });
+
+            /* members = group.getMembers();
+            Spinner spinner = (Spinner) view.findViewById(R.id.spinner_choose_member);
+            spinner.setDropDownVerticalOffset(android.R.layout.simple_spinner_dropdown_item);
+            ArrayAdapter<User> adapter = new ArrayAdapter<User>(view.getContext(), R.layout.item_group_member);
+            adapter.addAll(new User());
+            spinner.setAdapter(adapter);*/
 
             dialog.show();
         }

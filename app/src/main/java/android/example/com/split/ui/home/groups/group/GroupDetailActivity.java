@@ -2,6 +2,7 @@ package android.example.com.split.ui.home.groups.group;
 
 import android.app.AlertDialog;
 import android.example.com.split.R;
+import android.example.com.split.data.entity.Expense;
 import android.example.com.split.ui.home.groups.group.expenses.ExpensesTabFragment;
 import android.example.com.split.ui.home.groups.group.members.MembersTabFragment;
 import android.os.Bundle;
@@ -39,6 +40,9 @@ public class GroupDetailActivity extends AppCompatActivity {
     private EditText expenseAmount;
     //private EditText expensePayee;
     private Button addExpenseButton;
+
+    private ExpensesTabFragment expensesTabFragment;
+    private MembersTabFragment membersTabFragment;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -91,6 +95,8 @@ public class GroupDetailActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        expensesTabFragment = new ExpensesTabFragment();
+        membersTabFragment = new MembersTabFragment();
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -152,8 +158,8 @@ public class GroupDetailActivity extends AppCompatActivity {
 
     private void setUpViewPager(ViewPager viewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MembersTabFragment(), "Members");
-        adapter.addFragment(new ExpensesTabFragment(), "Expenses");
+        adapter.addFragment(membersTabFragment, "Members");
+        adapter.addFragment(expensesTabFragment, "Expenses");
         viewPager.setAdapter(adapter);
     }
 
@@ -229,9 +235,35 @@ public class GroupDetailActivity extends AppCompatActivity {
 
     private void addExpensePopupDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.dialog_add_expense, null);
+        final View view = getLayoutInflater().inflate(R.layout.dialog_add_expense, null);
         dialogBuilder.setView(view);
         dialog = dialogBuilder.create();
+
+        Button saveButton = (Button) view.findViewById(R.id.button_dialog_add_expense_save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Expense expense = new Expense();
+                // takes the title user input from the text field
+                expenseTitle = (EditText) view.findViewById(R.id.editText_dialog_add_expense_title);
+                String newTitle =  expenseTitle.getText().toString();
+                expense.setTittle(newTitle);
+                // takes the amount user input from the text field
+                expenseAmount = (EditText) view.findViewById(R.id.editText_dialog_add_expense_amount);
+                Double newAmount = Double.parseDouble(expenseAmount.getText().toString());
+                expense.setPaymentAmount(newAmount);
+
+                // add the new expense to the dataset in the ExpensesRecyclerAdapter
+                List<Expense> dataset = expensesTabFragment.getAdapter().getDataset();
+                dataset.add(expense);
+
+                // Notifies that the item at the last position is created
+                int position = dataset.size() - 1;
+                expensesTabFragment.getAdapter().notifyItemInserted(position);
+
+                dialog.dismiss();
+            }
+        });
         dialog.show();
     }
 }
