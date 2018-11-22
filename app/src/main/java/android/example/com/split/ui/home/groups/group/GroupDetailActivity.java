@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
+import android.example.com.split.data.entity.User;
 import android.example.com.split.ui.home.groups.group.expenses.ExpensesTabFragment;
 import android.example.com.split.ui.home.groups.group.members.MembersTabFragment;
 import android.os.Bundle;
@@ -248,14 +249,7 @@ public class GroupDetailActivity extends AppCompatActivity {
         dialog = dialogBuilder.create();
 
         expenseSpinner = (Spinner) view.findViewById(R.id.spinner_choose_member);
-        List<String> memberNames = new ArrayList<>();
-        /*
-        for (User user : group.getMembers()) {
-            memberNames.add(user.getFirstName() + " " + user.getLastName())
-        }
-        */
-        memberNames = group.getMembers();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, memberNames);
+        ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item, group.getMembers());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         expenseSpinner.setAdapter(adapter);
 

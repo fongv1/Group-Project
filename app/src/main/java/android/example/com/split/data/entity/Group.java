@@ -24,7 +24,7 @@ public class Group implements Serializable {
     /**
      * Members ({@link User}s) in the group
      */
-    private List<String> members;
+    private List<User> members;
 
     /**
      * {@link Expense}s in the group
@@ -63,7 +63,7 @@ public class Group implements Serializable {
 
     // return the list of group members
 
-    public List<String> getMembers() {
+    public List<User> getMembers() {
         return members;
     }
 
@@ -82,7 +82,7 @@ public class Group implements Serializable {
      * Add a user as member to the group
      */
 
-    public void addMember(String memberId) {
-        members.add(memberId);
+    public void addMember(User member) {
+        members.add(member);
     }
 }
