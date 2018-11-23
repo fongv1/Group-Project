@@ -15,11 +15,11 @@ public class UserDataRepository {
 
     private static final String TAG = "UserDataRepository";
     public OnUserId listener;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db;
 
     // create new Auth user
     public void createNewUser(User user, String userAuthId, final OnUserCreated listener) {
-
+        db = FirebaseFirestore.getInstance();
         db.collection("users").document(userAuthId).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -36,7 +36,7 @@ public class UserDataRepository {
 
     // create new user and add it to Auth user's list
     public void addNewContact(final User user, final String userAuthId, final OnContactCreated listener) {
-
+        db = FirebaseFirestore.getInstance();
         db.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
@@ -80,6 +80,7 @@ public class UserDataRepository {
 
     // get the document is of the current auth user
     public void getDocumentId(String user_auth_id, final OnUserId listener) {
+        db = FirebaseFirestore.getInstance();
         final String[] data = {""};
         db.collection("users").limit(1).whereEqualTo("id", user_auth_id).get()
 
@@ -120,7 +121,7 @@ public class UserDataRepository {
 
 
     public void isUserExist(String id, final IsUserExist listener) {
-
+        db = FirebaseFirestore.getInstance();
         db.collection("users").document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             // if got document or connected to collection ref but document not exists
             @Override
@@ -142,7 +143,7 @@ public class UserDataRepository {
 
     // create new user and add it to Auth user's list
     public void addNewContact1(final User user, final String userAuthId, final OnContactCreated listener) {
-
+        db = FirebaseFirestore.getInstance();
         db.collection("users").add(user).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
@@ -167,7 +168,7 @@ public class UserDataRepository {
     // get list of user's contact
 
     public void getContactlist(final String userAuthId, final OnGetContact listener) {
-
+        db = FirebaseFirestore.getInstance();
         db.collection("users").document(userAuthId).get()
           .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
               @Override
@@ -199,6 +200,7 @@ public class UserDataRepository {
     // get user details
 
     public void getUserDetail(final String userAuthId, final OnUserDetails listener) {
+        db = FirebaseFirestore.getInstance();
         db.collection("users").document(userAuthId).get()
           .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
               @Override
