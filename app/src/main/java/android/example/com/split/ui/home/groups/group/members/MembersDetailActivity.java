@@ -14,6 +14,7 @@ public class MembersDetailActivity extends AppCompatActivity {
     private TextView firstName;
     private TextView lastName;
     private TextView email;
+    private TextView balance;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -40,5 +41,7 @@ public class MembersDetailActivity extends AppCompatActivity {
 
         email = findViewById(R.id.member_detail_email);
         email.setText(user.getEmail());
+
+        //balance = (TextView) findViewById()
     }
 }
