@@ -2,7 +2,7 @@ package android.example.com.split.data.entity;
 
 import java.io.Serializable;
 
-public class Expense implements Serializable {
+public class Expense implements Serializable, com.alaskalany.lib.model.Expense {
 
     /**
      * Expense ID
@@ -24,6 +24,8 @@ public class Expense implements Serializable {
      */
     private String tittle;
 
+   @com.google.firebase.firestore.Exclude
+    private User user;
 
     public Expense() {
 
@@ -42,43 +44,62 @@ public class Expense implements Serializable {
     }
 
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     public String getPayeeId() {
         return payeeId;
     }
 
+    @Override
     public void setPayeeId(String payeeId) {
         this.payeeId = payeeId;
     }
 
+    @Override
     public String getPayeeName() {
         return payeeName;
     }
 
+    @Override
     public void setPayeeName(String payeeName) {
         this.payeeName = payeeName;
     }
 
+    @Override
     public double getPaymentAmount() {
         return paymentAmount;
     }
 
+    @Override
     public void setPaymentAmount(double paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
 
+    @Override
     public String getTittle() {
         return tittle;
     }
 
+    @Override
     public void setTittle(String tittle) {
         this.tittle = tittle;
+    }
+
+    @com.google.firebase.firestore.Exclude
+    public User getUser() {
+        return user;
+    }
+    @com.google.firebase.firestore.Exclude
+    public void setUser(User user) {
+        this.user = user;
     }
 }

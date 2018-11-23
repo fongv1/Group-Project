@@ -11,7 +11,7 @@ import java.util.List;
  * User
  */
 @IgnoreExtraProperties
-public class User implements Serializable {
+public class User implements Serializable, com.alaskalany.lib.model.User {
 
     // firebase authentiction id
     @Exclude
@@ -41,10 +41,12 @@ public class User implements Serializable {
     private List<String> contacts;
 
 
+    @Override
     public List<String> getContacts() {
         return contacts;
     }
 
+    @Override
     public void setContacts(List<String> contacts) {
         this.contacts = contacts;
     }
@@ -80,54 +82,69 @@ public class User implements Serializable {
 
 
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
+    @Override
     @Exclude
     public String getAuthId() {
         return authId;
     }
 
+    @Override
     public String getFirstName() {
         return firstName;
 
     }
 
+    @Override
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    @Override
     public String getLastName() {
         return lastName;
     }
 
+    @Override
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    @Override
     public String getEmail() {
         return email;
     }
 
+    @Override
     public void setEmail(String email) {
         this.email = email;
     }
 
+    @Override
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    @Override
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
+    @Override
     public void addToContactList(String newUser){
         contacts.add(newUser);
     }
 
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }

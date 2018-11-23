@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Share
  */
-class Share implements Payment, Serializable {
+class Share implements Payment, Serializable, com.alaskalany.lib.model.Share {
 
     /**
      * True if the share is paid
@@ -71,6 +71,7 @@ class Share implements Payment, Serializable {
      *
      * @return Get the {@link User} the ID
      */
+    @Override
     public String getUserId() {
         return userId;
     }
@@ -80,6 +81,7 @@ class Share implements Payment, Serializable {
      *
      * @param userId Set the {@link User} ID
      */
+    @Override
     public void setUserId(String userId) {
         this.userId = userId;
     }

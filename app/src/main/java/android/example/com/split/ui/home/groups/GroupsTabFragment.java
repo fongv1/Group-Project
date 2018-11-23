@@ -5,6 +5,7 @@ import android.content.Context;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
+import android.example.com.split.data.entity.User;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -39,12 +40,23 @@ public class GroupsTabFragment extends Fragment {
     private void initDataset() {
         dataset = new ArrayList<>();
         Random rand = new Random();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 20; i++) {
             Group group = new Group();
-            group.setName("Dummy Group " + i);
-            Expense expense = new Expense();
-            expense.setPaymentAmount(rand.nextInt(1000));
-            group.addExpense(expense);
+            String groupName = "Group " + i;
+            group.setName(groupName);
+
+            for (int j = 0; j < 8; j++) {
+                Expense expense = new Expense();
+                expense.setPaymentAmount(rand.nextInt(1000));
+                expense.setTittle("Expense " + j + " " + groupName);
+                group.addExpense(expense);
+            }
+            for(int j = 0; j < 5; j++){
+                User user = new User();
+                user.setFirstName("Memeber " + j);
+                user.setLastName(groupName);
+                group.addUserMember(user);
+            }
             dataset.add(group);
         }
     }
