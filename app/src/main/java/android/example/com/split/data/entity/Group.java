@@ -1,6 +1,5 @@
 package android.example.com.split.data.entity;
 
-import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.io.Serializable;
@@ -20,6 +19,7 @@ public class Group implements Serializable {
     /**
      * Group's name
      */
+
     private String name;
     /**
      * Members ({@link User}s) in the group
@@ -29,6 +29,7 @@ public class Group implements Serializable {
     /**
      * {@link Expense}s in the group
      */
+    @com.google.firebase.firestore.Exclude
     private List<Expense> expenses;
 
 
@@ -44,7 +45,7 @@ public class Group implements Serializable {
         this.name = name;
     }
 
-    @Exclude
+
     public String getGroupId() {
         return groupId;
     }
@@ -62,7 +63,6 @@ public class Group implements Serializable {
     }
 
     // return the list of group members
-
     public List<String> getMembers() {
         return members;
     }
