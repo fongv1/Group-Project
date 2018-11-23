@@ -29,12 +29,18 @@ public class Expense implements Serializable {
 
     }
 
-
-
-
-    public Expense(String id, String payeeId, double paymentAmount, String tittle , String payeeName) {
+    /*public Expense(String id, String payeeId, double paymentAmount, String tittle , String payeeName) {
 
         this.id = id;
+        this.payeeId = payeeId;
+        this.paymentAmount = paymentAmount;
+        this.tittle = tittle;
+        this.payeeName = payeeName;
+    }*/
+
+    // for test only
+    public Expense( String payeeId, double paymentAmount, String tittle , String payeeName) {
+
         this.payeeId = payeeId;
         this.paymentAmount = paymentAmount;
         this.tittle = tittle;
