@@ -1,6 +1,5 @@
 package android.example.com.split.data.entity;
 
-import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.io.Serializable;
@@ -14,8 +13,9 @@ import java.util.List;
 public class User implements Serializable {
 
     // firebase authentiction id
-    @Exclude
-    private String authId;
+
+    @com.google.firebase.firestore.Exclude
+     private String authId;
 
     /**
      * User UD
@@ -88,7 +88,7 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    @Exclude
+    @com.google.firebase.firestore.Exclude
     public String getAuthId() {
         return authId;
     }
@@ -130,4 +130,7 @@ public class User implements Serializable {
         contacts.add(newUser);
     }
 
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }

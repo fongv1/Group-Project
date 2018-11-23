@@ -1,6 +1,5 @@
 package android.example.com.split.data.entity;
 
-import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.io.Serializable;
@@ -20,15 +19,20 @@ public class Group implements Serializable {
     /**
      * Group's name
      */
+
     private String name;
     /**
      * Members ({@link User}s) in the group
      */
     private List<String> members;
 
+    @com.google.firebase.firestore.Exclude
+    private List<User> userMembers;
+
     /**
      * {@link Expense}s in the group
      */
+    @com.google.firebase.firestore.Exclude
     private List<Expense> expenses;
 
 
@@ -37,14 +41,19 @@ public class Group implements Serializable {
         // Initialise members and expenses lists
         members = new ArrayList<>();
         expenses = new ArrayList<>();
+        userMembers = new ArrayList<>();
     }
 
     public Group(String groupId, String name) {
         this.groupId = groupId;
         this.name = name;
     }
+    @com.google.firebase.firestore.Exclude
+    public List<User> getUserMembers() {
+        return userMembers;
+    }
 
-    @Exclude
+
     public String getGroupId() {
         return groupId;
     }
@@ -61,11 +70,15 @@ public class Group implements Serializable {
         this.name = name;
     }
 
-    // return the list of group members
 
+    // return the list of group members
     public List<String> getMembers() {
         return members;
     }
+
+    // return the list of group members
+
+
 
 
     // return the list of group expenses
@@ -82,7 +95,14 @@ public class Group implements Serializable {
      * Add a user as member to the group
      */
 
-    public void addMember(String memberId) {
-        members.add(memberId);
+
+    public void addMember(String member) {
+        members.add(member);
+    }
+
+    @com.google.firebase.firestore.Exclude
+    public void addUserMember (User user)
+    {
+        userMembers.add(user);
     }
 }
