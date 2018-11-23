@@ -1,6 +1,5 @@
 package android.example.com.split.data.entity;
 
-import com.alaskalany.lib.model.Expense;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -12,7 +11,7 @@ import java.util.List;
  * Group
  */
 @IgnoreExtraProperties
-public class Group implements Serializable, com.alaskalany.lib.model.Group {
+public class Group implements Serializable {
 
     /**
      * Group ID
@@ -27,71 +26,80 @@ public class Group implements Serializable, com.alaskalany.lib.model.Group {
      */
     private List<String> members;
 
+    @com.google.firebase.firestore.Exclude
+    private List<User> userMembers;
+
     /**
-     * {@link android.example.com.split.data.entity.Expense}s in the group
+     * {@link Expense}s in the group
      */
-    private List<Expense> expens;
+    private List<Expense> expenses;
 
 
     public Group() {
 
         // Initialise members and expenses lists
         members = new ArrayList<>();
-        expens = new ArrayList<>();
+        expenses = new ArrayList<>();
+        userMembers = new ArrayList<>();
     }
 
     public Group(String groupId, String name) {
         this.groupId = groupId;
         this.name = name;
     }
+    @com.google.firebase.firestore.Exclude
+    public List<User> getUserMembers() {
+        return userMembers;
+    }
 
-    @Override
     @Exclude
     public String getGroupId() {
         return groupId;
     }
 
-    @Override
     public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-    // return the list of group members
-
-    @Override
     public List<String> getMembers() {
         return members;
     }
 
+    // return the list of group members
+
+
+
 
     // return the list of group expenses
-    @Override
     public List<Expense> getExpenses() {
-        return expens;
+        return expenses;
     }
 
 
-    @Override
-    public void addExpense(Expense Expense) {
-        expens.add(Expense);
+    public void addExpense(Expense expense) {
+        expenses.add(expense);
     }
 
     /**
      * Add a user as member to the group
      */
 
-    @Override
-    public void addMember(String memberId) {
-        members.add(memberId);
+
+    public void addMember(String member) {
+        members.add(member);
+    }
+
+    @com.google.firebase.firestore.Exclude
+    public void addUserMember (User user)
+    {
+        userMembers.add(user);
     }
 }

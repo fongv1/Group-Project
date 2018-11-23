@@ -144,4 +144,7 @@ public class User implements Serializable, com.alaskalany.lib.model.User {
         contacts.add(newUser);
     }
 
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }

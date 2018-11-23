@@ -24,6 +24,8 @@ public class Expense implements Serializable, com.alaskalany.lib.model.Expense {
      */
     private String tittle;
 
+   @com.google.firebase.firestore.Exclude
+    private User user;
 
     public Expense() {
 
@@ -90,5 +92,14 @@ public class Expense implements Serializable, com.alaskalany.lib.model.Expense {
     @Override
     public void setTittle(String tittle) {
         this.tittle = tittle;
+    }
+
+    @com.google.firebase.firestore.Exclude
+    public User getUser() {
+        return user;
+    }
+    @com.google.firebase.firestore.Exclude
+    public void setUser(User user) {
+        this.user = user;
     }
 }
