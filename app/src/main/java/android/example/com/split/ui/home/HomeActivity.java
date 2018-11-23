@@ -68,6 +68,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     };
     private EditText contactName;
     private TabLayout.BaseOnTabSelectedListener onTabSelectedListener;
+    private DrawerLayout drawer;
+    private Toolbar toolbar;
+    private NavigationView navigationView;
+    private ActionBarDrawerToggle toggle;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private FloatingActionButton fab;
+    private ActionBar actionBar;
 
     @Contract(pure = true)
     @NonNull
@@ -120,25 +128,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         decorView.setSystemUiVisibility(uiOptions);
         // Remember that you should never show the action bar if the
         // status bar is hi
-        ActionBar actionBar = getActionBar();
+        actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }
-        Toolbar toolbar = findViewById(R.id.toolbar_app_bar_main);
+        toolbar = findViewById(R.id.toolbar_app_bar_main);
         setSupportActionBar(toolbar);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
-                                                                 R.string.navigation_drawer_close);
+        drawer = findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open,
+                                           R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = findViewById(R.id.nav_view_activity_home);
+        navigationView = findViewById(R.id.nav_view_activity_home);
         navigationView.setNavigationItemSelectedListener(this);
-        ViewPager viewPager = findViewById(R.id.viewpager_app_bar_main);
+        viewPager = findViewById(R.id.viewpager_app_bar_main);
         HomeTabsAdapter adapter = new HomeTabsAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-        TabLayout tabLayout = findViewById(R.id.tabLayout_app_bar_main);
+        tabLayout = findViewById(R.id.tabLayout_app_bar_main);
         tabLayout.setupWithViewPager(viewPager);
-        FloatingActionButton fab = findViewById(R.id.fab_app_bar_main);
+        fab = findViewById(R.id.fab_app_bar_main);
         fab.setOnClickListener(addContactFabListener);
         onTabSelectedListener = getOnTabSelectedListener(fab, addContactFabListener, addGroupFabListener);
         tabLayout.addOnTabSelectedListener(onTabSelectedListener);
@@ -251,7 +259,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
