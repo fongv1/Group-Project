@@ -104,13 +104,14 @@ public class GroupDetailActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        expensesTabFragment = new ExpensesTabFragment();
-        // create bundle to pass the group to the ExpenseTabFragment
+        // create bundle to pass the group to the TabFragments
         Bundle groupBundle = new Bundle();
         groupBundle.putSerializable("group", group);
-        expensesTabFragment.setArguments(groupBundle);
 
+        expensesTabFragment = new ExpensesTabFragment();
+        expensesTabFragment.setArguments(groupBundle);
         membersTabFragment = new MembersTabFragment();
+        membersTabFragment.setArguments(groupBundle);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 

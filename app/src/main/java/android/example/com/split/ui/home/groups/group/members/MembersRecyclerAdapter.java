@@ -37,7 +37,7 @@ public class MembersRecyclerAdapter extends RecyclerView.Adapter<MembersRecycler
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         User user = mDataset.get(position);
-        holder.mTextView.setText(user.getFirstName());
+        holder.mTextView.setText(user.getFirstName() + " " + user.getLastName());
     }
 
     // Return the size of your dataset (invoked by the layout manager)

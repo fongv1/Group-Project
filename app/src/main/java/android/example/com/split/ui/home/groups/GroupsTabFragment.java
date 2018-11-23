@@ -42,18 +42,19 @@ public class GroupsTabFragment extends Fragment {
         Random rand = new Random();
         for (int i = 0; i < 20; i++) {
             Group group = new Group();
-            group.setName("Dummy Group " + i);
+            String groupName = "Group " + i;
+            group.setName(groupName);
 
             for (int j = 0; j < 8; j++) {
                 Expense expense = new Expense();
                 expense.setPaymentAmount(rand.nextInt(1000));
-                expense.setTittle("Expense " + j);
+                expense.setTittle("Expense " + j + " " + groupName);
                 group.addExpense(expense);
             }
             for(int j = 0; j < 5; j++){
                 User user = new User();
-                user.setFirstName("Dummy Member ");
-                user.setLastName("" + j);
+                user.setFirstName("Memeber " + j);
+                user.setLastName(groupName);
                 group.addMember(user);
             }
             dataset.add(group);
