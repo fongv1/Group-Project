@@ -53,6 +53,9 @@
     <string name="hint_add_contact_lastName">Enter last name</string>
     <string name="hint_add_contact_firstName">Enter first name (mandatory)</string>
     <string name="hint_add_contact_email">Enter email</string>
+    <string name="member_row_view">Member First Name</string>
+    <string name="member_row_view_lastname">Member Last Name</string>
+
     <string name="textView_expense_item">Expense</string>
     <string name="textView_amount_item">Amount</string>
 

@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:paddingLeft="20dp"
-                    android:text="@string/contact_row_view"
+                    android:text="@string/member_row_view"
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold" />
 
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:paddingLeft="20dp"
-                    android:text="@string/contact_row_view"
+                    android:text="@string/member_row_view_lastname"
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold" />
 
