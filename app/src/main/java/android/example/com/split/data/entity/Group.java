@@ -24,7 +24,10 @@ public class Group implements Serializable {
     /**
      * Members ({@link User}s) in the group
      */
-    private List<User> members;
+    private List<String> members;
+
+    @com.google.firebase.firestore.Exclude
+    private List<User> userMembers;
 
     /**
      * {@link Expense}s in the group
@@ -37,11 +40,16 @@ public class Group implements Serializable {
         // Initialise members and expenses lists
         members = new ArrayList<>();
         expenses = new ArrayList<>();
+        userMembers = new ArrayList<>();
     }
 
     public Group(String groupId, String name) {
         this.groupId = groupId;
         this.name = name;
+    }
+    @com.google.firebase.firestore.Exclude
+    public List<User> getUserMembers() {
+        return userMembers;
     }
 
     @Exclude
@@ -61,11 +69,13 @@ public class Group implements Serializable {
         this.name = name;
     }
 
-    // return the list of group members
-
-    public List<User> getMembers() {
+    public List<String> getMembers() {
         return members;
     }
+
+    // return the list of group members
+
+
 
 
     // return the list of group expenses
@@ -82,7 +92,14 @@ public class Group implements Serializable {
      * Add a user as member to the group
      */
 
-    public void addMember(User member) {
+
+    public void addMember(String member) {
         members.add(member);
+    }
+
+    @com.google.firebase.firestore.Exclude
+    public void addUserMember (User user)
+    {
+        userMembers.add(user);
     }
 }

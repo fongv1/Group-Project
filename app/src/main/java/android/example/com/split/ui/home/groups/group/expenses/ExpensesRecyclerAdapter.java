@@ -110,7 +110,7 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
 
             // set the spinner with all the members of this group
             final Spinner expenseSpinner = (Spinner) view.findViewById(R.id.spinner_choose_member);
-            ArrayAdapter<User> adapter = new ArrayAdapter<User>(view.getContext(), android.R.layout.simple_spinner_item, group.getMembers());
+            ArrayAdapter<User> adapter = new ArrayAdapter<User>(view.getContext(), android.R.layout.simple_spinner_item, group.getUserMembers());
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             expenseSpinner.setAdapter(adapter);
             // select the correct member in the spinner
@@ -133,7 +133,7 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
                     expense.setPaymentAmount(newAmount);
                     // takes the selected member from its position in the spinner
                     int memberPosition = expenseSpinner.getSelectedItemPosition();
-                    User member = group.getMembers().get(memberPosition);
+                    User member = group.getUserMembers().get(memberPosition);
                     expense.setUser(member);
 
                     Toast.makeText(v.getContext(), "Saved!", Toast.LENGTH_SHORT).show();

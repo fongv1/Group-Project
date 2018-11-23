@@ -37,7 +37,7 @@ public class MembersTabFragment extends Fragment {
         group = (Group) bundle.get("group");
 
         //gets the expenses from the group
-        dataset = group.getMembers();
+        dataset = group.getUserMembers();
 
         MembersRecyclerAdapter mAdapter = new MembersRecyclerAdapter(dataset);
         mRecyclerView.setAdapter(mAdapter);

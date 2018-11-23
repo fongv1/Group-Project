@@ -55,7 +55,7 @@ public class GroupsTabFragment extends Fragment {
                 User user = new User();
                 user.setFirstName("Memeber " + j);
                 user.setLastName(groupName);
-                group.addMember(user);
+                group.addUserMember(user);
             }
             dataset.add(group);
         }
