@@ -78,7 +78,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             Group group = mDataset.get(mPosition);
             // Show toast when clicked
             Intent intent = new Intent(v.getContext(), GroupDetailActivity.class);
-            intent.putExtra("group name", mDataset.get(mPosition));
+            intent.putExtra("selected_group", group);
             // Notify the adapter, that the data has changed so it can
             // update the RecyclerView to display the data.
             mAdapter.notifyDataSetChanged();

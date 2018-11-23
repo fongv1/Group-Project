@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold"
-                    android:text="Expense" />
+                    android:text="@string/textView_expense_item" />
 
                 <TextView
                     android:id="@+id/textView_amount_item"
@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold"
-                    android:text="Amount" />
+                    android:text="@string/textView_amount_item" />
             </LinearLayout>
 
             <ImageView
