@@ -24,6 +24,7 @@ public class Expense implements Serializable {
      */
     private String tittle;
 
+    @com.google.firebase.firestore.Exclude
     private User user;
 
     public Expense() {
@@ -31,9 +32,7 @@ public class Expense implements Serializable {
     }
 
 
-
-
-    public Expense(String id, String payeeId, double paymentAmount, String tittle , String payeeName) {
+    public Expense(String id, String payeeId, double paymentAmount, String tittle, String payeeName) {
 
         this.id = id;
         this.payeeId = payeeId;
@@ -83,10 +82,12 @@ public class Expense implements Serializable {
         this.tittle = tittle;
     }
 
+    @com.google.firebase.firestore.Exclude
     public User getUser() {
         return user;
     }
 
+    @com.google.firebase.firestore.Exclude
     public void setUser(User user) {
         this.user = user;
     }

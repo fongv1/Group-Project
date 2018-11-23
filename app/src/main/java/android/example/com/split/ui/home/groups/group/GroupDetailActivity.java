@@ -254,7 +254,7 @@ public class GroupDetailActivity extends AppCompatActivity {
         dialog = dialogBuilder.create();
 
         expenseSpinner = (Spinner) view.findViewById(R.id.spinner_choose_member);
-        ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item, group.getMembers());
+        ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item, group.getMemberUsers());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         expenseSpinner.setAdapter(adapter);
 
@@ -273,7 +273,7 @@ public class GroupDetailActivity extends AppCompatActivity {
                 expense.setPaymentAmount(newAmount);
                 // takes the selected member from its position in the spinner
                 int memberPosition = expenseSpinner.getSelectedItemPosition();
-                User member = group.getMembers().get(memberPosition);
+                User member = group.getMemberUsers().get(memberPosition);
                 expense.setUser(member);
 
                 // add the new expense to the dataset in the ExpensesRecyclerAdapter
