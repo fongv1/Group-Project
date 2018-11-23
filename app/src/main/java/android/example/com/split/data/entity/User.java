@@ -130,4 +130,7 @@ public class User implements Serializable {
         contacts.add(newUser);
     }
 
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }
