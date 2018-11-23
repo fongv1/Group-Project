@@ -21,27 +21,29 @@ public class Group implements Serializable {
      * Group's name
      */
     private String name;
+
+    // Initialise memberUsers and expenses lists
     /**
      * Members ({@link User}s) in the group
      */
-    private List<String> members;
+    private List<String> members = new ArrayList<>();
     /**
      * Members ({@link User}s) in the group
      */
     @com.google.firebase.firestore.Exclude
-    private List<User> memberUsers;
+    private List<User> memberUsers = new ArrayList<>();
 
     /**
      * {@link Expense}s in the group
      */
-    private List<Expense> expenses;
+    @com.google.firebase.firestore.Exclude
+    private List<Expense> expenses = new ArrayList<>();
 
-
+    /**
+     * Empty Constructor needed by Firestore
+     */
     public Group() {
 
-        // Initialise memberUsers and expenses lists
-        memberUsers = new ArrayList<>();
-        expenses = new ArrayList<>();
     }
 
     public Group(String groupId, String name) {
@@ -82,11 +84,12 @@ public class Group implements Serializable {
 
 
     // return the list of group expenses
+    @com.google.firebase.firestore.Exclude
     public List<Expense> getExpenses() {
         return expenses;
     }
 
-
+    @com.google.firebase.firestore.Exclude
     public void addExpense(Expense expense) {
         expenses.add(expense);
     }

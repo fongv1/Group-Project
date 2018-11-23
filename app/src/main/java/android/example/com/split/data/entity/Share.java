@@ -21,7 +21,7 @@ class Share implements Payment, Serializable {
     private String userId;
 
     /**
-     * Share
+     * Empty Constructor needed by Firestore
      */
     public Share() {
     }

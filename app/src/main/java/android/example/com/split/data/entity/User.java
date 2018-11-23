@@ -38,22 +38,12 @@ public class User implements Serializable {
      */
     private String phoneNumber;
 
-    private List<String> contacts;
-
-
-    public List<String> getContacts() {
-        return contacts;
-    }
-
-    public void setContacts(List<String> contacts) {
-        this.contacts = contacts;
-    }
+    private List<String> contacts = new ArrayList<>();
 
 
     /**
-     * User
+     * Empty Constructor needed by Firestore
      */
-
     public User() {
 
     }
@@ -74,11 +64,15 @@ public class User implements Serializable {
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        contacts = new ArrayList<String>();
     }
 
+    public List<String> getContacts() {
+        return contacts;
+    }
 
-
+    public void setContacts(List<String> contacts) {
+        this.contacts = contacts;
+    }
 
     public String getId() {
         return id;
@@ -126,10 +120,11 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public void addToContactList(String newUser){
+    public void addToContactList(String newUser) {
         contacts.add(newUser);
     }
 
+    @com.google.firebase.firestore.Exclude
     public String toString() {
         return firstName + " " + lastName;
     }
