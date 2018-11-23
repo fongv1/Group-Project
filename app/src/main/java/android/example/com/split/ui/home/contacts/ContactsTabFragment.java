@@ -35,18 +35,6 @@ public class ContactsTabFragment extends Fragment {
         initDataset();
     }
 
-    // Create dummy data
-    private void initDataset() {
-        dataset = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            User user = new User();
-            user.setFirstName("Dummy Contact first name " + i);
-            user.setLastName("Dummy Contact last name " + i);
-            user.setEmail("Dummy Contact email " + i);
-            dataset.add(user);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -78,5 +66,17 @@ public class ContactsTabFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+    }
+
+    // Create dummy data
+    private void initDataset() {
+        dataset = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            User user = new User();
+            user.setFirstName("Dummy Contact first name " + i);
+            user.setLastName("Dummy Contact last name " + i);
+            user.setEmail("Dummy Contact email " + i);
+            dataset.add(user);
+        }
     }
 }

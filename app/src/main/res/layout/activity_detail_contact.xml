@@ -2,7 +2,7 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout_member_detail"
+    android:id="@+id/drawer_layout_contact_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -11,21 +11,21 @@
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/main_content_activity_detail_group"
+        android:id="@+id/main_content_activity_detail_contact"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".ui.home.groups.group.GroupDetailActivity">
+        tools:context=".ui.home.contacts.contact.contactDetailActivity">
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar_activity_detail_group"
+            android:id="@+id/appbar_activity_detail_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/appbar_padding_top"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_activity_detail_group"
+                android:id="@+id/toolbar_activity_detail_contact"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
@@ -40,7 +40,7 @@
 
 
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/cardView_member_detail"
+            android:id="@+id/cardView_contact_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
@@ -49,13 +49,13 @@
             card_view:contentPadding="20dp">
 
             <LinearLayout
-                android:id="@+id/detail_member_name"
+                android:id="@+id/detail_contact_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imageView_member_name"
+                    android:id="@+id/imageView_contact_name"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
@@ -71,28 +71,28 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/member_detail_first_name"
+                    android:id="@+id/contact_detail_first_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:paddingLeft="20dp"
-                    android:text="@string/member_row_view"
+                    android:text="@string/contact_row_view"
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/member_detail_last_name"
+                    android:id="@+id/contact_detail_last_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:paddingLeft="20dp"
-                    android:text="@string/member_row_view_lastname"
+                    android:text="@string/contact_row_view"
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold" />
 
 
                 <TextView
-                    android:id="@+id/member_detail_email"
+                    android:id="@+id/contact_detail_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
