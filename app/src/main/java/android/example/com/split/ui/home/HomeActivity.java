@@ -142,6 +142,29 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(addContactFabListener);
         onTabSelectedListener = getOnTabSelectedListener(fab, addContactFabListener, addGroupFabListener);
         tabLayout.addOnTabSelectedListener(onTabSelectedListener);
+
+
+      /*  GroupDataRepository repository = new GroupDataRepository();
+
+        Expense exp = new Expense("NVcK9pYKTdegqaYiR1yOoGPM2Zz1",200,"Food","Saleh");
+        Map<String,Object> expOb = new HashMap<>();
+        // Map<String,Object> zeroMap = new HashMap<>();
+        // zeroMap.put("1",exp);
+        expOb.put("0",exp);
+
+        repository.addGroupExpense("KGKsdM2VDKN7w3AHUokk",expOb, new Handler.Callback() {
+
+            @Override
+            public boolean handleMessage(Message msg) {
+                if(msg.getData().getBoolean(GroupDataRepository.SUCCESS)){
+                    Bundle bundle = msg.getData();
+                    Toast.makeText(HomeActivity.this,"true",Toast.LENGTH_SHORT).show();
+                   // ArrayList<User> users = (ArrayList<User>) bundle.getSerializable(GroupDataRepository.USERS_LIST);
+
+                }
+                return false;
+            }
+        });*/
     }
 
     private void handleUserDatabase(final FirebaseUser firebaseUser) {

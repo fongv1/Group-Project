@@ -8,15 +8,23 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Map;
 
 public class GroupDataRepository extends Repository<Group> {
 
+    public static final String SUCCESS = "success";
+    private FirebaseFirestore db;
     private static final String TAG = "DataRepository";
+    public static final String GROUP_ID = "group-id";
+    public static final String USERS_LIST = "users-list";
 
+    // create new group
     @Override
     public void createItem(Group group, final Handler.Callback listener) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
         db.collection("groups").add(group).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -25,14 +33,19 @@ public class GroupDataRepository extends Repository<Group> {
                     String documentId = documentReference.getId();
                     Message message = new Message();
                     final Bundle data = new Bundle();
-                    data.putBoolean("success", false);
-                    data.putString("group-id", documentId);
+                    data.putBoolean(SUCCESS, true);
+                    data.putString(GROUP_ID, documentId);
+
+                    /*ArrayList<User> users = new ArrayList<>();
+                    users.add(new User());
+                    data.putSerializable(USERS_LIST, users);*/
+
                     message.setData(data);
                     listener.handleMessage(message);
                 } else {
                     Message message = new Message();
                     final Bundle data = new Bundle();
-                    data.putBoolean("success", false);
+                    data.putBoolean(SUCCESS, false);
                     message.setData(data);
                     listener.handleMessage(message);
                 }
@@ -47,6 +60,58 @@ public class GroupDataRepository extends Repository<Group> {
 
     @Override
     public void updateItem(String itemId) {
+
+    }
+
+    // add a member to a group
+    public void addGroupMember(String groupId , String memberId, final Handler.Callback listener){
+        db = FirebaseFirestore.getInstance();
+        DocumentReference groupDocument = db.collection("groups").document(groupId);
+        // add new member to this group
+        groupDocument.update("members", FieldValue.arrayUnion(memberId)).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+              if (task.isSuccessful()){
+                  Message message = new Message();
+                  final Bundle data = new Bundle();
+                  data.putBoolean(SUCCESS, true);
+                  message.setData(data);
+                  listener.handleMessage(message);
+              } else{
+                  Message message = new Message();
+                  final Bundle data = new Bundle();
+                  data.putBoolean(SUCCESS, false);
+                  message.setData(data);
+                  listener.handleMessage(message);
+              }
+            }
+        });
+    }
+
+    // add expense to a group
+
+    public void addGroupExpense(String groupId , Map<String, Object> expense , final Handler.Callback listener){
+        db = FirebaseFirestore.getInstance();
+        DocumentReference groupDocument = db.collection("groups").document(groupId);
+        // add new expense to this group
+        groupDocument.update("expenses",expense).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Message message = new Message();
+                    final Bundle data = new Bundle();
+                    data.putBoolean(SUCCESS, true);
+                    message.setData(data);
+                    listener.handleMessage(message);
+                } else{
+                    Message message = new Message();
+                    final Bundle data = new Bundle();
+                    data.putBoolean(SUCCESS, false);
+                    message.setData(data);
+                    listener.handleMessage(message);
+                }
+            }
+        });
 
     }
 }
