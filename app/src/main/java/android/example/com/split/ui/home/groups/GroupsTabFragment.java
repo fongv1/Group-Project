@@ -22,75 +22,78 @@ import java.util.Random;
 
 public class GroupsTabFragment extends Fragment {
 
-    private List<Group> dataset;
+  private List<Group> dataset;
 
-    public GroupsTabFragment() {
-        // Required empty public constructor
+  public GroupsTabFragment() {
+    // Required empty public constructor
+  }
+
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    // Initialize dataset, this data would usually come from a local content provider or remote
+    // server.
+    initDataset();
+  }
+
+  // Create dummy data
+  private void initDataset() {
+    dataset = new ArrayList<>();
+    Random rand = new Random();
+    for (int i = 0; i < 20; i++) {
+      Group group = new Group();
+      String groupName = "Group " + i;
+      group.setName(groupName);
+
+      for (int j = 0; j < 8; j++) {
+        Expense expense = new Expense();
+        expense.setPaymentAmount(rand.nextInt(1000));
+        expense.setTittle("Expense " + j + " " + groupName);
+        group.addExpense(expense);
+      }
+      for (int j = 0; j < 5; j++) {
+        User user = new User();
+        user.setFirstName("Memeber " + j);
+        user.setLastName(groupName);
+        group.addUserMember(user);
+      }
+      dataset.add(group);
     }
+  }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+  }
 
-        // Initialize dataset, this data would usually come from a local content provider or remote server.
-        initDataset();
-    }
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+      savedInstanceState) {
+    View rootView = inflater.inflate(R.layout.fragment_tab_groups, container, false);
 
-    // Create dummy data
-    private void initDataset() {
-        dataset = new ArrayList<>();
-        Random rand = new Random();
-        for (int i = 0; i < 20; i++) {
-            Group group = new Group();
-            String groupName = "Group " + i;
-            group.setName(groupName);
+    RecyclerView mRecyclerView = (RecyclerView) rootView
+        .findViewById(R.id.recyclerView_fragment_tab_groups);
+    mRecyclerView.setHasFixedSize(true);
 
-            for (int j = 0; j < 8; j++) {
-                Expense expense = new Expense();
-                expense.setPaymentAmount(rand.nextInt(1000));
-                expense.setTittle("Expense " + j + " " + groupName);
-                group.addExpense(expense);
-            }
-            for(int j = 0; j < 5; j++){
-                User user = new User();
-                user.setFirstName("Memeber " + j);
-                user.setLastName(groupName);
-                group.addUserMember(user);
-            }
-            dataset.add(group);
-        }
-    }
+    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+    mRecyclerView.setLayoutManager(mLayoutManager);
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
+    GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(dataset);
+    mRecyclerView.setAdapter(mAdapter);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_tab_groups, container, false);
+    return rootView;
+  }
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_fragment_tab_groups);
-        mRecyclerView.setHasFixedSize(true);
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+  }
 
-        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(dataset);
-        mRecyclerView.setAdapter(mAdapter);
+  @Override
+  public void onStart() {
+    super.onStart();
 
-        return rootView;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
+  }
 }

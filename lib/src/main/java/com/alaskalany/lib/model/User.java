@@ -4,31 +4,31 @@ import java.util.List;
 
 public interface User {
 
-    List<String> getContacts();
+  List<String> getContacts();
 
-    void setContacts(List<String> contacts);
+  void setContacts(List<String> contacts);
 
-    String getId();
+  String getId();
 
-    void setId(String id);
+  void setId(String id);
 
-    String getAuthId();
+  String getAuthId();
 
-    String getFirstName();
+  String getFirstName();
 
-    void setFirstName(String firstName);
+  void setFirstName(String firstName);
 
-    String getLastName();
+  String getLastName();
 
-    void setLastName(String lastName);
+  void setLastName(String lastName);
 
-    String getEmail();
+  String getEmail();
 
-    void setEmail(String email);
+  void setEmail(String email);
 
-    String getPhoneNumber();
+  String getPhoneNumber();
 
-    void setPhoneNumber(String phoneNumber);
+  void setPhoneNumber(String phoneNumber);
 
-    void addToContactList(String newUser);
+  void addToContactList(String newUser);
 }

@@ -2,15 +2,15 @@ package com.alaskalany.lib.model;
 
 public interface Share {
 
-    boolean isPaid();
+  boolean isPaid();
 
-    void setPaid(boolean paid);
+  void setPaid(boolean paid);
 
-    double getAmount();
+  double getAmount();
 
-    void setAmount(double shareAmount);
+  void setAmount(double shareAmount);
 
-    String getUserId();
+  String getUserId();
 
-    void setUserId(String userId);
+  void setUserId(String userId);
 }

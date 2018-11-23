@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface Expenses {
 
-    List<Expense> getExpenses();
+  List<Expense> getExpenses();
 
-    void addExpense(Expense expense);
+  void addExpense(Expense expense);
 }

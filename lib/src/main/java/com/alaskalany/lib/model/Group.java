@@ -4,20 +4,20 @@ import java.util.List;
 
 public interface Group {
 
-    String getGroupId();
+  String getGroupId();
 
-    void setGroupId(String groupId);
+  void setGroupId(String groupId);
 
-    String getName();
+  String getName();
 
-    void setName(String name);
+  void setName(String name);
 
-    List<String> getMembers();
+  List<String> getMembers();
 
-    // return the list of group expenses
-    List<Expense> getExpenses();
+  // return the list of group expenses
+  List<Expense> getExpenses();
 
-    void addExpense(Expense Expense);
+  void addExpense(Expense Expense);
 
-    void addMember(String memberId);
+  void addMember(String memberId);
 }

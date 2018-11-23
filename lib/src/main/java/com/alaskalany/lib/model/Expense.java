@@ -2,23 +2,23 @@ package com.alaskalany.lib.model;
 
 public interface Expense {
 
-    String getId();
+  String getId();
 
-    void setId(String id);
+  void setId(String id);
 
-    String getPayeeId();
+  String getPayeeId();
 
-    void setPayeeId(String payeeId);
+  void setPayeeId(String payeeId);
 
-    String getPayeeName();
+  String getPayeeName();
 
-    void setPayeeName(String payeeName);
+  void setPayeeName(String payeeName);
 
-    double getPaymentAmount();
+  double getPaymentAmount();
 
-    void setPaymentAmount(double paymentAmount);
+  void setPaymentAmount(double paymentAmount);
 
-    String getTittle();
+  String getTittle();
 
-    void setTittle(String tittle);
+  void setTittle(String tittle);
 }

@@ -17,38 +17,40 @@ import java.util.List;
 
 public class ExpensesTabFragment extends Fragment {
 
-    private static final String TAG = "ExpensesTabFragment";
-    private List<Expense> dataset;
-    private ExpensesRecyclerAdapter expensesRecyclerAdapter;
-    private Group group;
+  private static final String TAG = "ExpensesTabFragment";
+  private List<Expense> dataset;
+  private ExpensesRecyclerAdapter expensesRecyclerAdapter;
+  private Group group;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+  @Nullable
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                           @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_tab_expenses, container, false);
+    View rootView = inflater.inflate(R.layout.fragment_tab_expenses, container, false);
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_fragment_tab_expenses);
-        mRecyclerView.setHasFixedSize(true);
+    RecyclerView mRecyclerView = (RecyclerView) rootView
+        .findViewById(R.id.recyclerView_fragment_tab_expenses);
+    mRecyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+    mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // Create bundle to get the group passed from the GroupDetailActivity
-        Bundle bundle = getArguments();
-        group = (Group) bundle.get("group");
+    // Create bundle to get the group passed from the GroupDetailActivity
+    Bundle bundle = getArguments();
+    group = (Group) bundle.get("group");
 
-        //gets the expenses from the group
-        dataset = group.getExpenses();
+    //gets the expenses from the group
+    dataset = group.getExpenses();
 
-        expensesRecyclerAdapter = new ExpensesRecyclerAdapter(this.getContext(), dataset, group);
-        mRecyclerView.setAdapter(expensesRecyclerAdapter);
+    expensesRecyclerAdapter = new ExpensesRecyclerAdapter(this.getContext(), dataset, group);
+    mRecyclerView.setAdapter(expensesRecyclerAdapter);
 
-        return rootView;
-    }
+    return rootView;
+  }
 
-    public ExpensesRecyclerAdapter getAdapter() {
-        return expensesRecyclerAdapter;
-    }
+  public ExpensesRecyclerAdapter getAdapter() {
+    return expensesRecyclerAdapter;
+  }
 
 }

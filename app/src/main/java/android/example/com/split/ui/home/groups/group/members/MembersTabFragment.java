@@ -17,31 +17,33 @@ import java.util.List;
 
 public class MembersTabFragment extends Fragment {
 
-    private static final String TAG = "MembersTabFragment";
-    private List<User> dataset;
-    private Group group;
+  private static final String TAG = "MembersTabFragment";
+  private List<User> dataset;
+  private Group group;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_tab_members, container, false);
+  @Nullable
+  @Override
+  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                           @Nullable Bundle savedInstanceState) {
+    View rootView = inflater.inflate(R.layout.fragment_tab_members, container, false);
 
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_fragment_tab_members);
-        mRecyclerView.setHasFixedSize(true);
+    RecyclerView mRecyclerView = (RecyclerView) rootView
+        .findViewById(R.id.recyclerView_fragment_tab_members);
+    mRecyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+    mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // Create bundle to get the group passed from the GroupDetailActivity
-        Bundle bundle = getArguments();
-        group = (Group) bundle.get("group");
+    // Create bundle to get the group passed from the GroupDetailActivity
+    Bundle bundle = getArguments();
+    group = (Group) bundle.get("group");
 
-        //gets the expenses from the group
-        dataset = group.getUserMembers();
+    //gets the expenses from the group
+    dataset = group.getUserMembers();
 
-        MembersRecyclerAdapter mAdapter = new MembersRecyclerAdapter(dataset);
-        mRecyclerView.setAdapter(mAdapter);
+    MembersRecyclerAdapter mAdapter = new MembersRecyclerAdapter(dataset);
+    mRecyclerView.setAdapter(mAdapter);
 
-        return rootView;
-    }
+    return rootView;
+  }
 }

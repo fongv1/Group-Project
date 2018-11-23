@@ -21,62 +21,65 @@ import java.util.List;
  */
 public class ContactsTabFragment extends Fragment {
 
-    private List<User> dataset;
+  private List<User> dataset;
 
-    public ContactsTabFragment() {
-        // Required empty public constructor
+  public ContactsTabFragment() {
+    // Required empty public constructor
+  }
+
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    // Initialize dataset, this data would usually come from a local content provider or remote
+    // server.
+    initDataset();
+  }
+
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+  }
+
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+      savedInstanceState) {
+    View rootView = inflater.inflate(R.layout.fragment_tab_contacts, container, false);
+
+    RecyclerView mRecyclerView = (RecyclerView) rootView
+        .findViewById(R.id.recyclerView_fragment_tab_contacts);
+    mRecyclerView.setHasFixedSize(true);
+
+    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+    mRecyclerView.setLayoutManager(mLayoutManager);
+
+    ContactsRecyclerAdapter mAdapter = new ContactsRecyclerAdapter(dataset);
+    mRecyclerView.setAdapter(mAdapter);
+
+    return rootView;
+  }
+
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
+
+  }
+
+  // Create dummy data
+  private void initDataset() {
+    dataset = new ArrayList<>();
+    for (int i = 0; i < 100; i++) {
+      User user = new User();
+      user.setFirstName("Dummy Contact first name " + i);
+      user.setLastName("Dummy Contact last name " + i);
+      user.setEmail("Dummy Contact email " + i);
+      dataset.add(user);
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Initialize dataset, this data would usually come from a local content provider or remote server.
-        initDataset();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_tab_contacts, container, false);
-
-        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_fragment_tab_contacts);
-        mRecyclerView.setHasFixedSize(true);
-
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        ContactsRecyclerAdapter mAdapter = new ContactsRecyclerAdapter(dataset);
-        mRecyclerView.setAdapter(mAdapter);
-
-        return rootView;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
-
-    // Create dummy data
-    private void initDataset() {
-        dataset = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            User user = new User();
-            user.setFirstName("Dummy Contact first name " + i);
-            user.setLastName("Dummy Contact last name " + i);
-            user.setEmail("Dummy Contact email " + i);
-            dataset.add(user);
-        }
-    }
+  }
 }
