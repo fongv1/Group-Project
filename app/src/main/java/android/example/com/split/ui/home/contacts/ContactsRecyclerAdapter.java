@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -21,6 +20,10 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
     // Create the adapter with a dataset
     public ContactsRecyclerAdapter(List<User> myDataset) {
         mDataset = myDataset;
+    }
+
+    public List<User> getDataset() {
+        return mDataset;
     }
 
     // Create new views (invoked by the layout manager)

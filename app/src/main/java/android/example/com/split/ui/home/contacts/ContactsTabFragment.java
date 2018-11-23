@@ -22,6 +22,7 @@ import java.util.List;
 public class ContactsTabFragment extends Fragment {
 
     private List<User> dataset;
+    private ContactsRecyclerAdapter contactsRecyclerAdapter;
 
     public ContactsTabFragment() {
         // Required empty public constructor
@@ -50,8 +51,10 @@ public class ContactsTabFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        ContactsRecyclerAdapter mAdapter = new ContactsRecyclerAdapter(dataset);
-        mRecyclerView.setAdapter(mAdapter);
+        Bundle bundle = getArguments();
+
+        contactsRecyclerAdapter = new ContactsRecyclerAdapter(dataset);
+        mRecyclerView.setAdapter(contactsRecyclerAdapter);
 
         return rootView;
     }
@@ -59,19 +62,17 @@ public class ContactsTabFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
     }
 
     // Create dummy data
     private void initDataset() {
         dataset = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 4; i++) {
             User user = new User();
             user.setFirstName("Dummy Contact first name " + i);
             user.setLastName("Dummy Contact last name " + i);
@@ -79,4 +80,8 @@ public class ContactsTabFragment extends Fragment {
             dataset.add(user);
         }
     }
+
+        public ContactsRecyclerAdapter getAdapter() {
+            return contactsRecyclerAdapter;
+        }
 }

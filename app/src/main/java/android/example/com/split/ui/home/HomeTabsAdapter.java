@@ -15,6 +15,9 @@ public class HomeTabsAdapter extends FragmentPagerAdapter {
      */
     private Context mContext;
 
+    private ContactsTabFragment contactsTabFragment;
+    private GroupsTabFragment groupsTabFragment;
+
     /**
      * Create a new {@link HomeTabsAdapter} object.
      *
@@ -33,9 +36,11 @@ public class HomeTabsAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new ContactsTabFragment();
+            contactsTabFragment = new ContactsTabFragment();
+            return contactsTabFragment;
         } else {
-            return new GroupsTabFragment();
+            groupsTabFragment = new GroupsTabFragment();
+            return groupsTabFragment;
         }
     }
 
@@ -54,5 +59,13 @@ public class HomeTabsAdapter extends FragmentPagerAdapter {
         } else {
             return mContext.getString(R.string.category_groups);
         }
+    }
+
+    public ContactsTabFragment getContactsTabFragment() {
+        return contactsTabFragment;
+    }
+
+    public GroupsTabFragment getGroupsTabFragment() {
+        return groupsTabFragment;
     }
 }
