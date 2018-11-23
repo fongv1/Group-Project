@@ -6,12 +6,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.*;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class GroupDataRepository extends Repository<Group> {
@@ -21,6 +24,7 @@ public class GroupDataRepository extends Repository<Group> {
     private static final String TAG = "DataRepository";
     public static final String GROUP_ID = "group-id";
     public static final String USERS_LIST = "users-list";
+    public static final String GROUP_LIST = "group-list";
 
     // create new group
     @Override
@@ -126,9 +130,43 @@ public class GroupDataRepository extends Repository<Group> {
 
     }
      // get the list of user's groups
-    public void getGroupList(String userId){
+    public void getGroupList(String userId, final Handler.Callback listener){
         db = FirebaseFirestore.getInstance();
-        db.collection("groups").whereArrayContains("members",userId).get();
+        final List<Group> groupList =  new ArrayList<>();
+        db.collection("groups").whereArrayContains("members",userId).get()
+          .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+              @Override
+              public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                  Message message = new Message();
+                  final Bundle data = new Bundle();
+
+                  if (!queryDocumentSnapshots.isEmpty()) {
+                      for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
+                          Group group = documentSnapshot.toObject(Group.class);
+                          groupList.add(group);
+                      }
+                       data.putBoolean(SUCCESS,true);
+                       data.putSerializable(GROUP_LIST, (Serializable) groupList);
+                       message.setData(data);
+                       listener.handleMessage(message);
+                  }
+                  else {
+                      data.putBoolean(SUCCESS,false);
+                      message.setData(data);
+                      listener.handleMessage(message);
+                  }
+
+              }
+          }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Message message = new Message();
+                final Bundle data = new Bundle();
+                data.putBoolean(SUCCESS,false);
+                message.setData(data);
+                listener.handleMessage(message);
+            }
+        });
     }
 
 }
