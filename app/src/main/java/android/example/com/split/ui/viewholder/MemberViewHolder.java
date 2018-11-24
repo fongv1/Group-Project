@@ -1,15 +1,15 @@
-package android.example.com.split.ui.home.groups.group.members;
+package android.example.com.split.ui.viewholder;
 
-import android.example.com.split.BaseViewHolder;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
+import android.example.com.split.ui.detailactivity.MembersDetailActivity;
 import android.view.View;
 import android.widget.TextView;
 
 // Provides reference to the views for each data item
 // When create more complex group view, it should be removed in a separate java file
-class MemberViewHolder extends BaseViewHolder<User> {
+public class MemberViewHolder extends BaseViewHolder<User> {
 
   // Each group data item is just a String presented as a textView in this case
   private TextView mTextView;

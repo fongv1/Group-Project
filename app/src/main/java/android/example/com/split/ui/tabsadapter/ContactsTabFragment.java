@@ -1,9 +1,10 @@
-package android.example.com.split.ui.home.contacts;
+package android.example.com.split.ui.tabsadapter;
 
 
 import android.content.Context;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
+import android.example.com.split.ui.recycleradapter.ContactsRecyclerAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

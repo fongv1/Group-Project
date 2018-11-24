@@ -1,9 +1,9 @@
-package android.example.com.split.ui.home.groups;
+package android.example.com.split.ui.recycleradapter;
 
 import android.content.Context;
-import android.example.com.split.BaseRecyclerAdapter;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Group;
+import android.example.com.split.ui.viewholder.GroupViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

@@ -1,4 +1,4 @@
-package android.example.com.split.ui.home;
+package android.example.com.split.ui.activity;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -7,7 +7,7 @@ import android.example.com.split.FeatureFlags;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
 import android.example.com.split.data.repository.UserDataRepository;
-import android.example.com.split.ui.FullscreenActivity;
+import android.example.com.split.ui.tabsadapter.HomeTabsAdapter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;

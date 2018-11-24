@@ -1,13 +1,13 @@
-package android.example.com.split.ui.home.groups.group;
+package android.example.com.split.ui.detailactivity;
 
 import android.app.AlertDialog;
-import android.example.com.split.DetailActivity;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
-import android.example.com.split.ui.home.groups.group.expenses.ExpensesTabFragment;
-import android.example.com.split.ui.home.groups.group.members.MembersTabFragment;
+import android.example.com.split.ui.tabfragment.ExpensesTabFragment;
+import android.example.com.split.ui.tabfragment.MembersTabFragment;
+import android.example.com.split.ui.tabsadapter.GroupTabsAdapter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -27,7 +27,7 @@ import android.widget.Spinner;
 
 import java.util.List;
 
-public class GroupDetailActivity extends DetailActivity {
+public class GroupDetailActivity extends BaseDetailActivity {
 
   // add member and expense
   private AlertDialog.Builder dialogBuilder;
@@ -209,7 +209,7 @@ public class GroupDetailActivity extends DetailActivity {
       public void onClick(View v) {
         User user = new User();
         // takes the name user input from the text field
-        memberName = (EditText)  view.findViewById(R.id.editText_dialog_add_member);
+        memberName = (EditText) view.findViewById(R.id.editText_dialog_add_member);
         String newName = memberName.getText().toString();
         user.setFirstName(newName);
         // add the new user to the dataset in the MembersRecyclerAdapter

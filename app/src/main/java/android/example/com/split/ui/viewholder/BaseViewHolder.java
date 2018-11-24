@@ -1,7 +1,8 @@
-package android.example.com.split;
+package android.example.com.split.ui.viewholder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.example.com.split.OnDeleteItemListener;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.support.annotation.CallSuper;

@@ -1,20 +1,20 @@
-package android.example.com.split.ui.home.groups.group.expenses;
+package android.example.com.split.ui.viewholder;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.example.com.split.BaseViewHolder;
 import android.example.com.split.OnDeleteItemListener;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
+import android.example.com.split.ui.detailactivity.ExpensesDetailActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 
 // Provides reference to the views for each data item
 // When create more complex group view, it should be removed in a separate java file
-class ExpenseViewHolder extends BaseViewHolder<Expense> {
+public class ExpenseViewHolder extends BaseViewHolder<Expense> {
 
   // Each group data item is just a String presented as a textView in this case
   private TextView expenseTextView;

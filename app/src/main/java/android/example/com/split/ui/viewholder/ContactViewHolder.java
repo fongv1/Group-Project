@@ -1,19 +1,19 @@
-package android.example.com.split.ui.home.contacts;
+package android.example.com.split.ui.viewholder;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.example.com.split.BaseViewHolder;
 import android.example.com.split.OnDeleteItemListener;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
+import android.example.com.split.ui.detailactivity.ContactDetailActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 // Provides reference to the views for each data item
 // When create more complex group view, it should be removed in a separate java file
-class ContactViewHolder extends BaseViewHolder<User> {
+public class ContactViewHolder extends BaseViewHolder<User> {
 
   public ImageView deleteButton;
   // Each group data item is just a String presented as a textView in this case

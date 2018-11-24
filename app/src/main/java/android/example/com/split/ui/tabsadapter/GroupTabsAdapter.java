@@ -1,6 +1,5 @@
-package android.example.com.split.ui.home.groups.group;
+package android.example.com.split.ui.tabsadapter;
 
-import android.example.com.split.TabsAdapter;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

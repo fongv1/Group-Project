@@ -1,6 +1,7 @@
-package android.example.com.split;
+package android.example.com.split.ui.recycleradapter;
 
 import android.content.Context;
+import android.example.com.split.OnDeleteItemListener;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 

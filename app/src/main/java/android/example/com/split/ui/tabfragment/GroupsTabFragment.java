@@ -1,4 +1,4 @@
-package android.example.com.split.ui.home.groups;
+package android.example.com.split.ui.tabfragment;
 
 
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
+import android.example.com.split.ui.recycleradapter.GroupsRecyclerAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

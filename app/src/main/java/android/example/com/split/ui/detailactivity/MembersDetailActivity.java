@@ -1,6 +1,5 @@
-package android.example.com.split.ui.home.groups.group.members;
+package android.example.com.split.ui.detailactivity;
 
-import android.example.com.split.DetailActivity;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
 import android.os.Bundle;
@@ -8,7 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.widget.TextView;
 
 
-public class MembersDetailActivity extends DetailActivity {
+public class MembersDetailActivity extends BaseDetailActivity {
 
   private User user;
   private TextView firstName;

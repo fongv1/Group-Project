@@ -1,12 +1,11 @@
-package android.example.com.split.ui.home.contacts;
+package android.example.com.split.ui.detailactivity;
 
-import android.example.com.split.DetailActivity;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
 import android.os.Bundle;
 import android.widget.TextView;
 
-public class ContactDetailActivity extends DetailActivity {
+public class ContactDetailActivity extends BaseDetailActivity {
 
   TextView firstName;
   TextView lastName;

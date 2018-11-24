@@ -1,9 +1,8 @@
-package android.example.com.split.ui;
+package android.example.com.split.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.example.com.split.R;
-import android.example.com.split.ui.home.HomeActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -50,12 +49,6 @@ public class FullscreenActivity extends AppCompatActivity {
           View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);*/
     }
   };
-  private final Runnable hideRunnable = new Runnable() {
-    @Override
-    public void run() {
-      hide();
-    }
-  };
   private View controlsView;
   private final Runnable showPart2Runnable = new Runnable() {
     @Override
@@ -66,6 +59,12 @@ public class FullscreenActivity extends AppCompatActivity {
         actionBar.show();
       }
       controlsView.setVisibility(View.VISIBLE);
+    }
+  };
+  private final Runnable hideRunnable = new Runnable() {
+    @Override
+    public void run() {
+      hide();
     }
   };
 

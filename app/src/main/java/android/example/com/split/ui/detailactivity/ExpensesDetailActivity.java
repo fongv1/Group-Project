@@ -1,6 +1,5 @@
-package android.example.com.split.ui.home.groups.group.expenses;
+package android.example.com.split.ui.detailactivity;
 
-import android.example.com.split.DetailActivity;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.os.Bundle;
@@ -11,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ExpensesDetailActivity extends DetailActivity {
+public class ExpensesDetailActivity extends BaseDetailActivity {
 
   private Double amount;
 
