@@ -10,49 +10,62 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class HomeTabsAdapter extends FragmentPagerAdapter {
 
-  /**
-   * Context of the app
-   */
-  private Context mContext;
+    /**
+     * Context of the app
+     */
+    private Context mContext;
 
-  /**
-   * Create a new {@link HomeTabsAdapter} object.
-   *
-   * @param context is the context of the app
-   * @param fm      is the fragment manager that will keep each fragment's state in the adapter
-   *                across swipes.
-   */
-  public HomeTabsAdapter(Context context, FragmentManager fm) {
-    super(fm);
-    mContext = context;
-  }
+    private ContactsTabFragment contactsTabFragment;
+    private GroupsTabFragment groupsTabFragment;
 
-  /**
-   * Return the {@link Fragment} that should be displayed for the given page number.
-   */
-  @Override
-  public Fragment getItem(int position) {
-    if (position == 0) {
-      return new ContactsTabFragment();
-    } else {
-      return new GroupsTabFragment();
+    /**
+     * Create a new {@link HomeTabsAdapter} object.
+     *
+     * @param context is the context of the app
+     * @param fm      is the fragment manager that will keep each fragment's state in the adapter
+     *                across swipes.
+     */
+    public HomeTabsAdapter(Context context, FragmentManager fm) {
+        super(fm);
+        mContext = context;
     }
-  }
 
-  /**
-   * Return the total number of pages.
-   */
-  @Override
-  public int getCount() {
-    return 2;
-  }
-
-  @Override
-  public CharSequence getPageTitle(int position) {
-    if (position == 0) {
-      return mContext.getString(R.string.category_contacts);
-    } else {
-      return mContext.getString(R.string.category_groups);
+    /**
+     * Return the {@link Fragment} that should be displayed for the given page number.
+     */
+    @Override
+    public Fragment getItem(int position) {
+        if (position == 0) {
+            contactsTabFragment = new ContactsTabFragment();
+            return contactsTabFragment;
+        } else {
+            groupsTabFragment = new GroupsTabFragment();
+            return groupsTabFragment;
+        }
     }
-  }
+
+    /**
+     * Return the total number of pages.
+     */
+    @Override
+    public int getCount() {
+        return 2;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        if (position == 0) {
+            return mContext.getString(R.string.category_contacts);
+        } else {
+            return mContext.getString(R.string.category_groups);
+        }
+    }
+
+    public ContactsTabFragment getContactsTabFragment() {
+        return contactsTabFragment;
+    }
+
+    public GroupsTabFragment getGroupsTabFragment() {
+        return groupsTabFragment;
+    }
 }
