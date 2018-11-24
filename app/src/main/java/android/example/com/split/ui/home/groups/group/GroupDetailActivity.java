@@ -1,6 +1,7 @@
 package android.example.com.split.ui.home.groups.group;
 
 import android.app.AlertDialog;
+import android.example.com.split.DetailActivity;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
@@ -15,7 +16,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +27,7 @@ import android.widget.Spinner;
 
 import java.util.List;
 
-public class GroupDetailActivity extends AppCompatActivity {
+public class GroupDetailActivity extends DetailActivity {
 
   // add member and expense
   private AlertDialog.Builder dialogBuilder;

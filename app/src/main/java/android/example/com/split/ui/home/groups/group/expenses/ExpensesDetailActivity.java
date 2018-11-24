@@ -1,16 +1,16 @@
 package android.example.com.split.ui.home.groups.group.expenses;
 
+import android.example.com.split.DetailActivity;
 import android.example.com.split.R;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ExpensesDetailActivity extends AppCompatActivity {
+public class ExpensesDetailActivity extends DetailActivity {
 
   private Double amount;
 

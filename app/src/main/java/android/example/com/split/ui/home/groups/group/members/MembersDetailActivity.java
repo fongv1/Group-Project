@@ -1,14 +1,14 @@
 package android.example.com.split.ui.home.groups.group.members;
 
+import android.example.com.split.DetailActivity;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 
-public class MembersDetailActivity extends AppCompatActivity {
+public class MembersDetailActivity extends DetailActivity {
 
   private User user;
   private TextView firstName;
