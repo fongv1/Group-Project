@@ -22,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
@@ -53,7 +54,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     // Fab functionality
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-    private EditText contactItem;
+    private EditText contactName;
+    private EditText contactSurname;
+    private EditText contactEmail;
+
+    private HomeTabsAdapter homeTabsAdapter;
+
     private final View.OnClickListener addContactFabListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -66,7 +72,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             createGroupPopupDialog();
         }
     };
-    private EditText contactName;
+    private EditText groupName;
     private TabLayout.BaseOnTabSelectedListener onTabSelectedListener;
 
     @Contract(pure = true)
@@ -134,8 +140,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view_activity_home);
         navigationView.setNavigationItemSelectedListener(this);
         ViewPager viewPager = findViewById(R.id.viewpager_app_bar_main);
-        HomeTabsAdapter adapter = new HomeTabsAdapter(this, getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
+        homeTabsAdapter = new HomeTabsAdapter(this, getSupportFragmentManager());
+        viewPager.setAdapter(homeTabsAdapter);
         TabLayout tabLayout = findViewById(R.id.tabLayout_app_bar_main);
         tabLayout.setupWithViewPager(viewPager);
         FloatingActionButton fab = findViewById(R.id.fab_app_bar_main);
@@ -312,11 +318,37 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void createContactPopupDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.dialog_add_contact, null);
-        contactItem = findViewById(R.id.editText_dialog_add_contact_firstName);
-
+        final View view = getLayoutInflater().inflate(R.layout.dialog_add_contact, null);
         dialogBuilder.setView(view);
         dialog = dialogBuilder.create();
+
+        Button saveButton = (Button) view.findViewById(R.id.button_dialog_add_contact_save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User user = new User();
+                contactName = (EditText) view.findViewById(R.id.editText_dialog_add_contact_firstName);
+                String newName = contactName.getText().toString();
+                user.setFirstName(newName);
+
+                contactSurname = (EditText) view.findViewById(R.id.editText_dialog_add_contact_lastName);
+                String newSurname = contactSurname.getText().toString();
+                user.setLastName(newSurname);
+
+                contactEmail = (EditText) view.findViewById(R.id.editText_dialog_add_contact_email);
+                String newEmail = contactEmail.getText().toString();
+                user.setEmail(newEmail);
+
+                List<User> dataset = homeTabsAdapter.getContactsTabFragment().getAdapter().getDataset();
+                dataset.add(user);
+
+                int position = dataset.size() - 1;
+                homeTabsAdapter.getContactsTabFragment().getAdapter().notifyItemInserted(position);
+
+                dialog.dismiss();
+            }
+        });
+
         dialog.show();
 
     }
@@ -324,7 +356,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void createGroupPopupDialog() {
         dialogBuilder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_add_group, null);
-        contactItem = findViewById(R.id.editText_dialog_add_group);
+        groupName = findViewById(R.id.editText_dialog_add_group);
 
         dialogBuilder.setView(view);
         dialog = dialogBuilder.create();
