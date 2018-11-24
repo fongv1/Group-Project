@@ -1,0 +1,137 @@
+package android.example.com.split.ui.home.groups.group.expenses;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.example.com.split.R;
+import android.example.com.split.data.entity.Expense;
+import android.example.com.split.data.entity.Group;
+import android.example.com.split.data.entity.User;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.*;
+
+// Provides reference to the views for each data item
+// When create more complex group view, it should be removed in a separate java file
+class ExpenseViewHolder extends RecyclerView.ViewHolder {
+
+  private final View itemView;
+  private final OnDeleteExpenseListener onDeleteListener;
+  // Each group data item is just a String presented as a textView in this case
+  public TextView expenseTextView;
+  public TextView amountTextView;
+  public ImageView editButton;
+  public ImageView deleteButton;
+  private ExpensesRecyclerAdapter expensesRecyclerAdapter;
+
+  // Initializes the ViewHolder TextView from the item_group XML resource
+  public ExpenseViewHolder(ExpensesRecyclerAdapter expensesRecyclerAdapter, View itemView,
+                           OnDeleteExpenseListener onDeleteListener) {
+    super(itemView);
+    this.expensesRecyclerAdapter = expensesRecyclerAdapter;
+    this.itemView = itemView;
+    this.onDeleteListener = onDeleteListener;
+    expenseTextView = (TextView) itemView.findViewById(R.id.textView_expense_item);
+    amountTextView = (TextView) itemView.findViewById(R.id.textView_amount_item);
+    editButton = (ImageView) itemView.findViewById(R.id.imageView_edit_expense_item);
+    deleteButton = (ImageView) itemView.findViewById(R.id.imageView_delete_expense_item);
+  }
+
+  private void editExpensePopupDialog(final Group group, final Expense expense, final int
+      position) {
+    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(itemView.getContext());
+    final View view = LayoutInflater.from(itemView.getContext())
+                                    .inflate(R.layout.dialog_add_expense, null);
+
+    dialogBuilder.setView(view);
+    final AlertDialog dialog = dialogBuilder.create();
+    //takes the already existing title and sets it to the text field
+    final EditText editTitle = (EditText) view.findViewById(R.id.editText_dialog_add_expense_title);
+    editTitle.setText(expense.getTittle());
+    //takes the already existing amount and sets it to the amount field
+    final EditText editAmount = (EditText) view
+        .findViewById(R.id.editText_dialog_add_expense_amount);
+    editAmount.setText("" + expense.getPaymentAmount());
+
+    // set the spinner with all the members of this group
+    final Spinner expenseSpinner = (Spinner) view.findViewById(R.id.spinner_choose_member);
+    ArrayAdapter<User> adapter = new ArrayAdapter<User>(view.getContext(),
+                                                        android.R.layout.simple_spinner_item,
+                                                        group.getUserMembers());
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    expenseSpinner.setAdapter(adapter);
+    // select the correct member in the spinner
+    // get the position in the member list of the user responsible for this expense
+    // the group contains the member list and the expense contains the user
+    int expenseMemberPosition = group.getMembers().indexOf(expense.getUser());
+    expenseSpinner.setSelection(expenseMemberPosition);
+
+    Button saveButton = (Button) view.findViewById(R.id.button_dialog_add_expense_save);
+    saveButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        //takes the title input from the text field
+        String newTitle = editTitle.getText().toString();
+        // updates the title
+        expense.setTittle(newTitle);
+        //takes the amount input from the text field
+        Double newAmount = Double.parseDouble(editAmount.getText().toString());
+        //updates the amount
+        expense.setPaymentAmount(newAmount);
+        // takes the selected member from its position in the spinner
+        int memberPosition = expenseSpinner.getSelectedItemPosition();
+        User member = group.getUserMembers().get(memberPosition);
+        expense.setUser(member);
+
+        Toast.makeText(v.getContext(), "Saved!", Toast.LENGTH_SHORT).show();
+        // Notifies tha adapter that the item at that position is changed
+        expensesRecyclerAdapter.notifyItemChanged(position);
+        dialog.dismiss();
+      }
+    });
+
+    dialog.show();
+  }
+
+  private void deleteExpensePopupDialog(final int position) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+    // Add the buttons
+    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+      public void onClick(DialogInterface dialog, int id) {
+        // User cancelled the dialog
+      }
+    });
+
+    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+      public void onClick(DialogInterface dialog, int id) {
+        // User clicked OK button
+        onDeleteListener.onDelete(position);
+      }
+    });
+
+    //Set other dialog properties
+    builder.setMessage("Delete expense?");
+
+    // Create the AlertDialog
+    AlertDialog dialog = builder.create();
+    dialog.show();
+
+  }
+
+  public void bind(final Group group, final Expense expense, final int position) {
+    expenseTextView.setText(expense.getTittle());
+    amountTextView.setText("" + expense.getPaymentAmount());
+    editButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        editExpensePopupDialog(group, expense, position);
+      }
+    });
+    deleteButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        deleteExpensePopupDialog(position);
+      }
+    });
+  }
+}
