@@ -19,12 +19,10 @@ import java.util.List;
 // Simple implementation for a data set that consists of a List of Strings displayed using TextView widgets
 public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapter.ContactViewHolder> {
 
-    private Context context;
     private List<User> mDataset;
 
     // Create the adapter with a dataset
-    public ContactsRecyclerAdapter(Context context, List<User> myDataset) {
-        this.context = context;
+    public ContactsRecyclerAdapter(List<User> myDataset) {
         mDataset = myDataset;
     }
 
@@ -83,7 +81,7 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
             User user = mDataset.get(mPosition);
 
             if (v.getId() == R.id.imageView_delete_contact_item) {
-                deleteContactPopupDialog(mPosition);
+                deleteContactPopupDialog(v.getContext(), mPosition);
             }
             else {
                 Intent intent = new Intent(v.getContext(), ContactDetailActivity.class);
@@ -95,8 +93,8 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
             }
         }
 
-        private void deleteContactPopupDialog(final int position) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mAdapter.context);
+        private void deleteContactPopupDialog(Context context, final int position) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
             // Add the buttons
             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {

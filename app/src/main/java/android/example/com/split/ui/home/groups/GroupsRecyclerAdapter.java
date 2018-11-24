@@ -21,12 +21,10 @@ import java.util.List;
 // Simple implementation for a data set that consists of a List of Groups displayed using TextView widgets
 public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAdapter.GroupViewHolder> {
 
-    private Context context;
     private List<Group> mDataset;
 
     // Create the adapter with a dataset
-    public GroupsRecyclerAdapter(Context context, List<Group> myDataset) {
-        this.context = context;
+    public GroupsRecyclerAdapter(List<Group> myDataset) {
         mDataset = myDataset;
     }
 
@@ -87,7 +85,7 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             Group group = mDataset.get(mPosition);
             // Checks if delete button is clicked or the cardview
             if (v.getId() == R.id.imageView_delete_group_item) {
-                deleteGroupPopupDialog(mPosition);
+                deleteGroupPopupDialog(v.getContext(), mPosition);
             }
 
             else {
@@ -100,8 +98,8 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             }
         }
 
-        private void deleteGroupPopupDialog(final int position) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mAdapter.context);
+        private void deleteGroupPopupDialog(Context context, final int position) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
             // Add the buttons
             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {

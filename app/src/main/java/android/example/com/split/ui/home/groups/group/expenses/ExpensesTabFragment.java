@@ -41,7 +41,7 @@ public class ExpensesTabFragment extends Fragment {
         //gets the expenses from the group
         dataset = group.getExpenses();
 
-        expensesRecyclerAdapter = new ExpensesRecyclerAdapter(this.getContext(), dataset, group);
+        expensesRecyclerAdapter = new ExpensesRecyclerAdapter(dataset, group);
         mRecyclerView.setAdapter(expensesRecyclerAdapter);
 
         return rootView;
