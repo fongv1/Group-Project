@@ -1,5 +1,6 @@
 package android.example.com.split.ui.home.groups.group.members;
 
+import android.example.com.split.BaseRecyclerAdapter;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
 import android.view.LayoutInflater;

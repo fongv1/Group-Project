@@ -1,16 +1,16 @@
-package android.example.com.split.ui.home.groups.group.members;
+package android.example.com.split;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.List;
 
-abstract class BaseRecyclerAdapter<T extends RecyclerView.ViewHolder, M> extends RecyclerView
-    .Adapter<T> {
+public abstract class BaseRecyclerAdapter<T extends RecyclerView.ViewHolder, M> extends
+    RecyclerView.Adapter<T> {
 
   protected List<M> mDataset;
 
-  BaseRecyclerAdapter(List<M> myDataset) {
+  public BaseRecyclerAdapter(List<M> myDataset) {
     mDataset = myDataset;
   }
 
