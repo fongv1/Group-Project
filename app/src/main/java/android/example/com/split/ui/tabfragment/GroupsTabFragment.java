@@ -9,7 +9,6 @@ import android.example.com.split.data.entity.User;
 import android.example.com.split.ui.recycleradapter.GroupsRecyclerAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,7 +20,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class GroupsTabFragment extends Fragment {
+public class GroupsTabFragment extends BaseTabFragment {
 
   private List<Group> dataset;
 
