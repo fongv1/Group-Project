@@ -2,21 +2,20 @@ package android.example.com.split.ui.home.groups.group.expenses;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.example.com.split.BaseViewHolder;
 import android.example.com.split.OnDeleteItemListener;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 
 // Provides reference to the views for each data item
 // When create more complex group view, it should be removed in a separate java file
-class ExpenseViewHolder extends RecyclerView.ViewHolder {
+class ExpenseViewHolder extends BaseViewHolder<Expense> {
 
-  private final View itemView;
   private final OnDeleteItemListener onDeleteListener;
   // Each group data item is just a String presented as a textView in this case
   public TextView expenseTextView;
@@ -30,18 +29,13 @@ class ExpenseViewHolder extends RecyclerView.ViewHolder {
                            OnDeleteItemListener onDeleteListener) {
     super(itemView);
     this.expensesRecyclerAdapter = expensesRecyclerAdapter;
-    this.itemView = itemView;
     this.onDeleteListener = onDeleteListener;
-    expenseTextView = (TextView) itemView.findViewById(R.id.textView_expense_item);
-    amountTextView = (TextView) itemView.findViewById(R.id.textView_amount_item);
-    editButton = (ImageView) itemView.findViewById(R.id.imageView_edit_expense_item);
-    deleteButton = (ImageView) itemView.findViewById(R.id.imageView_delete_expense_item);
   }
 
   private void editExpensePopupDialog(final Group group, final Expense expense, final int
       position) {
-    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(itemView.getContext());
-    final View view = LayoutInflater.from(itemView.getContext())
+    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getItemView().getContext());
+    final View view = LayoutInflater.from(getItemView().getContext())
                                     .inflate(R.layout.dialog_add_expense, null);
 
     dialogBuilder.setView(view);
@@ -95,7 +89,7 @@ class ExpenseViewHolder extends RecyclerView.ViewHolder {
   }
 
   private void deleteExpensePopupDialog(final int position) {
-    AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+    AlertDialog.Builder builder = new AlertDialog.Builder(getItemView().getContext());
     // Add the buttons
     builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
       public void onClick(DialogInterface dialog, int id) {
@@ -119,6 +113,20 @@ class ExpenseViewHolder extends RecyclerView.ViewHolder {
 
   }
 
+  @Override
+  protected void findAllViews(View itemView) {
+    expenseTextView = (TextView) itemView.findViewById(R.id.textView_expense_item);
+    amountTextView = (TextView) itemView.findViewById(R.id.textView_amount_item);
+    editButton = (ImageView) itemView.findViewById(R.id.imageView_edit_expense_item);
+    deleteButton = (ImageView) itemView.findViewById(R.id.imageView_delete_expense_item);
+  }
+
+  @Override
+  public void bind(Expense expense) {
+
+  }
+
+  @Override
   public void bind(final Group group, final Expense expense, final int position) {
     expenseTextView.setText(expense.getTittle());
     amountTextView.setText("" + expense.getPaymentAmount());
