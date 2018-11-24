@@ -67,6 +67,7 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
         // Each group data item is just a String presented as a textView in this case
         public TextView expenseTextView;
         public TextView amountTextView;
+        public TextView payerTextView;
         public ImageView editButton;
         public ImageView deleteButton;
 
@@ -75,6 +76,7 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             super(v);
             expenseTextView = (TextView) v.findViewById(R.id.textView_expense_item);
             amountTextView = (TextView) v.findViewById(R.id.textView_amount_item);
+            payerTextView = (TextView) v.findViewById(R.id.textView_payer_item);
             editButton = (ImageView) v.findViewById(R.id.imageView_edit_expense_item);
             deleteButton = (ImageView) v.findViewById(R.id.imageView_delete_expense_item);
             this.mAdapter = adapter;
