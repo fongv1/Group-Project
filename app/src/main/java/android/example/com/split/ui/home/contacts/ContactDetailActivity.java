@@ -22,7 +22,7 @@ public class ContactDetailActivity extends DetailActivity {
     Bundle bundle = getIntent().getExtras();
 
     if (bundle != null) {
-      user = (User) bundle.get("user");
+      user = (User) bundle.get("Contact");
     }
 
     firstName = (TextView) findViewById(R.id.contact_detail_first_name);
@@ -30,7 +30,7 @@ public class ContactDetailActivity extends DetailActivity {
     email = (TextView) findViewById(R.id.contact_detail_email);
 
 
-    user = (User) bundle.get("user");
+    user = (User) bundle.get("Contact");
     firstName.setText(user.getFirstName());
     lastName.setText(user.getLastName());
     email.setText(user.getEmail());

@@ -1,6 +1,5 @@
 package android.example.com.split.ui.home.groups;
 
-import android.content.Intent;
 import android.example.com.split.BaseViewHolder;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Group;
@@ -18,7 +17,7 @@ class GroupViewHolder extends BaseViewHolder<Group> {
 
   // Initializes the ViewHolder TextView from the item_group XML resource
   public GroupViewHolder(View itemView, GroupsRecyclerAdapter adapter) {
-    super(itemView);
+    super(itemView, GroupDetailActivity.class, "Group");
   }
 
   @Override
@@ -29,20 +28,18 @@ class GroupViewHolder extends BaseViewHolder<Group> {
 
   @Override
   public void bind(final Group group) {
+    super.bind(group);
     mTextView.setText(group.getName());
     expenseTextView.setText("" + group.getExpenses().get(0).getPaymentAmount());
-    getItemView().setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Intent intent = new Intent(view.getContext(), GroupDetailActivity.class);
-        intent.putExtra("selected_group", group);
-        view.getContext().startActivity(intent);
-      }
-    });
   }
 
   @Override
   public void bind(Group group, Group expense, int position) {
 
+  }
+
+  @Override
+  public void onItemClicked(View itemView) {
+    startDetailActivity(itemView.getContext());
   }
 }

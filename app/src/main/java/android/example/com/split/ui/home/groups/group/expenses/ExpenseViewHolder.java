@@ -16,7 +16,6 @@ import android.widget.*;
 // When create more complex group view, it should be removed in a separate java file
 class ExpenseViewHolder extends BaseViewHolder<Expense> {
 
-  private final OnDeleteItemListener onDeleteListener;
   // Each group data item is just a String presented as a textView in this case
   public TextView expenseTextView;
   public TextView amountTextView;
@@ -25,9 +24,9 @@ class ExpenseViewHolder extends BaseViewHolder<Expense> {
 
   // Initializes the ViewHolder TextView from the item_group XML resource
   public ExpenseViewHolder(ExpensesRecyclerAdapter expensesRecyclerAdapter, View itemView,
-                           OnDeleteItemListener onDeleteListener) {
-    super(itemView);
-    this.onDeleteListener = onDeleteListener;
+                           OnDeleteItemListener listener) {
+    super(itemView, ExpensesDetailActivity.class, "Expense");
+    setOnDeleteItemListener(listener);
   }
 
   private void editExpensePopupDialog(final Group group, final Expense expense, final int
@@ -97,7 +96,7 @@ class ExpenseViewHolder extends BaseViewHolder<Expense> {
     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
       public void onClick(DialogInterface dialog, int id) {
         // User clicked OK button
-        onDeleteListener.onDelete(position);
+        deleteItem(position);
       }
     });
 
@@ -120,17 +119,18 @@ class ExpenseViewHolder extends BaseViewHolder<Expense> {
 
   @Override
   public void bind(Expense expense) {
-
+    super.bind(expense);
   }
 
   @Override
   public void bind(final Group group, final Expense expense, final int position) {
-    expenseTextView.setText(expense.getTittle());
-    amountTextView.setText("" + expense.getPaymentAmount());
+    super.bind(expense);
+    expenseTextView.setText(getItemData().getTittle());
+    amountTextView.setText("" + getItemData().getPaymentAmount());
     editButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        editExpensePopupDialog(group, expense, position);
+        editExpensePopupDialog(group, getItemData(), position);
       }
     });
     deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -139,5 +139,10 @@ class ExpenseViewHolder extends BaseViewHolder<Expense> {
         deleteExpensePopupDialog(position);
       }
     });
+  }
+
+  @Override
+  public void onItemClicked(View v) {
+    startDetailActivity(v.getContext());
   }
 }

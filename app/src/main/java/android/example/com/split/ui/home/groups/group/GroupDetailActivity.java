@@ -78,7 +78,7 @@ public class GroupDetailActivity extends DetailActivity {
 
     Bundle bundle = getIntent().getExtras();
     if (bundle != null) {
-      group = (Group) bundle.get("selected_group");
+      group = (Group) bundle.get("Group");
     }
 
     // add member and expense

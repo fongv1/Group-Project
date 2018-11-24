@@ -30,7 +30,7 @@ public class MembersDetailActivity extends DetailActivity {
     Bundle bundle = getIntent().getExtras();
 
     if (bundle != null) {
-      user = (User) bundle.get("user");
+      user = (User) bundle.get("Member");
     }
 
     firstName = findViewById(R.id.member_detail_first_name);

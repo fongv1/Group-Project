@@ -1,6 +1,5 @@
 package android.example.com.split.ui.home.contacts;
 
-import android.content.Intent;
 import android.example.com.split.BaseViewHolder;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Group;
@@ -17,7 +16,7 @@ class ContactViewHolder extends BaseViewHolder<User> {
 
   // Initializes the ViewHolder TextView from the item_group XML resource
   public ContactViewHolder(View itemView, ContactsRecyclerAdapter adapter) {
-    super(itemView);
+    super(itemView, ContactDetailActivity.class, "Contact");
   }
 
   @Override
@@ -27,19 +26,17 @@ class ContactViewHolder extends BaseViewHolder<User> {
 
   @Override
   public void bind(final User user) {
+    super.bind(user);
     mTextView.setText(user.getFirstName());
-    getItemView().setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Intent intent = new Intent(v.getContext(), ContactDetailActivity.class);
-        intent.putExtra("user", user);
-        v.getContext().startActivity(intent);
-      }
-    });
   }
 
   @Override
   public void bind(Group group, User expense, int position) {
 
+  }
+
+  @Override
+  public void onItemClicked(View v) {
+    startDetailActivity(v.getContext());
   }
 }

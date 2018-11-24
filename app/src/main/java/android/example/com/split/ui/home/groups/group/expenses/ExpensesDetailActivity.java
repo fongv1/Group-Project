@@ -2,6 +2,7 @@ package android.example.com.split.ui.home.groups.group.expenses;
 
 import android.example.com.split.DetailActivity;
 import android.example.com.split.R;
+import android.example.com.split.data.entity.Expense;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
@@ -25,7 +26,8 @@ public class ExpensesDetailActivity extends DetailActivity {
 
     Bundle bundle = getIntent().getExtras();
     if (bundle != null) {
-      amount = (Double) bundle.get("Expense");
+      Expense expense = (Expense) bundle.get("Expense");
+      amount = expense.getPaymentAmount();
     }
 
     TextView textView = findViewById(R.id.textView_group_item_expense_total);
