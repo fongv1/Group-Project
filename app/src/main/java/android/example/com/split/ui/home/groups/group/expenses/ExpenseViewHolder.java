@@ -17,10 +17,10 @@ import android.widget.*;
 class ExpenseViewHolder extends BaseViewHolder<Expense> {
 
   // Each group data item is just a String presented as a textView in this case
-  public TextView expenseTextView;
-  public TextView amountTextView;
-  public ImageView editButton;
-  public ImageView deleteButton;
+  private TextView expenseTextView;
+  private TextView amountTextView;
+  private ImageView editButton;
+  private ImageView deleteButton;
 
   // Initializes the ViewHolder TextView from the item_group XML resource
   public ExpenseViewHolder(View itemView, OnDeleteItemListener listener) {
