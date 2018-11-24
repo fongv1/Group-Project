@@ -19,13 +19,11 @@ import java.util.List;
 // Simple implementation for a data set that consists of a List of Strings displayed using TextView widgets
 public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecyclerAdapter.ExpenseViewHolder> {
 
-    private Context context;
     private List<Expense> mDataset;
     private Group group;
 
     // Create the adapter with a dataset
-    public ExpensesRecyclerAdapter(Context context, List<Expense> myDataset, Group group) {
-        this.context = context;
+    public ExpensesRecyclerAdapter(List<Expense> myDataset, Group group) {
         mDataset = myDataset;
         this.group = group;
     }
@@ -67,6 +65,7 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
         // Each group data item is just a String presented as a textView in this case
         public TextView expenseTextView;
         public TextView amountTextView;
+        public TextView payerTextView;
         public ImageView editButton;
         public ImageView deleteButton;
 
@@ -75,6 +74,7 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             super(v);
             expenseTextView = (TextView) v.findViewById(R.id.textView_expense_item);
             amountTextView = (TextView) v.findViewById(R.id.textView_amount_item);
+            payerTextView = (TextView) v.findViewById(R.id.textView_payer_item);
             editButton = (ImageView) v.findViewById(R.id.imageView_edit_expense_item);
             deleteButton = (ImageView) v.findViewById(R.id.imageView_delete_expense_item);
             this.mAdapter = adapter;
@@ -91,19 +91,19 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             final Expense expense = mDataset.get(mPosition);
             // Checks which button is clicked
             if (v.getId() == R.id.imageView_edit_expense_item) {
-                editExpensePopupDialog(expense, mPosition);
+                editExpensePopupDialog(v.getContext(), expense, mPosition);
             }
             else if (v.getId() == R.id.imageView_delete_expense_item) {
-                deleteExpensePopupDialog(mPosition);
+                deleteExpensePopupDialog(v.getContext(), mPosition);
             }
             //Intent intent = new Intent(v.getContext(), ExpensesDetailActivity.class);
             //intent.putExtra("Expense", expense.getPaymentAmount());
             // v.getContext().startActivity(intent);
         }
 
-        private void editExpensePopupDialog(final Expense expense, final int position) {
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(mAdapter.context);
-            final View view = LayoutInflater.from(mAdapter.context).inflate(R.layout.dialog_add_expense, null);
+        private void editExpensePopupDialog(Context context, final Expense expense, final int position) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+            final View view = LayoutInflater.from(context).inflate(R.layout.dialog_add_expense, null);
 
             dialogBuilder.setView(view);
             final AlertDialog dialog = dialogBuilder.create();
@@ -152,8 +152,8 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             dialog.show();
         }
 
-        private void deleteExpensePopupDialog(final int position) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mAdapter.context);
+        private void deleteExpensePopupDialog(Context context, final int position) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
             // Add the buttons
             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {

@@ -58,5 +58,6 @@
 
     <string name="textView_expense_item">Expense</string>
     <string name="textView_amount_item">Amount</string>
+    <string name="textView_payer_item">Member name</string>
 
 </resources>

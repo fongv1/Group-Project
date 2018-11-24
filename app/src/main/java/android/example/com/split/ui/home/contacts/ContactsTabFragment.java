@@ -51,7 +51,7 @@ public class ContactsTabFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        contactsRecyclerAdapter = new ContactsRecyclerAdapter(this.getContext(), dataset);
+        contactsRecyclerAdapter = new ContactsRecyclerAdapter(dataset);
         mRecyclerView.setAdapter(contactsRecyclerAdapter);
 
         return rootView;

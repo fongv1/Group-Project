@@ -1,5 +1,8 @@
 package android.example.com.split.ui.home.groups;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Group;
@@ -8,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -60,14 +64,17 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
         // Each group data item is just a String presented as a textView in this case
         public TextView mTextView;
         public TextView expenseTextView;
+        public ImageView deleteButton;
 
         // Initializes the ViewHolder TextView from the item_group XML resource
         public GroupViewHolder(View v, GroupsRecyclerAdapter adapter) {
             super(v);
             mTextView = (TextView) v.findViewById(R.id.textView_group_item);
             expenseTextView = (TextView) v.findViewById(R.id.textView_group_item_expense_total);
+            deleteButton = (ImageView) v.findViewById(R.id.imageView_delete_group_item);
             this.mAdapter = adapter;
             v.setOnClickListener(this);
+            deleteButton.setOnClickListener(this);
         }
 
         @Override
@@ -76,13 +83,45 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupsRecyclerAd
             int mPosition = getLayoutPosition();
             // Use that to access the affected item in mDataset.
             Group group = mDataset.get(mPosition);
-            // Show toast when clicked
-            Intent intent = new Intent(v.getContext(), GroupDetailActivity.class);
-            intent.putExtra("selected_group", group);
-            // Notify the adapter, that the data has changed so it can
-            // update the RecyclerView to display the data.
-            mAdapter.notifyDataSetChanged();
-            v.getContext().startActivity(intent);
+            // Checks if delete button is clicked or the cardview
+            if (v.getId() == R.id.imageView_delete_group_item) {
+                deleteGroupPopupDialog(v.getContext(), mPosition);
+            }
+
+            else {
+                Intent intent = new Intent(v.getContext(), GroupDetailActivity.class);
+                intent.putExtra("selected_group", group);
+                // Notify the adapter, that the data has changed so it can
+                // update the RecyclerView to display the data.
+                mAdapter.notifyDataSetChanged();
+                v.getContext().startActivity(intent);
+            }
+        }
+
+        private void deleteGroupPopupDialog(Context context, final int position) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            // Add the buttons
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                }
+            });
+
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User clicked OK button
+                    mDataset.remove(position);
+                    notifyItemRemoved(position);
+                }
+            });
+
+            //Set other dialog properties
+            builder.setMessage("Delete group?");
+
+            // Create the AlertDialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
         }
     }
 }
