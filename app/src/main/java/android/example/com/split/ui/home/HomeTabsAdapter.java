@@ -2,13 +2,13 @@ package android.example.com.split.ui.home;
 
 import android.content.Context;
 import android.example.com.split.R;
+import android.example.com.split.TabsAdapter;
 import android.example.com.split.ui.home.contacts.ContactsTabFragment;
 import android.example.com.split.ui.home.groups.GroupsTabFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
-public class HomeTabsAdapter extends FragmentPagerAdapter {
+public class HomeTabsAdapter extends TabsAdapter {
 
     /**
      * Context of the app

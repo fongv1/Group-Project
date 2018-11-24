@@ -8,11 +8,8 @@ import android.example.com.split.data.entity.User;
 import android.example.com.split.ui.home.groups.group.expenses.ExpensesTabFragment;
 import android.example.com.split.ui.home.groups.group.members.MembersTabFragment;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -28,7 +25,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GroupDetailActivity extends AppCompatActivity {
@@ -58,7 +54,7 @@ public class GroupDetailActivity extends AppCompatActivity {
    * may be best to switch to a
    * {@link android.support.v4.app.FragmentStatePagerAdapter}.
    */
-  private SectionsPagerAdapter mSectionsPagerAdapter;
+  private GroupTabsAdapter mGroupTabsAdapter;
   private DrawerLayout drawer;
 
   /**
@@ -114,7 +110,7 @@ public class GroupDetailActivity extends AppCompatActivity {
     membersTabFragment = new MembersTabFragment();
     membersTabFragment.setArguments(groupBundle);
 
-    mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+    mGroupTabsAdapter = new GroupTabsAdapter(getSupportFragmentManager());
 
     mViewPager = findViewById(R.id.viewPager_activity_detail_group);
     setUpViewPager(mViewPager);
@@ -173,7 +169,7 @@ public class GroupDetailActivity extends AppCompatActivity {
   }
 
   private void setUpViewPager(ViewPager viewPager) {
-    SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+    GroupTabsAdapter adapter = new GroupTabsAdapter(getSupportFragmentManager());
     adapter.addFragment(membersTabFragment, "Members");
     adapter.addFragment(expensesTabFragment, "Expenses");
     viewPager.setAdapter(adapter);
@@ -253,42 +249,4 @@ public class GroupDetailActivity extends AppCompatActivity {
     dialog.show();
   }
 
-  /**
-   * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-   * one of the sections/tabs/pages.
-   */
-  public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-    private final List<Fragment> mFragmentList = new ArrayList<>();
-    private final List<String> mTitleList = new ArrayList<>();
-
-    public SectionsPagerAdapter(FragmentManager fm) {
-      super(fm);
-    }
-
-    public void addFragment(Fragment fragment, String title) {
-      mFragmentList.add(fragment);
-      mTitleList.add(title);
-    }
-
-    @Override
-    public Fragment getItem(int position) {
-      // getItem is called to instantiate the fragment for the given page.
-      // Return a PlaceholderFragment (defined as a static inner class below).
-      return mFragmentList.get(position);
-    }
-
-
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-      return mTitleList.get(position);
-    }
-
-    @Override
-    public int getCount() {
-      // Show 2 total pages.
-      return mFragmentList.size();
-    }
-  }
 }
