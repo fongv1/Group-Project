@@ -351,11 +351,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
         String newEmail = contactEmail.getText().toString();
         user.setEmail(newEmail);
 
-        List<User> dataset = homeTabsAdapter.getContactsTabFragment().getAdapter().getDataset();
+        List<User> dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().getDataset();
         dataset.add(user);
 
         int position = dataset.size() - 1;
-        homeTabsAdapter.getContactsTabFragment().getAdapter().notifyItemInserted(position);
+        homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().notifyItemInserted(position);
 
         dialog.dismiss();
       }
