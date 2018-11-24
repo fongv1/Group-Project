@@ -1,4 +1,4 @@
-package android.example.com.split.ui.tabsadapter;
+package android.example.com.split.ui.tabfragment;
 
 
 import android.content.Context;
@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ContactsTabFragment extends Fragment {
+public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter, User> {
 
   private List<User> dataset;
   private ContactsRecyclerAdapter contactsRecyclerAdapter;
@@ -47,19 +47,7 @@ public class ContactsTabFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
       savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_tab_contacts, container, false);
-
-    RecyclerView mRecyclerView = (RecyclerView) rootView
-        .findViewById(R.id.recyclerView_fragment_tab_contacts);
-    mRecyclerView.setHasFixedSize(true);
-
-    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-    mRecyclerView.setLayoutManager(mLayoutManager);
-
-    Bundle bundle = getArguments();
-
-    contactsRecyclerAdapter = new ContactsRecyclerAdapter(dataset, getContext());
-    mRecyclerView.setAdapter(contactsRecyclerAdapter);
-
+    setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_contacts);
     return rootView;
   }
 
@@ -87,5 +75,19 @@ public class ContactsTabFragment extends Fragment {
 
   public ContactsRecyclerAdapter getAdapter() {
     return contactsRecyclerAdapter;
+  }
+
+  @Override
+  protected void setupRecyclerView(View rootView, int recyclerViewId) {
+    mRecyclerView = (RecyclerView) rootView.findViewById(recyclerViewId);
+    mRecyclerView.setHasFixedSize(true);
+
+    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+    mRecyclerView.setLayoutManager(mLayoutManager);
+
+    Bundle bundle = getArguments();
+
+    contactsRecyclerAdapter = new ContactsRecyclerAdapter(dataset, getContext());
+    mRecyclerView.setAdapter(contactsRecyclerAdapter);
   }
 }

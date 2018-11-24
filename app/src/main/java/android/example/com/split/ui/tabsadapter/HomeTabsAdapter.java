@@ -2,6 +2,7 @@ package android.example.com.split.ui.tabsadapter;
 
 import android.content.Context;
 import android.example.com.split.R;
+import android.example.com.split.ui.tabfragment.ContactsTabFragment;
 import android.example.com.split.ui.tabfragment.GroupsTabFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
