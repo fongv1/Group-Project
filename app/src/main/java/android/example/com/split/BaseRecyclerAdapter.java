@@ -1,17 +1,20 @@
 package android.example.com.split;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.List;
 
 public abstract class BaseRecyclerAdapter<T extends RecyclerView.ViewHolder, M> extends
-    RecyclerView.Adapter<T> {
+    RecyclerView.Adapter<T> implements OnDeleteItemListener {
 
-  protected List<M> mDataset;
+  private List<M> mDataset;
+  private Context context;
 
-  public BaseRecyclerAdapter(List<M> myDataset) {
-    mDataset = myDataset;
+  public BaseRecyclerAdapter(List<M> myDataset, Context context) {
+    this.mDataset = myDataset;
+    this.context = context;
   }
 
   // Create new views (invoked by the layout manager)
@@ -24,5 +27,17 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerView.ViewHolder, M> 
 
   // Return the size of your dataset (invoked by the layout manager)
   @Override
-  public abstract int getItemCount();
+  public int getItemCount() {
+    return mDataset.size();
+  }
+
+  public List<M> getDataset() {
+    return mDataset;
+  }
+
+  @Override
+  public void onDelete(int position) {
+    getDataset().remove(position);
+    notifyItemRemoved(position);
+  }
 }

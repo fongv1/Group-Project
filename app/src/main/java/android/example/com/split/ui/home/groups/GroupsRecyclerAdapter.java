@@ -1,25 +1,23 @@
 package android.example.com.split.ui.home.groups;
 
+import android.content.Context;
+import android.example.com.split.BaseRecyclerAdapter;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Group;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 // Simple implementation for a data set that consists of a List of Groups displayed using
 // TextView widgets
-public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupViewHolder> {
-
-  private List<Group> mDataset;
+public class GroupsRecyclerAdapter extends BaseRecyclerAdapter<GroupViewHolder, Group> {
 
   // Create the adapter with a dataset
-  public GroupsRecyclerAdapter(List<Group> myDataset) {
-    mDataset = myDataset;
+  public GroupsRecyclerAdapter(List<Group> myDataset, Context context) {
+    super(myDataset, context);
   }
 
   // Create new views (invoked by the layout manager)
@@ -37,18 +35,8 @@ public class GroupsRecyclerAdapter extends RecyclerView.Adapter<GroupViewHolder>
   public void onBindViewHolder(GroupViewHolder holder, int position) {
     // - get element from your dataset at this position
     // - replace the contents of the view with that element
-    holder.bind(mDataset.get(position));
+    holder.bind(getDataset().get(position));
   }
-
-  // Return the size of your dataset (invoked by the layout manager)
-  @Override
-  public int getItemCount() {
-    if (mDataset == null) {
-      mDataset = new ArrayList<>();
-    }
-    return mDataset.size();
-  }
-
 }
 
 

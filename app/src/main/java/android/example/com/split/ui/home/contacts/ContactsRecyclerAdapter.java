@@ -1,8 +1,9 @@
 package android.example.com.split.ui.home.contacts;
 
+import android.content.Context;
+import android.example.com.split.BaseRecyclerAdapter;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +13,11 @@ import java.util.List;
 
 // Simple implementation for a data set that consists of a List of Strings displayed using
 // TextView widgets
-public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactViewHolder> {
-
-  private List<User> mDataset;
+public class ContactsRecyclerAdapter extends BaseRecyclerAdapter<ContactViewHolder, User> {
 
   // Create the adapter with a dataset
-  public ContactsRecyclerAdapter(List<User> myDataset) {
-    mDataset = myDataset;
-  }
-
-  public List<User> getDataset() {
-    return mDataset;
+  public ContactsRecyclerAdapter(List<User> myDataset, Context context) {
+    super(myDataset, context);
   }
 
   // Create new views (invoked by the layout manager)
@@ -40,15 +35,8 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactViewHol
   public void onBindViewHolder(ContactViewHolder holder, int position) {
     // - get element from your dataset at this position
     // - replace the contents of the view with that element
-    holder.bind(mDataset.get(position));
+    holder.bind(getDataset().get(position));
   }
-
-  // Return the size of your dataset (invoked by the layout manager)
-  @Override
-  public int getItemCount() {
-    return mDataset.size();
-  }
-
 }
 
 

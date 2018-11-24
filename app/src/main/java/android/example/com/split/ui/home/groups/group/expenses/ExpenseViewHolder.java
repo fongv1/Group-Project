@@ -2,6 +2,7 @@ package android.example.com.split.ui.home.groups.group.expenses;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.example.com.split.OnDeleteItemListener;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
@@ -16,7 +17,7 @@ import android.widget.*;
 class ExpenseViewHolder extends RecyclerView.ViewHolder {
 
   private final View itemView;
-  private final OnDeleteExpenseListener onDeleteListener;
+  private final OnDeleteItemListener onDeleteListener;
   // Each group data item is just a String presented as a textView in this case
   public TextView expenseTextView;
   public TextView amountTextView;
@@ -26,7 +27,7 @@ class ExpenseViewHolder extends RecyclerView.ViewHolder {
 
   // Initializes the ViewHolder TextView from the item_group XML resource
   public ExpenseViewHolder(ExpensesRecyclerAdapter expensesRecyclerAdapter, View itemView,
-                           OnDeleteExpenseListener onDeleteListener) {
+                           OnDeleteItemListener onDeleteListener) {
     super(itemView);
     this.expensesRecyclerAdapter = expensesRecyclerAdapter;
     this.itemView = itemView;

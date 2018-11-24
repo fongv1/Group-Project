@@ -1,5 +1,6 @@
 package android.example.com.split.ui.home.groups.group.members;
 
+import android.content.Context;
 import android.example.com.split.BaseRecyclerAdapter;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
@@ -15,8 +16,8 @@ import java.util.List;
 public class MembersRecyclerAdapter extends BaseRecyclerAdapter<MemberViewHolder, User> {
 
   // Create the adapter with a dataset
-  public MembersRecyclerAdapter(List<User> myDataset) {
-    super(myDataset);
+  public MembersRecyclerAdapter(List<User> myDataset, Context context) {
+    super(myDataset, context);
   }
 
   // Create new views (invoked by the layout manager)
@@ -34,16 +35,9 @@ public class MembersRecyclerAdapter extends BaseRecyclerAdapter<MemberViewHolder
   public void onBindViewHolder(MemberViewHolder holder, int position) {
     // - get element from your dataset at this position
     // - replace the contents of the view with that element
-    User user = mDataset.get(position);
+    User user = getDataset().get(position);
     holder.bind(user);
   }
-
-  // Return the size of your dataset (invoked by the layout manager)
-  @Override
-  public int getItemCount() {
-    return mDataset.size();
-  }
-
 }
 
 
