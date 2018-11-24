@@ -20,6 +20,7 @@ public class MembersTabFragment extends Fragment {
     private static final String TAG = "MembersTabFragment";
     private List<User> dataset;
     private Group group;
+    private MembersRecyclerAdapter membersRecyclerAdapter;
 
     @Nullable
     @Override
@@ -39,9 +40,13 @@ public class MembersTabFragment extends Fragment {
         //gets the expenses from the group
         dataset = group.getUserMembers();
 
-        MembersRecyclerAdapter mAdapter = new MembersRecyclerAdapter(dataset);
-        mRecyclerView.setAdapter(mAdapter);
+        membersRecyclerAdapter = new MembersRecyclerAdapter(this.getContext(), dataset, group);
+        mRecyclerView.setAdapter(membersRecyclerAdapter);
 
         return rootView;
+    }
+
+    public MembersRecyclerAdapter getAdapter(){
+        return membersRecyclerAdapter;
     }
 }

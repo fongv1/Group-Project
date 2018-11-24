@@ -1,7 +1,10 @@
 package android.example.com.split.ui.home.groups.group.members;
 
+import android.content.Context;
 import android.content.Intent;
 import android.example.com.split.R;
+import android.example.com.split.data.entity.Expense;
+import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,10 +19,19 @@ import java.util.List;
 public class MembersRecyclerAdapter extends RecyclerView.Adapter<MembersRecyclerAdapter.MemberViewHolder> {
 
     private List<User> mDataset;
+    private Context context;
+    private Group group;
 
     // Create the adapter with a dataset
-    public MembersRecyclerAdapter(List<User> myDataset) {
+    public MembersRecyclerAdapter(Context context, List<User> myDataset, Group group) {
         mDataset = myDataset;
+        this.group = group;
+        this.context = context;
+
+    }
+
+    public List<User> getmDataset(){
+        return mDataset;
     }
 
     // Create new views (invoked by the layout manager)
@@ -37,7 +49,8 @@ public class MembersRecyclerAdapter extends RecyclerView.Adapter<MembersRecycler
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         User user = mDataset.get(position);
-        holder.mTextView.setText(user.getFirstName() + " " + user.getLastName());
+        //holder.mTextView.setText(user.getFirstName() + " " + user.getLastName());
+        holder.mTextView.setText(user.getFirstName() + "");
     }
 
     // Return the size of your dataset (invoked by the layout manager)

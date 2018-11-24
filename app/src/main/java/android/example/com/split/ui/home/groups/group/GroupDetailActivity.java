@@ -5,6 +5,7 @@ import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
+import android.example.com.split.data.model.Members;
 import android.example.com.split.ui.home.groups.group.expenses.ExpensesTabFragment;
 import android.example.com.split.ui.home.groups.group.members.MembersTabFragment;
 import android.os.Bundle;
@@ -242,9 +243,31 @@ public class GroupDetailActivity extends AppCompatActivity {
 
     private void addMemberPopupDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.dialog_add_member, null);
+        final View view = getLayoutInflater().inflate(R.layout.dialog_add_member, null);
         dialogBuilder.setView(view);
         dialog = dialogBuilder.create();
+
+        Button saveButton = (Button) view.findViewById(R.id.button_dialog_add_member_save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User user = new User();
+                // takes the name user input from the text field
+                memberName = (EditText)  view.findViewById(R.id.editText_dialog_add_member);
+                String newName = memberName.getText().toString();
+                user.setFirstName(newName);
+                // add the new user to the dataset in the MembersRecyclerAdapter
+                List<User> dataset = membersTabFragment.getAdapter().getmDataset();
+                dataset.add(user);
+
+                // Notifies that the item at the last position is created
+                int position = dataset.size() - 1;
+                membersTabFragment.getAdapter().notifyItemInserted(position);
+
+                dialog.dismiss();
+            }
+        });
+
         dialog.show();
     }
 
