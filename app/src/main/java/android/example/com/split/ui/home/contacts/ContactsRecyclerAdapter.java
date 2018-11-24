@@ -1,5 +1,8 @@
 package android.example.com.split.ui.home.contacts;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
@@ -7,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -15,10 +19,12 @@ import java.util.List;
 // Simple implementation for a data set that consists of a List of Strings displayed using TextView widgets
 public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecyclerAdapter.ContactViewHolder> {
 
+    private Context context;
     private List<User> mDataset;
 
     // Create the adapter with a dataset
-    public ContactsRecyclerAdapter(List<User> myDataset) {
+    public ContactsRecyclerAdapter(Context context, List<User> myDataset) {
+        this.context = context;
         mDataset = myDataset;
     }
 
@@ -41,7 +47,7 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         User user = mDataset.get(position);
-        holder.mTextView.setText(user.getFirstName());
+        holder.contactTextView.setText(user.getFirstName());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -56,14 +62,17 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
 
         final ContactsRecyclerAdapter mAdapter;
         // Each group data item is just a String presented as a textView in this case
-        public TextView mTextView;
+        public TextView contactTextView;
+        public ImageView deleteButton;
 
         // Initializes the ViewHolder TextView from the item_group XML resource
         public ContactViewHolder(View v, ContactsRecyclerAdapter adapter) {
             super(v);
-            mTextView = (TextView) v.findViewById(R.id.textView_contact_item);
+            contactTextView = (TextView) v.findViewById(R.id.textView_contact_item);
+            deleteButton = (ImageView) v.findViewById(R.id.imageView_delete_contact_item);
             this.mAdapter = adapter;
             v.setOnClickListener(this);
+            deleteButton.setOnClickListener(this);
         }
 
         @Override
@@ -72,15 +81,43 @@ public class ContactsRecyclerAdapter extends RecyclerView.Adapter<ContactsRecycl
             int mPosition = getLayoutPosition();
             // Use that to access the affected item in mDataset.
             User user = mDataset.get(mPosition);
-            // Show toast when clicked
-            //Toast.makeText(v.getContext(), "Clicked " + user.getFirstName(), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(v.getContext(), ContactDetailActivity.class);
-            intent.putExtra("user", user);
 
+            if (v.getId() == R.id.imageView_delete_contact_item) {
+                deleteContactPopupDialog(mPosition);
+            }
+            else {
+                Intent intent = new Intent(v.getContext(), ContactDetailActivity.class);
+                intent.putExtra("user", user);
             // Notify the adapter, that the data has changed so it can
             // update the RecyclerView to display the data.
             mAdapter.notifyDataSetChanged();
             v.getContext().startActivity(intent);
+            }
+        }
+
+        private void deleteContactPopupDialog(final int position) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mAdapter.context);
+            // Add the buttons
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                }
+            });
+
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User clicked OK button
+                    mDataset.remove(position);
+                    notifyItemRemoved(position);
+                }
+            });
+
+            //Set other dialog properties
+            builder.setMessage("Delete contact?");
+
+            // Create the AlertDialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
 
         }
     }
