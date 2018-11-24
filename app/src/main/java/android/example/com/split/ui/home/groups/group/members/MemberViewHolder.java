@@ -34,10 +34,4 @@ class MemberViewHolder extends BaseViewHolder<User> {
   public void bind(Group group, User expense, int position) {
 
   }
-
-  @Override
-  public void onItemClicked(View itemView) {
-    startDetailActivity(itemView.getContext());
-  }
-
 }

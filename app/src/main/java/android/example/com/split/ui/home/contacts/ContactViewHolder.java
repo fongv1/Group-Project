@@ -34,9 +34,4 @@ class ContactViewHolder extends BaseViewHolder<User> {
   public void bind(Group group, User expense, int position) {
 
   }
-
-  @Override
-  public void onItemClicked(View v) {
-    startDetailActivity(v.getContext());
-  }
 }

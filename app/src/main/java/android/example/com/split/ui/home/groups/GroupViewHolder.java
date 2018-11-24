@@ -37,9 +37,4 @@ class GroupViewHolder extends BaseViewHolder<Group> {
   public void bind(Group group, Group expense, int position) {
 
   }
-
-  @Override
-  public void onItemClicked(View itemView) {
-    startDetailActivity(itemView.getContext());
-  }
 }

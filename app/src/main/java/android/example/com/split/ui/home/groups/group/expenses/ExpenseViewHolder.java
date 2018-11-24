@@ -140,9 +140,4 @@ class ExpenseViewHolder extends BaseViewHolder<Expense> {
       }
     });
   }
-
-  @Override
-  public void onItemClicked(View v) {
-    startDetailActivity(v.getContext());
-  }
 }

@@ -13,6 +13,7 @@ import java.io.Serializable;
 public abstract class BaseViewHolder<T extends Serializable> extends RecyclerView.ViewHolder
     implements View.OnClickListener {
 
+  private final Context context;
   private final View itemView;
   private final Class<? extends FragmentActivity> detailActivityClass;
   private final String title;
@@ -22,6 +23,7 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
   public BaseViewHolder(View itemView, Class<? extends FragmentActivity> detailActivityClass,
                         String title) {
     super(itemView);
+    context = itemView.getContext();
     this.detailActivityClass = detailActivityClass;
     this.itemView = itemView;
     this.title = title;
@@ -38,7 +40,9 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
 
   public abstract void bind(Group group, T expense, int position);
 
-  public abstract void onItemClicked(View itemView);
+  public void onItemClicked() {
+    startDetailActivity();
+  }
 
   public View getItemView() {
     return itemView;
@@ -53,23 +57,23 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
   }
 
   @Override
-  public void onClick(View v) {
-    onItemClicked(v);
+  public void onClick(View itemView) {
+    onItemClicked();
   }
 
   public T getItemData() {
     return itemData;
   }
 
-  protected void setItemData(T t) {
-    itemData = t;
+  protected void setItemData(T itemData) {
+    this.itemData = itemData;
   }
 
   public Class<?> getDetailActivityClass() {
     return detailActivityClass;
   }
 
-  protected void startDetailActivity(Context context) {
+  protected void startDetailActivity() {
     Intent intent = new Intent(context, getDetailActivityClass());
     intent.putExtra(title, getItemData());
     context.startActivity(intent);
