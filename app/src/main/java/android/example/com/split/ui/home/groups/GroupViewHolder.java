@@ -29,8 +29,8 @@ class GroupViewHolder extends BaseViewHolder<Group> {
   @Override
   public void bind(final Group group) {
     super.bind(group);
-    mTextView.setText(group.getName());
-    expenseTextView.setText("" + group.getExpenses().get(0).getPaymentAmount());
+    mTextView.setText(getItemData().getName());
+    expenseTextView.setText("" + getItemData().getExpenses().get(0).getPaymentAmount());
   }
 
   @Override

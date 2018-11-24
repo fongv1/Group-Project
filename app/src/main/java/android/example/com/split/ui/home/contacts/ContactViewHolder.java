@@ -27,7 +27,7 @@ class ContactViewHolder extends BaseViewHolder<User> {
   @Override
   public void bind(final User user) {
     super.bind(user);
-    mTextView.setText(user.getFirstName());
+    mTextView.setText(getItemData().getFirstName());
   }
 
   @Override
