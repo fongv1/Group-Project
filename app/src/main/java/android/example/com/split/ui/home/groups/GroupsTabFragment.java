@@ -76,7 +76,7 @@ public class GroupsTabFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(dataset);
+        GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(this.getContext(), dataset);
         mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
