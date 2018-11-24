@@ -30,7 +30,7 @@ public class ExpensesRecyclerAdapter extends BaseRecyclerAdapter<ExpenseViewHold
 
     View v = (View) LayoutInflater.from(parent.getContext())
                                   .inflate(R.layout.item_expense, parent, false);
-    ExpenseViewHolder vh = new ExpenseViewHolder(this, v, this);
+    ExpenseViewHolder vh = new ExpenseViewHolder(v, this);
     return vh;
   }
 

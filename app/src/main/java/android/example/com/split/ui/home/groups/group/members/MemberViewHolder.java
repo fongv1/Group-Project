@@ -12,10 +12,10 @@ import android.widget.TextView;
 class MemberViewHolder extends BaseViewHolder<User> {
 
   // Each group data item is just a String presented as a textView in this case
-  public TextView mTextView;
+  private TextView mTextView;
 
   // Initializes the ViewHolder TextView from the item_group XML resource
-  public MemberViewHolder(View itemView, MembersRecyclerAdapter adapter) {
+  public MemberViewHolder(View itemView) {
     super(itemView, MembersDetailActivity.class, "Member");
   }
 

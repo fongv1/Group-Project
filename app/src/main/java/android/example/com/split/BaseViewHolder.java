@@ -20,8 +20,8 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
   private T itemData;
   private OnDeleteItemListener onDeleteItemListener;
 
-  public BaseViewHolder(View itemView, Class<? extends FragmentActivity> detailActivityClass,
-                        String title) {
+  protected BaseViewHolder(View itemView, Class<? extends FragmentActivity> detailActivityClass,
+                           String title) {
     super(itemView);
     context = itemView.getContext();
     this.detailActivityClass = detailActivityClass;
@@ -38,17 +38,17 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
     setItemData(t);
   }
 
-  public abstract void bind(Group group, T expense, int position);
+  protected abstract void bind(Group group, T expense, int position);
 
-  public void onItemClicked() {
+  protected void onItemClicked() {
     startDetailActivity();
   }
 
-  public View getItemView() {
+  protected View getItemView() {
     return itemView;
   }
 
-  public void setOnDeleteItemListener(OnDeleteItemListener onDeleteItemListener) {
+  protected void setOnDeleteItemListener(OnDeleteItemListener onDeleteItemListener) {
     this.onDeleteItemListener = onDeleteItemListener;
   }
 
@@ -69,7 +69,7 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
     this.itemData = itemData;
   }
 
-  public Class<?> getDetailActivityClass() {
+  protected Class<?> getDetailActivityClass() {
     return detailActivityClass;
   }
 

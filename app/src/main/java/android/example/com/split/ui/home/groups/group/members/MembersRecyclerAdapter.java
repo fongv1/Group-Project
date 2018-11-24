@@ -26,7 +26,7 @@ public class MembersRecyclerAdapter extends BaseRecyclerAdapter<MemberViewHolder
 
     View v = (View) LayoutInflater.from(parent.getContext())
                                   .inflate(R.layout.item_group_member, parent, false);
-    MemberViewHolder vh = new MemberViewHolder(v, this);
+    MemberViewHolder vh = new MemberViewHolder(v);
     return vh;
   }
 
