@@ -22,13 +22,11 @@ class ExpenseViewHolder extends BaseViewHolder<Expense> {
   public TextView amountTextView;
   public ImageView editButton;
   public ImageView deleteButton;
-  private ExpensesRecyclerAdapter expensesRecyclerAdapter;
 
   // Initializes the ViewHolder TextView from the item_group XML resource
   public ExpenseViewHolder(ExpensesRecyclerAdapter expensesRecyclerAdapter, View itemView,
                            OnDeleteItemListener onDeleteListener) {
     super(itemView);
-    this.expensesRecyclerAdapter = expensesRecyclerAdapter;
     this.onDeleteListener = onDeleteListener;
   }
 
@@ -80,7 +78,6 @@ class ExpenseViewHolder extends BaseViewHolder<Expense> {
 
         Toast.makeText(v.getContext(), "Saved!", Toast.LENGTH_SHORT).show();
         // Notifies tha adapter that the item at that position is changed
-        expensesRecyclerAdapter.notifyItemChanged(position);
         dialog.dismiss();
       }
     });
