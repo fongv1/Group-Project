@@ -13,13 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
-public class ExpensesTabFragment extends BaseTabFragment {
+public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter, Expense> {
 
   private static final String TAG = "ExpensesTabFragment";
-  private List<Expense> dataset;
-  private ExpensesRecyclerAdapter expensesRecyclerAdapter;
   private Group group;
 
   @Nullable
@@ -28,29 +24,22 @@ public class ExpensesTabFragment extends BaseTabFragment {
                            @Nullable Bundle savedInstanceState) {
 
     View rootView = inflater.inflate(R.layout.fragment_tab_expenses, container, false);
-
-    RecyclerView mRecyclerView = (RecyclerView) rootView
-        .findViewById(R.id.recyclerView_fragment_tab_expenses);
-    mRecyclerView.setHasFixedSize(true);
-
-    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-    mRecyclerView.setLayoutManager(mLayoutManager);
-
     // Create bundle to get the group passed from the GroupDetailActivity
     Bundle bundle = getArguments();
     group = (Group) bundle.get("group");
-
     //gets the expenses from the group
-    dataset = group.getExpenses();
-
-    expensesRecyclerAdapter = new ExpensesRecyclerAdapter(this.getContext(), dataset, group);
-    mRecyclerView.setAdapter(expensesRecyclerAdapter);
-
+    setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_expenses);
     return rootView;
   }
 
-  public ExpensesRecyclerAdapter getAdapter() {
-    return expensesRecyclerAdapter;
+  @Override
+  protected void setupRecyclerView(View rootView, int recyclerViewId) {
+    mRecyclerView = (RecyclerView) rootView.findViewById(recyclerViewId);
+    mRecyclerView.setHasFixedSize(true);
+    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+    mRecyclerView.setLayoutManager(mLayoutManager);
+    setData(group.getExpenses());
+    setRecyclerAdapter(new ExpensesRecyclerAdapter(this.getContext(), getData(), group));
+    mRecyclerView.setAdapter(getRecyclerAdapter());
   }
-
 }

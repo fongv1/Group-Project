@@ -16,13 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 
-public class GroupsTabFragment extends BaseTabFragment {
-
-  private List<Group> dataset;
+public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Group> {
 
   public GroupsTabFragment() {
     // Required empty public constructor
@@ -39,7 +36,7 @@ public class GroupsTabFragment extends BaseTabFragment {
 
   // Create dummy data
   private void initDataset() {
-    dataset = new ArrayList<>();
+    setData(new ArrayList<Group>());
     Random rand = new Random();
     for (int i = 0; i < 20; i++) {
       Group group = new Group();
@@ -58,7 +55,7 @@ public class GroupsTabFragment extends BaseTabFragment {
         user.setLastName(groupName);
         group.addUserMember(user);
       }
-      dataset.add(group);
+      getData().add(group);
     }
   }
 
@@ -71,18 +68,18 @@ public class GroupsTabFragment extends BaseTabFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
       savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_tab_groups, container, false);
+    setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_expenses);
+    return rootView;
+  }
 
-    RecyclerView mRecyclerView = (RecyclerView) rootView
-        .findViewById(R.id.recyclerView_fragment_tab_groups);
+  @Override
+  protected void setupRecyclerView(View rootView, int recyclerViewId) {
+    mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_fragment_tab_groups);
     mRecyclerView.setHasFixedSize(true);
-
     LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
     mRecyclerView.setLayoutManager(mLayoutManager);
-
-    GroupsRecyclerAdapter mAdapter = new GroupsRecyclerAdapter(dataset, getContext());
-    mRecyclerView.setAdapter(mAdapter);
-
-    return rootView;
+    setRecyclerAdapter(new GroupsRecyclerAdapter(getData(), getContext()));
+    mRecyclerView.setAdapter(getRecyclerAdapter());
   }
 
   @Override

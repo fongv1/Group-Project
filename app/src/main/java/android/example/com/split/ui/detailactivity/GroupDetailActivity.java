@@ -213,12 +213,12 @@ public class GroupDetailActivity extends BaseDetailActivity {
         String newName = memberName.getText().toString();
         user.setFirstName(newName);
         // add the new user to the dataset in the MembersRecyclerAdapter
-        List<User> dataset = membersTabFragment.getAdapter().getmDataset();
+        List<User> dataset = membersTabFragment.getRecyclerAdapter().getmDataset();
         dataset.add(user);
 
         // Notifies that the item at the last position is created
         int position = dataset.size() - 1;
-        membersTabFragment.getAdapter().notifyItemInserted(position);
+        membersTabFragment.getRecyclerAdapter().notifyItemInserted(position);
 
         dialog.dismiss();
       }
@@ -258,12 +258,12 @@ public class GroupDetailActivity extends BaseDetailActivity {
         expense.setUser(member);
 
         // add the new expense to the dataset in the ExpensesRecyclerAdapter
-        List<Expense> dataset = expensesTabFragment.getAdapter().getDataset();
+        List<Expense> dataset = expensesTabFragment.getData();
         dataset.add(expense);
 
         // Notifies that the item at the last position is created
         int position = dataset.size() - 1;
-        expensesTabFragment.getAdapter().notifyItemInserted(position);
+        expensesTabFragment.getRecyclerAdapter().notifyItemInserted(position);
 
         dialog.dismiss();
       }
