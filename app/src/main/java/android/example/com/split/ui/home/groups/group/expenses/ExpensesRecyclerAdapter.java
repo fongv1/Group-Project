@@ -2,6 +2,7 @@ package android.example.com.split.ui.home.groups.group.expenses;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
@@ -67,6 +68,7 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
         public TextView expenseTextView;
         public TextView amountTextView;
         public ImageView editButton;
+        public ImageView deleteButton;
 
         // Initializes the ViewHolder TextView from the item_group XML resource
         public ExpenseViewHolder(View v, ExpensesRecyclerAdapter adapter) {
@@ -74,9 +76,11 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             expenseTextView = (TextView) v.findViewById(R.id.textView_expense_item);
             amountTextView = (TextView) v.findViewById(R.id.textView_amount_item);
             editButton = (ImageView) v.findViewById(R.id.imageView_edit_expense_item);
+            deleteButton = (ImageView) v.findViewById(R.id.imageView_delete_expense_item);
             this.mAdapter = adapter;
             v.setOnClickListener(this);
             editButton.setOnClickListener(this);
+            deleteButton.setOnClickListener(this);
         }
 
         @Override
@@ -85,11 +89,13 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             final int mPosition = getLayoutPosition();
             // Use that to access the affected item in mDataset.
             final Expense expense = mDataset.get(mPosition);
-
+            // Checks which button is clicked
             if (v.getId() == R.id.imageView_edit_expense_item) {
                 editExpensePopupDialog(expense, mPosition);
             }
-
+            else if (v.getId() == R.id.imageView_delete_expense_item) {
+                deleteExpensePopupDialog(mPosition);
+            }
             //Intent intent = new Intent(v.getContext(), ExpensesDetailActivity.class);
             //intent.putExtra("Expense", expense.getPaymentAmount());
             // v.getContext().startActivity(intent);
@@ -144,6 +150,32 @@ public class ExpensesRecyclerAdapter extends RecyclerView.Adapter<ExpensesRecycl
             });
 
             dialog.show();
+        }
+
+        private void deleteExpensePopupDialog(final int position) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mAdapter.context);
+            // Add the buttons
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                }
+            });
+
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User clicked OK button
+                    mDataset.remove(position);
+                    notifyItemRemoved(position);
+                }
+            });
+
+            //Set other dialog properties
+            builder.setMessage("Delete expense?");
+
+            // Create the AlertDialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
         }
     }
 }
