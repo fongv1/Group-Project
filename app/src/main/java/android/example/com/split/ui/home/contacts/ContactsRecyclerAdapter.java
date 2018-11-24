@@ -35,7 +35,7 @@ public class ContactsRecyclerAdapter extends BaseRecyclerAdapter<ContactViewHold
   public void onBindViewHolder(ContactViewHolder holder, int position) {
     // - get element from your dataset at this position
     // - replace the contents of the view with that element
-    holder.bind(getDataset().get(position));
+    holder.bind(null, getDataset().get(position), position);
   }
 }
 

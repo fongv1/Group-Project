@@ -122,6 +122,11 @@ class ExpenseViewHolder extends BaseViewHolder<Expense> {
   }
 
   @Override
+  public void bind(User user, int position) {
+
+  }
+
+  @Override
   public void bind(final Group group, final Expense expense, final int position) {
     super.bind(expense);
     expenseTextView.setText(getItemData().getTittle());

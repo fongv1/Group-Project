@@ -3,6 +3,7 @@ package android.example.com.split;
 import android.content.Context;
 import android.content.Intent;
 import android.example.com.split.data.entity.Group;
+import android.example.com.split.data.entity.User;
 import android.support.annotation.CallSuper;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
@@ -23,12 +24,12 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
   protected BaseViewHolder(View itemView, Class<? extends FragmentActivity> detailActivityClass,
                            String title) {
     super(itemView);
+    findAllViews(itemView);
     context = itemView.getContext();
     this.detailActivityClass = detailActivityClass;
     this.itemView = itemView;
     this.title = title;
     itemView.setOnClickListener(this);
-    findAllViews(itemView);
   }
 
   protected abstract void findAllViews(View itemView);
@@ -37,6 +38,8 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
   public void bind(T t) {
     setItemData(t);
   }
+
+  public abstract void bind(User user, int position);
 
   protected abstract void bind(Group group, T expense, int position);
 

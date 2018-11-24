@@ -33,6 +33,11 @@ class MemberViewHolder extends BaseViewHolder<User> {
   }
 
   @Override
+  public void bind(User user, int position) {
+
+  }
+
+  @Override
   public void bind(Group group, User expense, int position) {
 
   }

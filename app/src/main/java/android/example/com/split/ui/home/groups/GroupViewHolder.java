@@ -3,6 +3,7 @@ package android.example.com.split.ui.home.groups;
 import android.example.com.split.BaseViewHolder;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Group;
+import android.example.com.split.data.entity.User;
 import android.example.com.split.ui.home.groups.group.GroupDetailActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -31,6 +32,11 @@ class GroupViewHolder extends BaseViewHolder<Group> {
     super.bind(group);
     mTextView.setText(getItemData().getName());
     expenseTextView.setText("" + getItemData().getExpenses().get(0).getPaymentAmount());
+  }
+
+  @Override
+  public void bind(User user, int position) {
+
   }
 
   @Override

@@ -37,7 +37,8 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerView.ViewHolder, M> 
 
   @Override
   public void onDelete(int position) {
-    getDataset().remove(position);
+    mDataset.remove(position);
     notifyItemRemoved(position);
+    notifyItemRangeChanged(position, getItemCount());
   }
 }
