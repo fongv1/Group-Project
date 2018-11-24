@@ -4,7 +4,6 @@ import android.example.com.split.R;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.example.com.split.ui.detailactivity.GroupDetailActivity;
-import android.example.com.split.ui.recycleradapter.GroupsRecyclerAdapter;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,7 +16,7 @@ public class GroupViewHolder extends BaseViewHolder<Group> {
   private TextView expenseTextView;
 
   // Initializes the ViewHolder TextView from the item_group XML resource
-  public GroupViewHolder(View itemView, GroupsRecyclerAdapter adapter) {
+  public GroupViewHolder(View itemView) {
     super(itemView, GroupDetailActivity.class, "Group");
   }
 

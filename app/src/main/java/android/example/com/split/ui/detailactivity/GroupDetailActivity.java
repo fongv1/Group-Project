@@ -213,7 +213,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
         String newName = memberName.getText().toString();
         user.setFirstName(newName);
         // add the new user to the dataset in the MembersRecyclerAdapter
-        List<User> dataset = membersTabFragment.getRecyclerAdapter().getmDataset();
+        List<User> dataset = membersTabFragment.getRecyclerAdapter().getDataset();
         dataset.add(user);
 
         // Notifies that the item at the last position is created

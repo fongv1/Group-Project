@@ -29,16 +29,16 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
 
   @Override
   protected void setupRecyclerView(View rootView, int recyclerViewId) {
-    mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_fragment_tab_members);
-    mRecyclerView.setHasFixedSize(true);
+    recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_fragment_tab_members);
+    recyclerView.setHasFixedSize(true);
     LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-    mRecyclerView.setLayoutManager(mLayoutManager);
+    recyclerView.setLayoutManager(mLayoutManager);
     // Create bundle to get the group passed from the GroupDetailActivity
     Bundle bundle = getArguments();
     group = (Group) bundle.get("group");
     //gets the expenses from the group
     setData(group.getUserMembers());
-    setRecyclerAdapter(new MembersRecyclerAdapter(this.getContext(), getData(), group));
-    mRecyclerView.setAdapter(getRecyclerAdapter());
+    setRecyclerAdapter(new MembersRecyclerAdapter(getData()));
+    recyclerView.setAdapter(getRecyclerAdapter());
   }
 }

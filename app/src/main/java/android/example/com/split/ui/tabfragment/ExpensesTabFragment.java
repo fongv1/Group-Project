@@ -34,12 +34,12 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
 
   @Override
   protected void setupRecyclerView(View rootView, int recyclerViewId) {
-    mRecyclerView = (RecyclerView) rootView.findViewById(recyclerViewId);
-    mRecyclerView.setHasFixedSize(true);
+    recyclerView = (RecyclerView) rootView.findViewById(recyclerViewId);
+    recyclerView.setHasFixedSize(true);
     LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-    mRecyclerView.setLayoutManager(mLayoutManager);
+    recyclerView.setLayoutManager(mLayoutManager);
     setData(group.getExpenses());
-    setRecyclerAdapter(new ExpensesRecyclerAdapter(this.getContext(), getData(), group));
-    mRecyclerView.setAdapter(getRecyclerAdapter());
+    setRecyclerAdapter(new ExpensesRecyclerAdapter(getData(), group));
+    recyclerView.setAdapter(getRecyclerAdapter());
   }
 }

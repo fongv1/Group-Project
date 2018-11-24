@@ -74,12 +74,12 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
 
   @Override
   protected void setupRecyclerView(View rootView, int recyclerViewId) {
-    mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_fragment_tab_groups);
-    mRecyclerView.setHasFixedSize(true);
+    recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_fragment_tab_groups);
+    recyclerView.setHasFixedSize(true);
     LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-    mRecyclerView.setLayoutManager(mLayoutManager);
-    setRecyclerAdapter(new GroupsRecyclerAdapter(getData(), getContext()));
-    mRecyclerView.setAdapter(getRecyclerAdapter());
+    recyclerView.setLayoutManager(mLayoutManager);
+    setRecyclerAdapter(new GroupsRecyclerAdapter(getData()));
+    recyclerView.setAdapter(getRecyclerAdapter());
   }
 
   @Override

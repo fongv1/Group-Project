@@ -15,15 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter, User> {
-
-  private List<User> dataset;
-  private ContactsRecyclerAdapter contactsRecyclerAdapter;
 
   public ContactsTabFragment() {
     // Required empty public constructor
@@ -63,31 +59,27 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
 
   // Create dummy data
   private void initDataset() {
-    dataset = new ArrayList<>();
+    setData(new ArrayList<User>());
     for (int i = 0; i < 4; i++) {
       User user = new User();
       user.setFirstName("Dummy Contact first name " + i);
       user.setLastName("Dummy Contact last name " + i);
       user.setEmail("Dummy Contact email " + i);
-      dataset.add(user);
+      getData().add(user);
     }
-  }
-
-  public ContactsRecyclerAdapter getAdapter() {
-    return contactsRecyclerAdapter;
   }
 
   @Override
   protected void setupRecyclerView(View rootView, int recyclerViewId) {
-    mRecyclerView = (RecyclerView) rootView.findViewById(recyclerViewId);
-    mRecyclerView.setHasFixedSize(true);
+    recyclerView = (RecyclerView) rootView.findViewById(recyclerViewId);
+    recyclerView.setHasFixedSize(true);
 
     LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-    mRecyclerView.setLayoutManager(mLayoutManager);
+    recyclerView.setLayoutManager(mLayoutManager);
 
     Bundle bundle = getArguments();
 
-    contactsRecyclerAdapter = new ContactsRecyclerAdapter(dataset, getContext());
-    mRecyclerView.setAdapter(contactsRecyclerAdapter);
+    setRecyclerAdapter(new ContactsRecyclerAdapter(getData()));
+    recyclerView.setAdapter(getRecyclerAdapter());
   }
 }

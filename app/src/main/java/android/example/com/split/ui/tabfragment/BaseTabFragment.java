@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class BaseTabFragment<T extends BaseRecyclerAdapter, M extends Serializable>
     extends Fragment {
 
-  protected RecyclerView mRecyclerView;
+  protected RecyclerView recyclerView;
   private T recyclerAdapter;
   private List<M> data;
 
