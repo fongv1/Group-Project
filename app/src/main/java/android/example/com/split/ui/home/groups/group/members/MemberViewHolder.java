@@ -27,7 +27,9 @@ class MemberViewHolder extends BaseViewHolder<User> {
   @Override
   public void bind(final User user) {
     super.bind(user);
-    mTextView.setText(getItemData().getFirstName() + " " + getItemData().getLastName());
+    //mTextView.setText(getItemData().getFirstName() + " " + getItemData().getLastName());
+    mTextView.setText(user.getFirstName() + "");
+
   }
 
   @Override
