@@ -33,7 +33,7 @@ public class ContactsTabFragment extends Fragment {
     super.onCreate(savedInstanceState);
 
     // Initialize dataset, this data would usually come from a local content provider or remote
-      // server.
+    // server.
     initDataset();
   }
 
