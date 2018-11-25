@@ -1,6 +1,5 @@
 package android.example.com.split.data.entity;
 
-import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.io.Serializable;
@@ -13,124 +12,122 @@ import java.util.List;
 @IgnoreExtraProperties
 public class User implements Serializable {
 
-    // firebase authentiction id
-    @Exclude
-    private String authId;
+  // firebase authentiction id
 
-    /**
-     * User UD
-     */
-    private String id;
-    /**
-     * User's first name
-     */
-    private String firstName;
-    /**
-     * User's last name
-     */
-    private String lastName;
-    /**
-     * User's email
-     */
-    private String email;
-    /**
-     * User's phone number
-     */
-    private String phoneNumber;
+  @com.google.firebase.firestore.Exclude
+  private String authId;
 
-    private List<String> contacts;
+  /**
+   * User UD
+   */
+  private String id;
+  /**
+   * User's first name
+   */
+  private String firstName;
+  /**
+   * User's last name
+   */
+  private String lastName;
+  /**
+   * User's email
+   */
+  private String email;
+  /**
+   * User's phone number
+   */
+  private String phoneNumber;
 
-
-    public List<String> getContacts() {
-        return contacts;
-    }
-
-    public void setContacts(List<String> contacts) {
-        this.contacts = contacts;
-    }
+  private List<String> contacts;
 
 
-    /**
-     * User
-     */
+  /**
+   * User
+   */
 
-    public User() {
+  public User() {
 
-    }
+  }
 
-    //
-    public User(String firstName, String lastName, String email, String phoneNumber) {
+  //
+  public User(String firstName, String lastName, String email, String phoneNumber) {
 
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-    }
-
-    // constructor with auth id
-    public User(String id, String firstName, String lastName, String email, String phoneNumber) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        contacts = new ArrayList<String>();
-    }
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+  }
 
 
+  // constructor with auth id
+  public User(String id, String firstName, String lastName, String email, String phoneNumber) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+    contacts = new ArrayList<String>();
+  }
 
+  public List<String> getContacts() {
+    return contacts;
+  }
 
-    public String getId() {
-        return id;
-    }
+  public void setContacts(List<String> contacts) {
+    this.contacts = contacts;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    @Exclude
-    public String getAuthId() {
-        return authId;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public String getFirstName() {
-        return firstName;
+  @com.google.firebase.firestore.Exclude
+  public String getAuthId() {
+    return authId;
+  }
 
-    }
+  public String getFirstName() {
+    return firstName;
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+  }
 
-    public String getLastName() {
-        return lastName;
-    }
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+  public String getLastName() {
+    return lastName;
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+  public String getPhoneNumber() {
+    return phoneNumber;
+  }
 
-    public void addToContactList(String newUser){
-        contacts.add(newUser);
-    }
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
+  }
 
-    public String toString() {
-        return firstName + " " + lastName;
-    }
+  public void addToContactList(String newUser) {
+    contacts.add(newUser);
+  }
+
+  public String toString() {
+    return firstName + " " + lastName;
+  }
 }

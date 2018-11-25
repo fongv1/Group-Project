@@ -2,7 +2,7 @@ package android.example.com.split.data.model;
 
 public interface Email {
 
-    String getEmail();
+  String getEmail();
 
-    void setEmail(String email);
+  void setEmail(String email);
 }

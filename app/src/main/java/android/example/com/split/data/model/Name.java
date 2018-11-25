@@ -2,7 +2,7 @@ package android.example.com.split.data.model;
 
 public interface Name {
 
-    String getName();
+  String getName();
 
-    void setName(String name);
+  void setName(String name);
 }
