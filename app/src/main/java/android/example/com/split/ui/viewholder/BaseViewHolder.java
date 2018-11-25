@@ -3,6 +3,7 @@ package android.example.com.split.ui.viewholder;
 import android.content.Context;
 import android.content.Intent;
 import android.example.com.split.OnDeleteItemListener;
+import android.example.com.split.OnEditItemListener;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.support.annotation.CallSuper;
@@ -21,6 +22,7 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
   private final String title;
   private T itemData;
   private OnDeleteItemListener onDeleteItemListener;
+  private OnEditItemListener onEditItemListener;
 
   protected BaseViewHolder(View itemView, Class<? extends FragmentActivity> detailActivityClass,
                            String title) {
@@ -58,6 +60,14 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
 
   protected void deleteItem(int position) {
     onDeleteItemListener.onDelete(position);
+  }
+
+  protected void setOnEditItemListener(OnEditItemListener onEditItemListener) {
+    this.onEditItemListener = onEditItemListener;
+  }
+
+  protected void editItem(int position) {
+    onEditItemListener.onEdit(position);
   }
 
   @Override
