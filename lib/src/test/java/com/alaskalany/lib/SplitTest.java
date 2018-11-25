@@ -1,7 +1,8 @@
 package com.alaskalany.lib;
 
-import com.alaskalany.lib.entity.UserEntity;
-import com.alaskalany.lib.model.User;
+import com.alaskalany.lib.data.entity.Split;
+import com.alaskalany.lib.data.entity.UserEntity;
+import com.alaskalany.lib.data.model.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
