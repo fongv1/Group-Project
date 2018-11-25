@@ -310,9 +310,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
     int id = item.getItemId();
 
     if (id == R.id.nav_new_group) {
-      Toast.makeText(this, "add group", Toast.LENGTH_LONG).show();
+      createGroupPopupDialog();
     } else if (id == R.id.nav_new_contact) {
-      Toast.makeText(this, "add contact", Toast.LENGTH_LONG).show();
+      createContactPopupDialog();
     } else if (id == R.id.nav_info) {
       Toast.makeText(this, "add app info", Toast.LENGTH_LONG).show();
     } else if (id == R.id.nav_manage) {
