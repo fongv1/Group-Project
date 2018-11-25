@@ -1,15 +1,19 @@
 package android.example.com.split.ui.detailactivity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
+import android.example.com.split.ui.activity.HomeActivity;
 import android.example.com.split.ui.tabfragment.ExpensesTabFragment;
 import android.example.com.split.ui.tabfragment.MembersTabFragment;
 import android.example.com.split.ui.tabsadapter.GroupTabsAdapter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -100,6 +105,33 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
     drawer.addDrawerListener(toggle);
     toggle.syncState();
+
+    NavigationView navigationView = findViewById(R.id.nav_view_activity_detail_group);
+    navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+      @Override
+      public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        // Handle navigation view item clicks here.
+        int id = menuItem.getItemId();
+
+        if (id == R.id.nav_new_group) {
+          Toast.makeText(getBaseContext(), "add new group", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.nav_new_contact) {
+          Toast.makeText(getBaseContext(), "add new contact", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.nav_info) {
+          Toast.makeText(getBaseContext(), "add app info", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.nav_manage) {
+          Toast.makeText(getBaseContext(), "add manage", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.nav_share) {
+          Toast.makeText(getBaseContext(), "add share", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.nav_send) {
+          Toast.makeText(getBaseContext(), "add send", Toast.LENGTH_LONG).show();
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_group_detail);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+      }
+    });
 
     // create bundle to pass the group to the TabFragments
     Bundle groupBundle = new Bundle();
