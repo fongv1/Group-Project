@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.example.com.split.FeatureFlags;
 import android.example.com.split.R;
+import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.example.com.split.data.repository.UserDataRepository;
 import android.example.com.split.ui.tabsadapter.HomeTabsAdapter;
@@ -59,6 +60,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
   private EditText contactName;
   private EditText contactSurname;
   private EditText contactEmail;
+  private EditText groupName;
 
   private HomeTabsAdapter homeTabsAdapter;
 
@@ -68,7 +70,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
       createContactPopupDialog();
     }
   };
-  private EditText groupName;
   private final View.OnClickListener addGroupFabListener = new View.OnClickListener() {
     @Override
     public void onClick(View v) {
@@ -79,8 +80,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
 
   @Contract(pure = true)
   @NonNull
-  private static TabLayout.BaseOnTabSelectedListener getOnTabSelectedListener(final
-                                                                                FloatingActionButton fab, final View.OnClickListener addContactFabListener, final View.OnClickListener addGroupFabListener) {
+  private static TabLayout.BaseOnTabSelectedListener getOnTabSelectedListener(final FloatingActionButton fab, final View.OnClickListener addContactFabListener, final View.OnClickListener addGroupFabListener) {
     return new TabLayout.BaseOnTabSelectedListener() {
       @Override
       public void onTabSelected(TabLayout.Tab tab) {
@@ -150,8 +150,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
     tabLayout.setupWithViewPager(viewPager);
     FloatingActionButton fab = findViewById(R.id.fab_app_bar_main);
     fab.setOnClickListener(addContactFabListener);
-    onTabSelectedListener = getOnTabSelectedListener(fab, addContactFabListener,
-                                                     addGroupFabListener);
+    onTabSelectedListener = getOnTabSelectedListener(fab, addContactFabListener, addGroupFabListener);
     tabLayout.addOnTabSelectedListener(onTabSelectedListener);
   }
 
@@ -367,12 +366,30 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
 
   private void createGroupPopupDialog() {
     dialogBuilder = new AlertDialog.Builder(this);
-    View view = getLayoutInflater().inflate(R.layout.dialog_add_group, null);
-    groupName = findViewById(R.id.editText_dialog_add_group);
-
+    final View view = getLayoutInflater().inflate(R.layout.dialog_add_group, null);
     dialogBuilder.setView(view);
     dialog = dialogBuilder.create();
-    dialog.show();
 
+    Button saveButton = view.findViewById(R.id.button_dialog_add_group_save);
+    saveButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Group group = new Group();
+        groupName = (EditText) view.findViewById(R.id.editText_dialog_add_group);
+        String newGroupName = groupName.getText().toString();
+        group.setName(newGroupName);
+
+        List<Group> dataset = homeTabsAdapter.getGroupsTabFragment().getRecyclerAdapter().getDataset();
+        dataset.add(group);
+
+        int position = dataset.size() - 1;
+        homeTabsAdapter.getGroupsTabFragment().getRecyclerAdapter().notifyItemInserted(position);
+
+        dialog.dismiss();
+      }
+    });
+
+
+    dialog.show();
   }
 }

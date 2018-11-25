@@ -34,7 +34,7 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
 
   @Override
   protected void setupRecyclerView(View rootView, int recyclerViewId) {
-    recyclerView = (RecyclerView) rootView.findViewById(recyclerViewId);
+    recyclerView = rootView.findViewById(recyclerViewId);
     recyclerView.setHasFixedSize(true);
     LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
     recyclerView.setLayoutManager(mLayoutManager);

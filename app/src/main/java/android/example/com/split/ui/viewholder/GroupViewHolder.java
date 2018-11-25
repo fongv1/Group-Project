@@ -13,7 +13,7 @@ public class GroupViewHolder extends BaseViewHolder<Group> {
 
   // Each group data item is just a String presented as a textView in this case
   private TextView mTextView;
-  private TextView expenseTextView;
+  //private TextView expenseTextView;
 
   // Initializes the ViewHolder TextView from the item_group XML resource
   public GroupViewHolder(View itemView) {
@@ -23,14 +23,14 @@ public class GroupViewHolder extends BaseViewHolder<Group> {
   @Override
   protected void findAllViews(View itemView) {
     mTextView = (TextView) itemView.findViewById(R.id.textView_group_item);
-    expenseTextView = (TextView) itemView.findViewById(R.id.textView_group_item_expense_total);
+    //expenseTextView = (TextView) itemView.findViewById(R.id.textView_group_item_expense_total);
   }
 
   @Override
   public void bind(final Group group) {
     super.bind(group);
     mTextView.setText(getItemData().getName());
-    expenseTextView.setText("" + getItemData().getExpenses().get(0).getPaymentAmount());
+    //expenseTextView.setText("" + getItemData().getExpenses().get(0).getPaymentAmount());
   }
 
   @Override
@@ -38,8 +38,10 @@ public class GroupViewHolder extends BaseViewHolder<Group> {
 
   }
 
+
   @Override
-  public void bind(Group group, Group expense, int position) {
+  public void bind(Group group, Group expense, final int position) {
+    super.bind(group);
 
   }
 }

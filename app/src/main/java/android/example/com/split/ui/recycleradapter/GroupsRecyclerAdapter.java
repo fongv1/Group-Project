@@ -15,10 +15,16 @@ import java.util.List;
 // TextView widgets
 public class GroupsRecyclerAdapter extends BaseRecyclerAdapter<GroupViewHolder, Group> {
 
+  //private List<Group> mDataset;
+
   // Create the adapter with a dataset
   public GroupsRecyclerAdapter(List<Group> groups) {
     super(groups);
   }
+
+/*  public List<Group> getDataset() {
+    return mDataset;
+  }*/
 
   // Create new views (invoked by the layout manager)
   @NonNull
@@ -41,8 +47,7 @@ public class GroupsRecyclerAdapter extends BaseRecyclerAdapter<GroupViewHolder, 
   public void onBindViewHolder(@NonNull GroupViewHolder holder, int position) {
     // - get element from your dataset at this position
     // - replace the contents of the view with that element
+    //Group group = mDataset.get(position);
     holder.bind(getDataset().get(position));
   }
 }
-
-

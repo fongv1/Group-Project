@@ -16,10 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
 public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Group> {
+
+  //private List<Group> dataset;
+  private GroupsRecyclerAdapter groupsRecyclerAdapter;
 
   public GroupsTabFragment() {
     // Required empty public constructor
@@ -37,24 +41,11 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
   // Create dummy data
   private void initDataset() {
     setData(new ArrayList<Group>());
-    Random rand = new Random();
+
+    //Random rand = new Random();
     for (int i = 0; i < 20; i++) {
       Group group = new Group();
-      String groupName = "Group " + i;
-      group.setName(groupName);
-
-      for (int j = 0; j < 8; j++) {
-        Expense expense = new Expense();
-        expense.setPaymentAmount(rand.nextInt(1000));
-        expense.setTittle("Expense " + j + " " + groupName);
-        group.addExpense(expense);
-      }
-      for (int j = 0; j < 5; j++) {
-        User user = new User();
-        user.setFirstName("Memeber " + j);
-        user.setLastName(groupName);
-        group.addUserMember(user);
-      }
+      group.setName("Group " + i);
       getData().add(group);
     }
   }
@@ -65,10 +56,24 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
-      savedInstanceState) {
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
     View rootView = inflater.inflate(R.layout.fragment_tab_groups, container, false);
-    setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_expenses);
+
+    RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_fragment_tab_groups);
+    mRecyclerView.setHasFixedSize(true);
+
+    LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+    mRecyclerView.setLayoutManager(mLayoutManager);
+
+    setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_groups);
+
+    Bundle bundle = getArguments();
+
+    groupsRecyclerAdapter = new GroupsRecyclerAdapter(getData());
+    mRecyclerView.setAdapter(groupsRecyclerAdapter);
+
+
     return rootView;
   }
 
