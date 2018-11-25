@@ -62,7 +62,7 @@
                 android:layout_weight="0"
                 android:layout_gravity="top"
                 android:layout_marginRight="10dp"
-                app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
+                android:contentDescription="TODO" app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
 
             <ImageView
                 android:id="@+id/imageView_delete_expense_item"
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:layout_gravity="top"
-                app:srcCompat="@drawable/ic_clear_black_24dp" />
+                android:contentDescription="TODO" app:srcCompat="@drawable/ic_clear_black_24dp" />
 
 
         </LinearLayout>

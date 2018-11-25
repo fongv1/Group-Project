@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:scaleType="centerInside"
+                android:contentDescription="TODO" android:scaleType="centerInside"
                 app:srcCompat="@drawable/ic_group_black_24dp" />
 
             <TextView
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:layout_gravity="top"
-                android:paddingEnd="2dp"
+                android:contentDescription="TODO" android:paddingEnd="2dp"
                 app:srcCompat="@drawable/ic_clear_black_24dp" />
 
         </LinearLayout>

@@ -29,7 +29,7 @@
             <EditText
                 android:id="@+id/editText_dialog_add_expense_title"
                 android:layout_below="@id/textView_dialog_add_expense"
-                android:layout_width="match_parent"
+                android:layout_width="match_parent" android:inputType="" 
                 android:hint="@string/hint_add_expense"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -38,7 +38,7 @@
             <EditText
                 android:id="@+id/editText_dialog_add_expense_amount"
                 android:layout_below="@id/editText_dialog_add_expense_title"
-                android:layout_width="match_parent"
+                android:layout_width="match_parent" android:inputType="" 
                 android:hint="@string/hint_add_expense_amount"
                 android:layout_height="wrap_content" />
 

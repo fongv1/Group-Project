@@ -29,21 +29,21 @@
             <EditText
                 android:id="@+id/editText_dialog_add_contact_firstName"
                 android:layout_below="@id/textView_dialog_add_contact"
-                android:layout_width="match_parent"
+                android:layout_width="match_parent" android:inputType="" 
                 android:hint="@string/hint_add_contact_firstName"
                 android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/editText_dialog_add_contact_lastName"
                 android:layout_below="@id/editText_dialog_add_contact_firstName"
-                android:layout_width="match_parent"
+                android:layout_width="match_parent" android:inputType="" 
                 android:hint="@string/hint_add_contact_lastName"
                 android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/editText_dialog_add_contact_email"
                 android:layout_below="@id/editText_dialog_add_contact_lastName"
-                android:layout_width="match_parent"
+                android:layout_width="match_parent" android:inputType="" 
                 android:hint="@string/hint_add_contact_email"
                 android:layout_height="wrap_content" />
 

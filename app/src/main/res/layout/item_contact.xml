@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:scaleType="centerInside"
+                android:contentDescription="TODO" android:scaleType="centerInside"
                 app:srcCompat="@drawable/ic_person_black_24dp" />
 
             <TextView
@@ -47,7 +47,7 @@
                 android:layout_height="50dp"
                 android:layout_weight="0"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/ic_clear_black_24dp" />
+                android:contentDescription="TODO" app:srcCompat="@drawable/ic_clear_black_24dp" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

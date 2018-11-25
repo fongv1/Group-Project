@@ -58,7 +58,7 @@
                     android:id="@+id/imageView_member_name"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:scaleType="centerInside"
+                    android:contentDescription="TODO" android:scaleType="centerInside"
                     app:srcCompat="@drawable/ic_person_black_24dp" />
 
 
