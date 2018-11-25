@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Members {
 
-    List<Id> getMembers();
+  List<Id> getMembers();
 
-    void addMember(Id id);
+  void addMember(Id id);
 }

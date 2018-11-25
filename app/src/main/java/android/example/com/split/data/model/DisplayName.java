@@ -4,12 +4,12 @@ import android.support.annotation.Nullable;
 
 public interface DisplayName {
 
-    @Nullable
-    String getFirstName() throws Exception;
+  @Nullable
+  String getFirstName() throws Exception;
 
-    void setFirstName(String firstName) throws IllegalArgumentException;
+  void setFirstName(String firstName) throws IllegalArgumentException;
 
-    String getLastName();
+  String getLastName();
 
-    void setLastName(String lastName);
+  void setLastName(String lastName);
 }
