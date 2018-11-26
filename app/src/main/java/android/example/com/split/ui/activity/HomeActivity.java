@@ -307,18 +307,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
     // Handle navigation view item clicks here.
     int id = item.getItemId();
 
-    if (id == R.id.nav_new) {
-      // Handle the camera action
-    } else if (id == R.id.nav_join) {
-
+    if (id == R.id.nav_new_group) {
+      createGroupPopupDialog();
+    } else if (id == R.id.nav_new_contact) {
+      createContactPopupDialog();
     } else if (id == R.id.nav_info) {
-
+      Toast.makeText(this, "add app info", Toast.LENGTH_LONG).show();
     } else if (id == R.id.nav_manage) {
-
+      Toast.makeText(this, "add manage", Toast.LENGTH_LONG).show();
     } else if (id == R.id.nav_share) {
-
+      Toast.makeText(this, "add share", Toast.LENGTH_LONG).show();
     } else if (id == R.id.nav_send) {
-
+      Toast.makeText(this, "add send", Toast.LENGTH_LONG).show();
     }
 
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
