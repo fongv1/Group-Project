@@ -39,7 +39,8 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
   private void initDataset() {
     setData(new ArrayList<Group>());
     Random rand = new Random();
-    for (int i = 0; i < 20; i++) {
+    
+    for (int i = 0; i < 5; i++) {
       Group group = new Group();
       String groupName = "Group " + i;
       group.setName(groupName);
