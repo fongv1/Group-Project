@@ -18,6 +18,7 @@ public class MembersDetailActivity extends BaseDetailActivity {
   private TextView lastName;
   private TextView email;
   private TextView balance;
+  private TextView share;
 
   public MembersDetailActivity() {
     init(R.string.title_activity_member, R.layout.activity_detail_members, R.menu.activity_detail);
@@ -44,8 +45,17 @@ public class MembersDetailActivity extends BaseDetailActivity {
     lastName = findViewById(R.id.member_detail_last_name);
     lastName.setText(user.getLastName());
 
-    email = findViewById(R.id.member_detail_email);
-    email.setText(user.getEmail());
+    //email = findViewById(R.id.member_detail_email);
+    //email.setText(user.getEmail());
+
+    share = findViewById(R.id.member_detail_share);
+    //TODO replace the share
+    share.setText("Share");
+
+    balance = findViewById(R.id.member_detail_balance);
+    //TODO replace the real value from calculator
+    balance.setText("Balance");
+
 
     //balance = (TextView) findViewById()
   }

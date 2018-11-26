@@ -83,5 +83,7 @@
     <string name="title_activity_member">Member</string>
     <string name="title_activity_contact">Contact</string>
     <string name="title_activity_detail">Detail</string>
+    <string name="total_share">Share</string>
+    <string name="balance">Balance</string>
 
 </resources>
