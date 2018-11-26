@@ -80,8 +80,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
 
   @Contract(pure = true)
   @NonNull
-  private static TabLayout.BaseOnTabSelectedListener getOnTabSelectedListener(final
-                                                                                FloatingActionButton fab, final View.OnClickListener addContactFabListener, final View.OnClickListener addGroupFabListener) {
+  private static TabLayout.BaseOnTabSelectedListener getOnTabSelectedListener(final FloatingActionButton fab,
+                                                                              final View.OnClickListener addContactFabListener,
+                                                                              final View.OnClickListener addGroupFabListener) {
     return new TabLayout.BaseOnTabSelectedListener() {
       @Override
       public void onTabSelected(TabLayout.Tab tab) {
@@ -332,20 +333,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
     dialogBuilder.setView(view);
     dialog = dialogBuilder.create();
 
-    Button saveButton = (Button) view.findViewById(R.id.button_dialog_add_contact_save);
+    Button saveButton = view.findViewById(R.id.button_dialog_add_contact_save);
     saveButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         User user = new User();
-        contactName = (EditText) view.findViewById(R.id.editText_dialog_add_contact_firstName);
+        contactName = view.findViewById(R.id.editText_dialog_add_contact_firstName);
         String newName = contactName.getText().toString();
         user.setFirstName(newName);
 
-        contactSurname = (EditText) view.findViewById(R.id.editText_dialog_add_contact_lastName);
+        contactSurname = view.findViewById(R.id.editText_dialog_add_contact_lastName);
         String newSurname = contactSurname.getText().toString();
         user.setLastName(newSurname);
 
-        contactEmail = (EditText) view.findViewById(R.id.editText_dialog_add_contact_email);
+        contactEmail = view.findViewById(R.id.editText_dialog_add_contact_email);
         String newEmail = contactEmail.getText().toString();
         user.setEmail(newEmail);
 
@@ -372,12 +373,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
     dialogBuilder.setView(view);
     dialog = dialogBuilder.create();
 
-    Button saveButton = (Button) view.findViewById(R.id.button_dialog_add_group_save);
+    Button saveButton = view.findViewById(R.id.button_dialog_add_group_save);
     saveButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Group group = new Group();
-        groupName = (EditText) view.findViewById(R.id.editText_dialog_add_group);
+        groupName = view.findViewById(R.id.editText_dialog_add_group);
         String newGroupName = groupName.getText().toString();
         group.setName(newGroupName);
 
