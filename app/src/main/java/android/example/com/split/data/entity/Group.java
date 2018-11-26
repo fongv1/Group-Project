@@ -47,6 +47,9 @@ public class Group implements Serializable {
   public Group(String groupId, String name) {
     this.groupId = groupId;
     this.name = name;
+    members = new ArrayList<>();
+    expenses = new ArrayList<>();
+    userMembers = new ArrayList<>();
   }
 
   @com.google.firebase.firestore.Exclude

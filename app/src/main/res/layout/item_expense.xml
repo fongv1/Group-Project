@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/linearLayout_item_expense"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height"
     android:layout_marginLeft="@dimen/margin_medium"
-    android:layout_marginRight="@dimen/margin_medium"
-    android:gravity="center_vertical">
+    android:layout_marginRight="@dimen/margin_medium">
 
     <!-- A CardView that contains a TextView -->
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -60,7 +59,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/edit_expense_button"
                 app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
 
             <ImageView
@@ -68,9 +68,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
+                android:contentDescription="@string/delete_expense_button"
                 app:srcCompat="@drawable/ic_clear_black_24dp" />
 
         </LinearLayout >
     </android.support.v7.widget.CardView>
 
-</LinearLayout>
+</FrameLayout>
