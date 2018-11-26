@@ -43,17 +43,21 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
       String groupName = "Group " + i;
       group.setName(groupName);
 
-      for (int j = 0; j < 8; j++) {
-        Expense expense = new Expense();
-        expense.setPaymentAmount(rand.nextInt(1000));
-        expense.setTittle("Expense " + j + " " + groupName);
-        group.addExpense(expense);
-      }
-      for (int j = 0; j < 5; j++) {
+      for(int j = 0; j < 5; j++){
         User user = new User();
-        user.setFirstName("Memeber " + j);
+        user.setFirstName("Member " + j);
         user.setLastName(groupName);
         group.addUserMember(user);
+      }
+
+      for (int j = 0; j < 8; j++) {
+        Expense expense = new Expense();
+        User user = group.getUserMembers().get(rand.nextInt(5));
+        expense.setUser(user);
+        expense.setPayeeName(user.getFirstName());
+        expense.setPaymentAmount(rand.nextInt(10));
+        expense.setTittle("Expense " + j + " " + groupName);
+        group.addExpense(expense);
       }
       getData().add(group);
     }

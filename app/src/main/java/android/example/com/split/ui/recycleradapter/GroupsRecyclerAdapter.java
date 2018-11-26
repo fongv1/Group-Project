@@ -33,7 +33,7 @@ public class GroupsRecyclerAdapter extends BaseRecyclerAdapter<GroupViewHolder, 
   @NonNull
   @Override
   protected GroupViewHolder getViewHolder(View v) {
-    return new GroupViewHolder(v);
+    return new GroupViewHolder(v,this);
   }
 
   // Replace the contents of a view (invoked by the layout manager)
@@ -41,7 +41,7 @@ public class GroupsRecyclerAdapter extends BaseRecyclerAdapter<GroupViewHolder, 
   public void onBindViewHolder(@NonNull GroupViewHolder holder, int position) {
     // - get element from your dataset at this position
     // - replace the contents of the view with that element
-    holder.bind(getDataset().get(position));
+    holder.bind(getDataset().get(position), null, position);
   }
 }
 

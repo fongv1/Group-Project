@@ -16,49 +16,48 @@
         card_view:cardUseCompatPadding="true"
         card_view:contentPadding="10dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_expense_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:text="@string/textView_expense_item" />
+
+            <TextView
+                android:id="@+id/textView_amount_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:text="@string/textView_amount_item" />
+        </LinearLayout>
 
             <TextView
                 android:id="@+id/textView_payer_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:textColor="@color/colorPrimaryDark"
-                android:layout_gravity="top"
+                android:layout_gravity="right"
+                android:layout_marginRight="30dp"
                 android:textStyle="bold"
                 android:text="@string/textView_payer_item" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView_expense_item"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textStyle="bold"
-                    android:text="@string/textView_expense_item" />
-
-                <TextView
-                    android:id="@+id/textView_amount_item"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textStyle="bold"
-                    android:text="@string/textView_amount_item" />
-            </LinearLayout>
 
             <ImageView
                 android:id="@+id/imageView_edit_expense_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
                 android:layout_gravity="top"
                 android:layout_marginEnd="10dp"
                 android:contentDescription="@string/edit_expense_button"
@@ -68,13 +67,11 @@
                 android:id="@+id/imageView_delete_expense_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
                 android:layout_gravity="top"
                 android:contentDescription="@string/delete_expense_button"
                 app:srcCompat="@drawable/ic_clear_black_24dp" />
 
-
-        </LinearLayout>
+        </LinearLayout >
     </android.support.v7.widget.CardView>
 
 </FrameLayout>
