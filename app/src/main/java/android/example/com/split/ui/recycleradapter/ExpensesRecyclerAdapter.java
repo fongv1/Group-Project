@@ -37,7 +37,7 @@ public class ExpensesRecyclerAdapter extends BaseRecyclerAdapter<ExpenseViewHold
   @NonNull
   @Override
   protected ExpenseViewHolder getViewHolder(View v) {
-    return new ExpenseViewHolder(v, this);
+    return new ExpenseViewHolder(v, this, this);
   }
 
   // Replace the contents of a view (invoked by the layout manager)

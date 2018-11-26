@@ -3,6 +3,7 @@ package android.example.com.split.ui.viewholder;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.example.com.split.OnDeleteItemListener;
+import android.example.com.split.OnEditItemListener;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
@@ -24,9 +25,10 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
   private ImageView deleteButton;
 
   // Initializes the ViewHolder TextView from the item_group XML resource
-  public ExpenseViewHolder(View itemView, OnDeleteItemListener listener) {
+  public ExpenseViewHolder(View itemView, OnDeleteItemListener deleteListener, OnEditItemListener editListener) {
     super(itemView, ExpensesDetailActivity.class, "Expense");
-    setOnDeleteItemListener(listener);
+    setOnDeleteItemListener(deleteListener);
+    setOnEditItemListener(editListener);
   }
 
   private void editExpensePopupDialog(final Group group, final Expense expense, final int
@@ -77,6 +79,7 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
 
         Toast.makeText(v.getContext(), "Saved!", Toast.LENGTH_SHORT).show();
         // Notifies tha adapter that the item at that position is changed
+        editItem(position);
         dialog.dismiss();
       }
     });

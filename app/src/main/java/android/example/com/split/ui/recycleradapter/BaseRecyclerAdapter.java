@@ -1,6 +1,7 @@
 package android.example.com.split.ui.recycleradapter;
 
 import android.example.com.split.OnDeleteItemListener;
+import android.example.com.split.OnEditItemListener;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -9,7 +10,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 public abstract class BaseRecyclerAdapter<T extends RecyclerView.ViewHolder, M> extends
-    RecyclerView.Adapter<T> implements OnDeleteItemListener {
+    RecyclerView.Adapter<T> implements OnDeleteItemListener, OnEditItemListener {
 
   private List<M> data;
 
@@ -44,5 +45,10 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerView.ViewHolder, M> 
     data.remove(position);
     notifyItemRemoved(position);
     notifyItemRangeChanged(position, getItemCount());
+  }
+
+  @Override
+  public void onEdit(int position) {
+    notifyItemChanged(position);
   }
 }
