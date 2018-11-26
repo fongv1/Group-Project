@@ -23,10 +23,11 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
   private T itemData;
   private OnDeleteItemListener onDeleteItemListener;
   private OnEditItemListener onEditItemListener;
+  private boolean hasDetail;
 
-  protected BaseViewHolder(View itemView, Class<? extends FragmentActivity> detailActivityClass,
-                           String title) {
+  protected BaseViewHolder(View itemView, Class<? extends FragmentActivity> detailActivityClass, String title, boolean hasDetail) {
     super(itemView);
+    this.hasDetail = hasDetail;
     findAllViews(itemView);
     context = itemView.getContext();
     this.detailActivityClass = detailActivityClass;
@@ -47,7 +48,9 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
   protected abstract void bind(Group group, T expense, int position);
 
   protected void onItemClicked() {
-    startDetailActivity();
+    if(hasDetail){
+      startDetailActivity();
+    }
   }
 
   protected View getItemView() {

@@ -1,7 +1,6 @@
 package android.example.com.split.ui.viewholder;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.example.com.split.OnDeleteItemListener;
 import android.example.com.split.R;
@@ -23,7 +22,7 @@ public class GroupViewHolder extends BaseViewHolder<Group> {
 
   // Initializes the ViewHolder TextView from the item_group XML resource
   public GroupViewHolder(View itemView, OnDeleteItemListener listener) {
-    super(itemView, GroupDetailActivity.class, "Group");
+    super(itemView, GroupDetailActivity.class, "Group", true);
     setOnDeleteItemListener(listener);
   }
 
@@ -75,7 +74,9 @@ public class GroupViewHolder extends BaseViewHolder<Group> {
   public void bind(Group group, Group expense, final int position) {
     super.bind(group);
     mTextView.setText(getItemData().getName());
-    expenseTextView.setText("" + getItemData().getExpenses().get(0).getPaymentAmount());
+    if(group.getExpenses().size()>0){
+      expenseTextView.setText("" + getItemData().getExpenses().get(0).getPaymentAmount());
+    }
     deleteButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {

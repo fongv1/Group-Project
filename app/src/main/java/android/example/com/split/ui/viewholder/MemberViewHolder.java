@@ -1,7 +1,6 @@
 package android.example.com.split.ui.viewholder;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.example.com.split.OnDeleteItemListener;
 import android.example.com.split.R;
@@ -23,7 +22,7 @@ public class MemberViewHolder extends BaseViewHolder<User> {
   // Initializes the ViewHolder TextView from the item_group XML resource
   public MemberViewHolder(View itemView, OnDeleteItemListener onDeleteListener) {
 
-    super(itemView, MembersDetailActivity.class, "Member");
+    super(itemView, MembersDetailActivity.class, "Member", true);
     setOnDeleteItemListener(onDeleteListener);
   }
 
