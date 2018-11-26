@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout_dialog_add_contact"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -29,23 +30,29 @@
             <EditText
                 android:id="@+id/editText_dialog_add_contact_firstName"
                 android:layout_below="@id/textView_dialog_add_contact"
-                android:layout_width="match_parent" android:inputType="" 
+                android:layout_width="match_parent"
+                android:inputType=""
                 android:hint="@string/hint_add_contact_firstName"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                tools:ignore="Autofill" />
 
             <EditText
                 android:id="@+id/editText_dialog_add_contact_lastName"
                 android:layout_below="@id/editText_dialog_add_contact_firstName"
-                android:layout_width="match_parent" android:inputType="" 
+                android:layout_width="match_parent"
+                android:inputType=""
                 android:hint="@string/hint_add_contact_lastName"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                tools:ignore="Autofill" />
 
             <EditText
                 android:id="@+id/editText_dialog_add_contact_email"
                 android:layout_below="@id/editText_dialog_add_contact_lastName"
-                android:layout_width="match_parent" android:inputType="" 
+                android:layout_width="match_parent"
+                android:inputType="textEmailAddress"
                 android:hint="@string/hint_add_contact_email"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                tools:ignore="Autofill" />
 
             <Button
                 android:id="@+id/button_dialog_add_contact_save"

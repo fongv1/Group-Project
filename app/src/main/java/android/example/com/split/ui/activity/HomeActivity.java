@@ -108,6 +108,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
   protected void onCreate(Bundle savedInstanceState) {
 
     super.onCreate(savedInstanceState);
+
     setContentView(R.layout.activity_home);
 
     if (AUTHENTICATION) {
@@ -123,10 +124,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
         handleUserDatabase(firebaseUser);
       }
     }
-    View decorView = getWindow().getDecorView();
-    // Hide the status bar.
-    int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-    decorView.setSystemUiVisibility(uiOptions);
     // Remember that you should never show the action bar if the
     // status bar is hi
     ActionBar actionBar = getActionBar();
@@ -351,7 +348,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
         String newEmail = contactEmail.getText().toString();
         user.setEmail(newEmail);
 
-        List<User> dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().getDataset();
+        List<User> dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter()
+                                            .getDataset();
         dataset.add(user);
 
         int position = dataset.size() - 1;

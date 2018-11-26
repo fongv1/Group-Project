@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/linearLayout_item_group"
     android:layout_width="match_parent"
     android:layout_height="@dimen/list_item_height"
     android:layout_marginLeft="@dimen/margin_medium"
-    android:layout_marginRight="@dimen/margin_medium"
-    android:gravity="center_vertical">
+    android:layout_marginRight="@dimen/margin_medium">
 
     <!-- A CardView that contains a TextView -->
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -29,7 +27,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:contentDescription="TODO" android:scaleType="centerInside"
+                android:contentDescription="@string/group_item"
+                android:scaleType="centerInside"
                 app:srcCompat="@drawable/ic_group_black_24dp" />
 
             <TextView
@@ -40,7 +39,8 @@
                 android:text="@string/group_row_view"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
-                android:paddingLeft="20dp" />
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp" />
 
             <TextView
                 android:id="@+id/textView_group_item_expense_total"
@@ -49,7 +49,7 @@
                 android:layout_weight="1"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
-                android:text="Amount" />
+                android:text="@string/amount" />
 
             <ImageView
                 android:id="@+id/imageView_delete_group_item"
@@ -57,10 +57,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:layout_gravity="top"
-                android:contentDescription="TODO" android:paddingEnd="2dp"
+                android:contentDescription="@string/delete_group_button"
+                android:layout_marginRight="2dp"
+                android:layout_marginLeft="2dp"
                 app:srcCompat="@drawable/ic_clear_black_24dp" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-</LinearLayout>
+</FrameLayout>

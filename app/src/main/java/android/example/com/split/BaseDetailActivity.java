@@ -1,6 +1,5 @@
-package android.example.com.split.ui.detailactivity;
+package android.example.com.split;
 
-import android.example.com.split.R;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,23 +8,16 @@ import android.view.MenuItem;
 
 public class BaseDetailActivity extends AppCompatActivity {
 
-  private int optionsMenuId;
   private int titleStringId;
-  private int activityLayoutId;
 
-  protected void init(int titleStringId, int activityLayoutId, int optionsMenuId) {
+  public BaseDetailActivity(int titleStringId) {
     this.titleStringId = titleStringId;
-    this.activityLayoutId = activityLayoutId;
-    this.optionsMenuId = optionsMenuId;
-  }
-
-  public BaseDetailActivity() {
   }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(activityLayoutId);
+    setContentView(R.layout.activity_base_detail);
 
     android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
@@ -39,7 +31,7 @@ public class BaseDetailActivity extends AppCompatActivity {
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(optionsMenuId, menu);
+    getMenuInflater().inflate(R.menu.activity_detail, menu);
     return true;
   }
 

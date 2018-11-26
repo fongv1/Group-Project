@@ -1,6 +1,7 @@
 package android.example.com.split.ui.detailactivity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
@@ -12,12 +13,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -62,6 +62,10 @@ public class GroupDetailActivity extends BaseDetailActivity {
    */
   private ViewPager mViewPager;
 
+  public GroupDetailActivity() {
+    init(R.string.title_activity_group, R.layout.activity_detail_group, R.menu.menu_group);
+  }
+
   @Override
   public void onBackPressed() {
     if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -74,8 +78,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_detail_group);
-
     Bundle bundle = getIntent().getExtras();
     if (bundle != null) {
       group = (Group) bundle.get("Group");
@@ -89,17 +91,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
     expenseAmount = (EditText) findViewById(R.id.editText_dialog_add_expense_amount);
     //expensePayee = (EditText) findViewById(R.id.);
     addExpenseButton = (Button) findViewById(R.id.button_dialog_add_expense_save);
-
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_activity_detail_group);
-    setSupportActionBar(toolbar);
-
-    drawer = findViewById(R.id.drawer_layout_group_detail);
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                                                             R.string.navigation_drawer_open,
-                                                             R.string.navigation_drawer_close);
-
-    drawer.addDrawerListener(toggle);
-    toggle.syncState();
 
     // create bundle to pass the group to the TabFragments
     Bundle groupBundle = new Bundle();
@@ -176,13 +167,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
   }
 
   @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.menu_group, menu);
-    return true;
-  }
-
-  @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     // Handle action bar item clicks here. The action bar will
     // automatically handle clicks on the Home/Up button, so long
@@ -191,6 +175,22 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
     //noinspection SimplifiableIfStatement
     if (id == R.id.action_settings) {
+      return true;
+    } else if (id == R.id.home) {
+      Intent upIntent = NavUtils.getParentActivityIntent(this);
+      if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+        // This activity is NOT part of this app's task, so create a new task
+        // when navigating up, with a synthesized back stack.
+        TaskStackBuilder.create(this)
+                        // Add all of this activity's parents to the back stack
+                        .addNextIntentWithParentStack(upIntent)
+                        // Navigate up to the closest parent
+                        .startActivities();
+      } else {
+        // This activity is part of this app's task, so simply
+        // navigate up to the logical parent activity.
+        NavUtils.navigateUpTo(this, upIntent);
+      }
       return true;
     }
 
