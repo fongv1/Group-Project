@@ -26,7 +26,7 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
 
   // Initializes the ViewHolder TextView from the item_group XML resource
   public ExpenseViewHolder(View itemView, OnDeleteItemListener deleteListener, OnEditItemListener editListener) {
-    super(itemView, ExpensesDetailActivity.class, "Expense");
+    super(itemView, ExpensesDetailActivity.class, "Expense", false);
     setOnDeleteItemListener(deleteListener);
     setOnEditItemListener(editListener);
   }

@@ -21,6 +21,7 @@ import java.util.Random;
 
 public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Group> {
 
+ private GroupsRecyclerAdapter groupsRecyclerAdapter;
   public GroupsTabFragment() {
     // Required empty public constructor
   }
@@ -84,6 +85,8 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
     recyclerView.setLayoutManager(mLayoutManager);
     setRecyclerAdapter(new GroupsRecyclerAdapter(getData()));
     recyclerView.setAdapter(getRecyclerAdapter());
+
+
   }
 
   @Override
