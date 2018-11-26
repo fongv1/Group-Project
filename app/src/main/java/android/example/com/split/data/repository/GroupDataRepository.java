@@ -104,6 +104,7 @@ public class GroupDataRepository extends Repository<Group> {
     }
 
     // add expense to a group
+    // should be changed
 
     public void addGroupExpense(String groupId , Map<String, Object> expense , final Handler.Callback listener){
         db = FirebaseFirestore.getInstance();
