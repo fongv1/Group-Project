@@ -6,51 +6,51 @@ import org.junit.Test;
 
 public class UserTest {
 
-    @Before
-    public void setUp() throws Exception {
-    }
+  @Before
+  public void setUp() throws Exception {
+  }
 
-    @After
-    public void tearDown() throws Exception {
-    }
+  @After
+  public void tearDown() throws Exception {
+  }
 
-    @Test
-    public void getUserId() {
-    }
+  @Test
+  public void getUserId() {
+  }
 
-    @Test
-    public void setUserId() {
-    }
+  @Test
+  public void setUserId() {
+  }
 
-    @Test
-    public void getFirstName() {
-    }
+  @Test
+  public void getFirstName() {
+  }
 
-    @Test
-    public void setFirstName() {
-    }
+  @Test
+  public void setFirstName() {
+  }
 
-    @Test
-    public void getLastName() {
-    }
+  @Test
+  public void getLastName() {
+  }
 
-    @Test
-    public void setLastName() {
-    }
+  @Test
+  public void setLastName() {
+  }
 
-    @Test
-    public void getEmail() {
-    }
+  @Test
+  public void getEmail() {
+  }
 
-    @Test
-    public void setEmail() {
-    }
+  @Test
+  public void setEmail() {
+  }
 
-    @Test
-    public void getPhoneNumber() {
-    }
+  @Test
+  public void getPhoneNumber() {
+  }
 
-    @Test
-    public void setPhoneNumber() {
-    }
+  @Test
+  public void setPhoneNumber() {
+  }
 }
