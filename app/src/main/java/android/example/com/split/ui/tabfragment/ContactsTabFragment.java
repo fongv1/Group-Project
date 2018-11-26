@@ -77,8 +77,6 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
     LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
     recyclerView.setLayoutManager(mLayoutManager);
 
-    Bundle bundle = getArguments();
-
     setRecyclerAdapter(new ContactsRecyclerAdapter(getData()));
     recyclerView.setAdapter(getRecyclerAdapter());
   }

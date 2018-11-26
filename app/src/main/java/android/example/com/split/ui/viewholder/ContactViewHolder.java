@@ -21,7 +21,7 @@ public class ContactViewHolder extends BaseViewHolder<User> {
 
   // Initializes the ViewHolder TextView from the item_group XML resource
   public ContactViewHolder(View itemView, OnDeleteItemListener onDeleteListener) {
-    super(itemView, ContactDetailActivity.class, "Contact");
+    super(itemView, ContactDetailActivity.class, "Contact", true);
     setOnDeleteItemListener(onDeleteListener);
   }
 
