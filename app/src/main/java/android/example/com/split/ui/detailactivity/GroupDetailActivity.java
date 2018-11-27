@@ -221,14 +221,17 @@ public class GroupDetailActivity extends BaseDetailActivity {
         // takes the name user input from the text field
         memberName = (EditText) view.findViewById(R.id.editText_dialog_add_member);
         String newName = memberName.getText().toString();
-        user.setFirstName(newName);
-        // add the new user to the dataset in the MembersRecyclerAdapter
-        List<User> dataset = membersTabFragment.getRecyclerAdapter().getDataset();
-        dataset.add(user);
 
-        // Notifies that the item at the last position is created
-        int position = dataset.size() - 1;
-        membersTabFragment.getRecyclerAdapter().notifyItemInserted(position);
+        if(!newName.trim().isEmpty()) {
+          user.setFirstName(newName);
+          // add the new user to the dataset in the MembersRecyclerAdapter
+          List<User> dataset = membersTabFragment.getRecyclerAdapter().getDataset();
+          dataset.add(user);
+
+          // Notifies that the item at the last position is created
+          int position = dataset.size() - 1;
+          membersTabFragment.getRecyclerAdapter().notifyItemInserted(position);
+        }
 
         dialog.dismiss();
       }
