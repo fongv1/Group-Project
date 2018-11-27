@@ -252,7 +252,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
     dialogBuilder.setView(view);
     dialog = dialogBuilder.create();
 
-    expenseSpinner = (Spinner) view.findViewById(R.id.spinner_choose_member);
+    final Spinner expenseSpinner = (Spinner) view.findViewById(R.id.spinner_choose_member);
     ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item,
                                                         group.getUserMembers());
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -264,31 +264,50 @@ public class GroupDetailActivity extends BaseDetailActivity {
       public void onClick(View v) {
         Expense expense = new Expense();
         // takes the title user input from the text field
-        expenseTitle = (EditText) view.findViewById(R.id.editText_dialog_add_expense_title);
+        expenseTitle = view.findViewById(R.id.editText_dialog_add_expense_title);
         String newTitle = expenseTitle.getText().toString();
-        expense.setTittle(newTitle);
+
         // takes the amount user input from the text field
-        expenseAmount = (EditText) view.findViewById(R.id.editText_dialog_add_expense_amount);
-        Double newAmount = Double.parseDouble(expenseAmount.getText().toString());
-        expense.setPaymentAmount(newAmount);
+        expenseAmount = view.findViewById(R.id.editText_dialog_add_expense_amount);
+        double newAmount = ParseDouble(expenseAmount.getText().toString());
+
         // takes the selected member from its position in the spinner
         int memberPosition = expenseSpinner.getSelectedItemPosition();
         User member = group.getUserMembers().get(memberPosition);
-        expense.setUser(member);
-        expense.setPayerName(member.getFirstName());
 
-        // add the new expense to the dataset in the ExpensesRecyclerAdapter
-        List<Expense> dataset = expensesTabFragment.getData();
-        dataset.add(expense);
+        if(!newTitle.trim().isEmpty() &&
+            newAmount > 0.0) {
 
-        // Notifies that the item at the last position is created
-        int position = dataset.size() - 1;
-        expensesTabFragment.getRecyclerAdapter().notifyItemInserted(position);
+          expense.setTittle(newTitle);
+          expense.setPaymentAmount(newAmount);
+          expense.setUser(member);
+          expense.setPayerName(member.getFirstName());
+
+          // add the new expense to the dataset in the ExpensesRecyclerAdapter
+          List<Expense> dataset = expensesTabFragment.getData();
+          dataset.add(expense);
+
+          // Notifies that the item at the last position is created
+          int position = dataset.size() - 1;
+          expensesTabFragment.getRecyclerAdapter().notifyItemInserted(position);
+
+        }
 
         dialog.dismiss();
       }
     });
     dialog.show();
+  }
+
+  double ParseDouble(String strNumber) {
+    if (strNumber != null && strNumber.length() > 0) {
+      try {
+        return Double.parseDouble(strNumber);
+      } catch(Exception e) {
+        return -1;   // -1 marks this field is wrong. or make a function validates field first ...
+      }
+    }
+    else return 0;
   }
 
 }

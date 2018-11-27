@@ -346,7 +346,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
         List<User> dataset;
         contactName = view.findViewById(R.id.editText_dialog_add_contact_firstName);
         String newName = contactName.getText().toString();
-        if(!newName.trim().equals("")) {
+        if(!newName.trim().isEmpty()) {
           user.setFirstName(newName);
 
           contactSurname = view.findViewById(R.id.editText_dialog_add_contact_lastName);
@@ -388,7 +388,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
         groupName = view.findViewById(R.id.editText_dialog_add_group);
         String newGroupName = groupName.getText().toString();
 
-        if(!newGroupName.trim().equals("")) {
+        if(!newGroupName.trim().isEmpty()) {
           group.setName(newGroupName);
           List<Group> dataset = homeTabsAdapter.getGroupsTabFragment().getRecyclerAdapter().getDataset();
           dataset.add(group);
