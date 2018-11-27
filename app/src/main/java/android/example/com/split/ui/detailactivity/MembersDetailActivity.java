@@ -37,6 +37,7 @@ public class MembersDetailActivity extends BaseDetailActivity {
 
     if (bundle != null) {
       user = (User) bundle.get("Member");
+      setTitle(user.getFirstName());
     }
 
     firstName = findViewById(R.id.member_detail_first_name);

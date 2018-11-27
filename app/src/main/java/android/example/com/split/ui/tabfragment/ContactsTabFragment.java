@@ -4,6 +4,7 @@ package android.example.com.split.ui.tabfragment;
 import android.content.Context;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
+import android.example.com.split.ui.activity.HomeActivity;
 import android.example.com.split.ui.recycleradapter.ContactsRecyclerAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,7 +33,13 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
 
     // Initialize dataset, this data would usually come from a local content provider or remote
     // server.
+    getContactsData();
+  }
+
+  private void getContactsData() {
     initDataset();
+    List<User> loadedContacts = new ArrayList<>();
+    //setData(loadedContacts);
   }
 
   @Override

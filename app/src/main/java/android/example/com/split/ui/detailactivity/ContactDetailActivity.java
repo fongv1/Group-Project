@@ -29,6 +29,7 @@ public class ContactDetailActivity extends BaseDetailActivity {
 
     if (bundle != null) {
       user = (User) bundle.get("Contact");
+      setTitle(user.getFirstName());
     }
 
     firstName = (TextView) findViewById(R.id.contact_detail_first_name);
