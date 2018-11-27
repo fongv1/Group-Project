@@ -338,25 +338,27 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
       @Override
       public void onClick(View v) {
         User user = new User();
+        List<User> dataset;
         contactName = view.findViewById(R.id.editText_dialog_add_contact_firstName);
         String newName = contactName.getText().toString();
-        user.setFirstName(newName);
+        if(!newName.trim().equals("")) {
+          user.setFirstName(newName);
 
-        contactSurname = view.findViewById(R.id.editText_dialog_add_contact_lastName);
-        String newSurname = contactSurname.getText().toString();
-        user.setLastName(newSurname);
+          contactSurname = view.findViewById(R.id.editText_dialog_add_contact_lastName);
+          String newSurname = contactSurname.getText().toString();
+          user.setLastName(newSurname);
 
-        contactEmail = view.findViewById(R.id.editText_dialog_add_contact_email);
-        String newEmail = contactEmail.getText().toString();
-        user.setEmail(newEmail);
+          contactEmail = view.findViewById(R.id.editText_dialog_add_contact_email);
+          String newEmail = contactEmail.getText().toString();
+          user.setEmail(newEmail);
 
-        List<User> dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter()
-                                            .getDataset();
-        dataset.add(user);
+          dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter()
+                                              .getDataset();
+          dataset.add(user);
+          int position = dataset.size() - 1;
+          homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().notifyItemInserted(position);
 
-        int position = dataset.size() - 1;
-        homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().notifyItemInserted(position);
-
+        }
         dialog.dismiss();
       }
     });
@@ -380,16 +382,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
         Group group = new Group();
         groupName = view.findViewById(R.id.editText_dialog_add_group);
         String newGroupName = groupName.getText().toString();
-        group.setName(newGroupName);
 
-        List<Group> dataset = homeTabsAdapter.getGroupsTabFragment().getRecyclerAdapter().getDataset();
-        dataset.add(group);
+        if(!newGroupName.trim().equals("")) {
+          group.setName(newGroupName);
+          List<Group> dataset = homeTabsAdapter.getGroupsTabFragment().getRecyclerAdapter().getDataset();
+          dataset.add(group);
 
-        int position = dataset.size() - 1;
-        homeTabsAdapter.getGroupsTabFragment().getRecyclerAdapter().notifyItemInserted(position);
-
-        dialog.dismiss();
+          int position = dataset.size() - 1;
+          homeTabsAdapter.getGroupsTabFragment().getRecyclerAdapter().notifyItemInserted(position);
         }
+        dialog.dismiss();
+
+      }
       });
         dialog.show();
     }

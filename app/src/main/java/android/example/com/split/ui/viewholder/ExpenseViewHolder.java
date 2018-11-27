@@ -66,20 +66,33 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
       public void onClick(View v) {
         //takes the title input from the text field
         String newTitle = editTitle.getText().toString();
-        // updates the title
-        expense.setTittle(newTitle);
+
         //takes the amount input from the text field
         Double newAmount = Double.parseDouble(editAmount.getText().toString());
-        //updates the amount
-        expense.setPaymentAmount(newAmount);
-        // takes the selected member from its position in the spinner
-        int memberPosition = expenseSpinner.getSelectedItemPosition();
-        User member = group.getUserMembers().get(memberPosition);
-        expense.setUser(member);
 
-        Toast.makeText(v.getContext(), "Saved!", Toast.LENGTH_SHORT).show();
-        // Notifies tha adapter that the item at that position is changed
-        editItem(position);
+
+
+        if(!newTitle.trim().equals("") && newAmount != 0.0) {
+          // updates the title
+          expense.setTittle(newTitle);
+
+          //updates the amount
+          expense.setPaymentAmount(newAmount);
+          // takes the selected member from its position in the spinner
+          int memberPosition = expenseSpinner.getSelectedItemPosition();
+          User member = group.getUserMembers().get(memberPosition);
+          expense.setUser(member);
+
+          Toast.makeText(v.getContext(), "Saved!", Toast.LENGTH_SHORT).show();
+          // Notifies tha adapter that the item at that position is changed
+          editItem(position);
+        }
+
+        else {
+          Toast.makeText(v.getContext(), "Not saved!", Toast.LENGTH_SHORT).show();
+
+        }
+
         dialog.dismiss();
       }
     });
