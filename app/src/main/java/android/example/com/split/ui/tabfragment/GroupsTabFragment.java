@@ -6,6 +6,7 @@ import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
+import android.example.com.split.ui.activity.HomeActivity;
 import android.example.com.split.ui.recycleradapter.GroupsRecyclerAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -76,6 +78,12 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
     View rootView = inflater.inflate(R.layout.fragment_tab_groups, container, false);
     setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_expenses);
     return rootView;
+  }
+
+  @Override
+  public List<Group> getData() {
+    //setData(get);
+    return super.getData();
   }
 
   @Override
