@@ -42,7 +42,7 @@
                 android:id="@+id/editText_dialog_add_expense_amount"
                 android:layout_below="@id/editText_dialog_add_expense_title"
                 android:layout_width="match_parent"
-                android:inputType=""
+                android:inputType="numberDecimal"
                 android:hint="@string/hint_add_expense_amount"
                 android:layout_height="wrap_content"
                 tools:ignore="Autofill" />
