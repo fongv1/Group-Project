@@ -10,6 +10,7 @@ import android.example.com.split.ui.tabfragment.ExpensesTabFragment;
 import android.example.com.split.ui.tabfragment.MembersTabFragment;
 import android.example.com.split.ui.tabsadapter.GroupTabsAdapter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupDetailActivity extends BaseDetailActivity {
@@ -203,6 +205,13 @@ public class GroupDetailActivity extends BaseDetailActivity {
     dialogBuilder.setView(view);
     dialog = dialogBuilder.create();
 
+    // set the spinner to show all the contacts
+    final Spinner contactsSpinner = (Spinner) view.findViewById(R.id.spinner_choose_contact);
+    ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item,
+                                                        getContactsData());
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    contactsSpinner.setAdapter(adapter);
+
     Button saveButton = (Button) view.findViewById(R.id.button_dialog_add_member_save);
     saveButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -225,6 +234,12 @@ public class GroupDetailActivity extends BaseDetailActivity {
     });
 
     dialog.show();
+  }
+
+  @NonNull
+  private List<User> getContactsData() {
+
+    return new ArrayList<>();
   }
 
   private void addExpensePopupDialog() {
