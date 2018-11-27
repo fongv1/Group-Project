@@ -1,21 +1,47 @@
 package android.example.com.split.data.repository;
 
+import android.example.com.split.data.entity.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertTrue;
+
 public class UserDataRepositoryTest {
+
+  UserDataRepository repository;
+  String userId;
 
   @Before
   public void setUp() throws Exception {
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    userId = auth.getCurrentUser().getUid();
+
+    repository = new UserDataRepository();
   }
 
   @After
   public void tearDown() throws Exception {
+    repository = null;
   }
 
   @Test
   public void createNewUser() {
+    User user = new User();
+    // user.setId("TESTID");
+    repository.createNewUser(user, userId, new UserDataRepository.OnUserCreated() {
+      @Override
+      public void onUserCreated(Boolean userCreated) {
+        if (userCreated) {
+          assertTrue(true);
+        } else {
+          assertTrue(false);
+        }
+      }
+    });
   }
 
   @Test
