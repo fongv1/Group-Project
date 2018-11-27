@@ -30,6 +30,7 @@ public class ExpensesDetailActivity extends BaseDetailActivity {
     if (bundle != null) {
       Expense expense = (Expense) bundle.get("Expense");
       amount = expense.getPaymentAmount();
+      setTitle(expense.getTittle());
     }
 
     TextView textView = findViewById(R.id.textView_group_item_expense_total);

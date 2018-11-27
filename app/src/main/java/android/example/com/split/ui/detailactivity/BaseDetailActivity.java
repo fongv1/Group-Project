@@ -12,14 +12,15 @@ public class BaseDetailActivity extends AppCompatActivity {
   private int optionsMenuId;
   private int titleStringId;
   private int activityLayoutId;
+  private ActionBar actionBar;
+
+  public BaseDetailActivity() {
+  }
 
   protected void init(int titleStringId, int activityLayoutId, int optionsMenuId) {
     this.titleStringId = titleStringId;
     this.activityLayoutId = activityLayoutId;
     this.optionsMenuId = optionsMenuId;
-  }
-
-  public BaseDetailActivity() {
   }
 
   @Override
@@ -31,10 +32,15 @@ public class BaseDetailActivity extends AppCompatActivity {
     setSupportActionBar(toolbar);
 
     // Get a support ActionBar corresponding to this toolbar
-    ActionBar actionBar = getSupportActionBar();
+    actionBar = getSupportActionBar();
     actionBar.setTitle(titleStringId);
     // Enable the Up button
     actionBar.setDisplayHomeAsUpEnabled(true);
+    setTitle("My Group");
+  }
+
+  protected void setTitle(String title) {
+    actionBar.setTitle(title);
   }
 
   @Override

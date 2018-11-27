@@ -83,6 +83,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
     Bundle bundle = getIntent().getExtras();
     if (bundle != null) {
       group = (Group) bundle.get("Group");
+      setTitle(group.getName());
     }
 
     // add member and expense
