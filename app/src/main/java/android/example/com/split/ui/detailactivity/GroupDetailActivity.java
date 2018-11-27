@@ -272,6 +272,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
         int memberPosition = expenseSpinner.getSelectedItemPosition();
         User member = group.getUserMembers().get(memberPosition);
         expense.setUser(member);
+        expense.setPayerName(member.getFirstName());
 
         // add the new expense to the dataset in the ExpensesRecyclerAdapter
         List<Expense> dataset = expensesTabFragment.getData();
