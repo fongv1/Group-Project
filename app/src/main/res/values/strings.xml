@@ -47,7 +47,7 @@
     <string name="enter_expense">Expense</string>
     <string name="hint_add_expense">Enter title</string>
     <string name="choose_member">Member:</string>
-    <string name="save_expense">>save</string>
+    <string name="save_expense">save</string>
     <string name="hint_add_expense_payee">Enter name</string>
     <string name="hint_add_expense_amount">Enter amount</string>
     <string name="hint_add_contact_lastName">Enter last name</string>
@@ -86,5 +86,7 @@
     <string name="title_activity_detail">Detail</string>
     <string name="total_share">Share</string>
     <string name="balance">Balance</string>
+    <string name="dialog_exit_button">exit</string>
+    <string name="dialog_info_content">Split is a free app for family, friends and roommates. Split shows you a tally of who owes how much, by adding multiple payees and splitting your expenses. No more lost receipts or disagreements about the balance. Split is for brunch, utilities, or when you are on vacation</string>
 
 </resources>
