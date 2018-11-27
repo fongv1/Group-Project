@@ -22,12 +22,11 @@ public class ExpensesDataRepository {
 
     public static final String SUCCESS = "success";
     public static final String EXPENSE_ID = "expense-id";
-    public static final String SECCESS = "seccess";
     public static final String UPDATE_SUCCESS = "update-success";
     private FirebaseFirestore db;
 
     // add expense to a group
-    public void addExpenses(String groupId , Expense expense , final Handler.Callback listener){
+    public void addExpenses(final String groupId , Expense expense , final Handler.Callback listener){
      db = FirebaseFirestore.getInstance();
      db.collection("groups").document(groupId).collection("expenses").add(expense)
        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -36,6 +35,11 @@ public class ExpensesDataRepository {
              if (task.isSuccessful()){
                  DocumentReference documentReference = task.getResult();
                  String documentId = documentReference.getId();
+                 // save doc id into the share document
+                  db.collection("groups").document(groupId).collection("expenses").document(documentId)
+                    .update("id",documentId);
+                 // After adding new expense by default a new share will be added !!
+
 
                  Message message = new Message();
                  Bundle data = new Bundle();
@@ -75,13 +79,13 @@ public class ExpensesDataRepository {
                           expenseList.add(expense);
 
                       }
-                      data.putBoolean(SECCESS, true);
+                      data.putBoolean(SUCCESS, true);
                       data.putSerializable("expense-list", (Serializable) expenseList);
                       message.setData(data);
                       listener.handleMessage(message);
                   }
                   else {
-                      data.putBoolean(SECCESS, true);
+                      data.putBoolean(SUCCESS, true);
                       message.setData(data);
                       listener.handleMessage(message);
                   }
@@ -91,7 +95,7 @@ public class ExpensesDataRepository {
             public void onFailure(@NonNull Exception e) {
                 Message message = new Message();
                 Bundle data = new Bundle();
-                data.putBoolean(SECCESS, true);
+                data.putBoolean(SUCCESS, true);
                 message.setData(data);
                 listener.handleMessage(message);
 

@@ -54,7 +54,7 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
         Expense expense = new Expense();
         User user = group.getUserMembers().get(rand.nextInt(5));
         expense.setUser(user);
-        expense.setPayeeName(user.getFirstName());
+        expense.setPayerName(user.getFirstName());
         expense.setPaymentAmount(rand.nextInt(10));
         expense.setTittle("Expense " + j + " " + groupName);
         group.addExpense(expense);

@@ -15,7 +15,6 @@ import com.google.firebase.firestore.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class GroupDataRepository extends Repository<Group> {
 
@@ -106,7 +105,7 @@ public class GroupDataRepository extends Repository<Group> {
     // add expense to a group
     // should be changed
 
-    public void addGroupExpense(String groupId , Map<String, Object> expense , final Handler.Callback listener){
+   /* public void addGroupExpense(String groupId , Map<String, Object> expense , final Handler.Callback listener){
         db = FirebaseFirestore.getInstance();
         DocumentReference groupDocument = db.collection("groups").document(groupId);
         // add new expense to this group
@@ -129,7 +128,7 @@ public class GroupDataRepository extends Repository<Group> {
             }
         });
 
-    }
+    }*/
      // get the list of user's groups
     public void getGroupList(String userId, final Handler.Callback listener){
         db = FirebaseFirestore.getInstance();

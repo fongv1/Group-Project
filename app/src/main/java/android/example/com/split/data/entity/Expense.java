@@ -12,9 +12,9 @@ public class Expense implements Serializable {
     /**
      * User who paid for the expense
      */
-    private String payeeId;
+    private String payerId;
 
-    private String payeeName;
+    private String payerName;
     /**
      * The amount of the payment made for the expense
      */
@@ -32,22 +32,22 @@ public class Expense implements Serializable {
 
     }
 
-    public Expense(String id, String payeeId, double paymentAmount, String tittle , String payeeName) {
+    public Expense(String id, String payerId, double paymentAmount, String tittle , String payerName) {
 
         this.id = id;
-        this.payeeId = payeeId;
+        this.payerId = payerId;
         this.paymentAmount = paymentAmount;
         this.tittle = tittle;
-        this.payeeName = payeeName;
+        this.payerName = payerName;
     }
 
     // for test only
-    public Expense( String payeeId, double paymentAmount, String tittle , String payeeName) {
+    public Expense( String payerId, double paymentAmount, String tittle , String payerName) {
 
-        this.payeeId = payeeId;
+        this.payerId = payerId;
         this.paymentAmount = paymentAmount;
         this.tittle = tittle;
-        this.payeeName = payeeName;
+        this.payerName = payerName;
     }
 
 
@@ -59,20 +59,20 @@ public class Expense implements Serializable {
         this.id = id;
     }
 
-    public String getPayeeId() {
-        return payeeId;
+    public String getPayerId() {
+        return payerId;
     }
 
-    public void setPayeeId(String payeeId) {
-        this.payeeId = payeeId;
+    public void setPayerId(String payerId) {
+        this.payerId = payerId;
     }
 
-    public String getPayeeName() {
-        return payeeName;
+    public String getPayerName() {
+        return payerName;
     }
 
-    public void setPayeeName(String payeeName) {
-        this.payeeName = payeeName;
+    public void setPayerName(String payerName) {
+        this.payerName = payerName;
     }
 
     public double getPaymentAmount() {
