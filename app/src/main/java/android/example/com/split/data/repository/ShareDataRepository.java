@@ -133,4 +133,73 @@ public class ShareDataRepository {
 
   }
 
+  // remove share (member with his shares)
+
+  public void removeShare(String groupId , String shareId , final Handler.Callback listener ){
+    db = FirebaseFirestore.getInstance();
+    db.collection("groups").document(groupId).collection("shares").document(shareId)
+      .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+      @Override
+      public void onComplete(@NonNull Task<Void> task) {
+        Message message = new Message();
+        Bundle data = new Bundle();
+        if(task.isSuccessful()) {
+          data.putBoolean(SUCCESS, true);
+          message.setData(data);
+          listener.handleMessage(message);
+        }
+        else {
+          data.putBoolean(SUCCESS, false);
+          message.setData(data);
+          listener.handleMessage(message);
+        }
+      }
+    }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        Message message = new Message();
+        Bundle data = new Bundle();
+        data.putBoolean(SUCCESS, false);
+        message.setData(data);
+        listener.handleMessage(message);
+      }
+    });
+
+  }
+
+  // delete all shares in a group
+
+  public void deleteAllShares(String groupId  , final Handler.Callback listener ){
+    db = FirebaseFirestore.getInstance();
+    db.collection("groups").document(groupId).collection("shares").document()
+      .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+      @Override
+      public void onComplete(@NonNull Task<Void> task) {
+        Message message = new Message();
+        Bundle data = new Bundle();
+        if(task.isSuccessful()) {
+          data.putBoolean(SUCCESS, true);
+          message.setData(data);
+          listener.handleMessage(message);
+        }
+        else {
+          data.putBoolean(SUCCESS, false);
+          message.setData(data);
+          listener.handleMessage(message);
+        }
+      }
+    }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        Message message = new Message();
+        Bundle data = new Bundle();
+        data.putBoolean(SUCCESS, false);
+        message.setData(data);
+        listener.handleMessage(message);
+      }
+    });
+
+  }
+
+
 }

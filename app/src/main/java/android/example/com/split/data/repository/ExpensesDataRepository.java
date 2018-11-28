@@ -9,10 +9,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -129,5 +126,74 @@ public class ExpensesDataRepository {
         });
 
     }
+
+
+  // remove expense
+
+  public void removeExpense(String groupId , String expenseId , final Handler.Callback listener ){
+    db = FirebaseFirestore.getInstance();
+    db.collection("groups").document(groupId).collection("expenses").document(expenseId)
+      .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+      @Override
+      public void onComplete(@NonNull Task<Void> task) {
+        Message message = new Message();
+        Bundle data = new Bundle();
+        if(task.isSuccessful()) {
+          data.putBoolean(SUCCESS, true);
+          message.setData(data);
+          listener.handleMessage(message);
+        }
+        else {
+          data.putBoolean(SUCCESS, false);
+          message.setData(data);
+          listener.handleMessage(message);
+        }
+      }
+    }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        Message message = new Message();
+        Bundle data = new Bundle();
+        data.putBoolean(SUCCESS, false);
+        message.setData(data);
+        listener.handleMessage(message);
+      }
+    });
+
+  }
+
+  // delete all the expenses in a group
+
+  public void deleteAllExpenses(String groupId  , final Handler.Callback listener ){
+    db = FirebaseFirestore.getInstance();
+    db.collection("groups").document(groupId).collection("expenses").document()
+      .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+      @Override
+      public void onComplete(@NonNull Task<Void> task) {
+        Message message = new Message();
+        Bundle data = new Bundle();
+        if(task.isSuccessful()) {
+          data.putBoolean(SUCCESS, true);
+          message.setData(data);
+          listener.handleMessage(message);
+        }
+        else {
+          data.putBoolean(SUCCESS, false);
+          message.setData(data);
+          listener.handleMessage(message);
+        }
+      }
+    }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        Message message = new Message();
+        Bundle data = new Bundle();
+        data.putBoolean(SUCCESS, false);
+        message.setData(data);
+        listener.handleMessage(message);
+      }
+    });
+
+  }
 
 }

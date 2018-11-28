@@ -298,6 +298,35 @@ public class UserDataRepository {
 
   }
 
+  // remove a contact from conatct collection (tested)
+
+  public void removeContactFromCollection(final String userId , String contactUserId , final OnItemRemoved listener ){
+    db = FirebaseFirestore.getInstance();
+    db.collection("users").document(userId).collection("contacts").whereEqualTo("id",contactUserId)
+      .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+      @Override
+      public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        if (task.isSuccessful()) {
+          for (DocumentSnapshot document : task.getResult()){
+            db.collection("users").document(userId).collection("contacts").document(document.getId())
+              .delete();
+          }
+          listener.onItemRemoved(true);
+        }
+        else {
+          listener.onItemRemoved(false);
+        }
+      }
+    }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        listener.onItemRemoved(false);
+      }
+    });
+
+  }
+
+
   public interface OnUserId {
 
     void onUserId(String userId);
@@ -329,6 +358,12 @@ public class UserDataRepository {
   public interface OnUserDetails {
 
     void onUserDetails(User user);
+  }
+
+
+  public interface OnItemRemoved {
+
+    void onItemRemoved(boolean isItemRemoved);
   }
 
 }
