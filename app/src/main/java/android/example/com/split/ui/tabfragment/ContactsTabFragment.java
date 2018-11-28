@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter, User> {
+public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter, User> implements ContactsActions{
 
   public ContactsTabFragment() {
     // Required empty public constructor
@@ -87,5 +87,50 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
 
     setRecyclerAdapter(new ContactsRecyclerAdapter(getData()));
     recyclerView.setAdapter(getRecyclerAdapter());
+  }
+
+  @Override
+  public void addContact(User user) {
+    
+  }
+
+  @Override
+  public void getContactDetailFromUI(String firstName, String lastName, String Email) {
+
+  }
+
+  @Override
+  public boolean contactExist(List<User> users, String firstName, String lastName) {
+    return false;
+  }
+
+  @Override
+  public User initialiseNewContact(String firstName, String lastName, String email) {
+    return null;
+  }
+
+  @Override
+  public void saveNewContact(User user) {
+
+  }
+
+  @Override
+  public void saveNewContactToRemote(User user) {
+
+  }
+
+  @Override
+  public void updateUIWithNewContact(User user) {
+
+  }
+
+  @Override
+  public void removeContact(List<User> users, User user) {
+
+  }
+
+  @Override
+  public void removeContactFromDB(User user) {
+
   }
 }
