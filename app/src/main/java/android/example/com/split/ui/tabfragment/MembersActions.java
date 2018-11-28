@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface MembersActions {
 
+  // Adding
   void addNewMember(User member);
 
   List<User> getContactsNotInAGroup(Group group, List<User> contacts);
@@ -15,6 +16,7 @@ public interface MembersActions {
 
   boolean isContactMemberInGroup(User contact, Group group);
 
+  // Actions
   User initializeNewGroupMember(User newMember, Group group);
 
   void saveNewMemberInGroup(User newMember, Group group);
@@ -23,6 +25,7 @@ public interface MembersActions {
 
   void updateUiAfterAddingNewMemberToGroup();
 
+  // Removing
   void removeGroupMember(User member, Group group);
 
   boolean groupMemberHasZeroBalanceInGroup(User user, Group group);
@@ -31,5 +34,5 @@ public interface MembersActions {
 
   void updateUiAfterRemovingGroupMember();
 
-  
+
 }
