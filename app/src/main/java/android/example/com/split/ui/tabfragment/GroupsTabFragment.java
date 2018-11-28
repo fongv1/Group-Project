@@ -228,9 +228,11 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
     repository.getGroupList(currentUser.getId(), new Handler.Callback() {
       @Override
       public boolean handleMessage(Message msg) {
-        List<Group> groups = (List<Group>) msg.getData()
-                                              .getSerializable(GroupDataRepository.GROUP_LIST);
-        getRecyclerAdapter().getDataset().addAll(groups);
+        if (msg.getData().getBoolean(GroupDataRepository.SUCCESS, false)) {
+          List<Group> groups = (List<Group>) msg.getData().getSerializable(GroupDataRepository
+                                                                               .GROUP_LIST);
+          getRecyclerAdapter().getDataset().addAll(groups);
+        }
         getRecyclerAdapter().notifyDataSetChanged();
         return false;
       }
