@@ -3,6 +3,7 @@ package android.example.com.split.ui.tabfragment;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
+import android.example.com.split.data.entity.User;
 import android.example.com.split.ui.recycleradapter.ExpensesRecyclerAdapter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter, Expense> {
+import java.util.List;
+
+public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter, Expense> implements ExpensesActions{
 
   private static final String TAG = "ExpensesTabFragment";
   private Group group;
@@ -41,5 +44,60 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
     setData(group.getExpenses());
     setRecyclerAdapter(new ExpensesRecyclerAdapter(getData(), group));
     recyclerView.setAdapter(getRecyclerAdapter());
+  }
+
+  @Override
+  public void addExpense(Group group, Expense expense) {
+
+  }
+
+  @Override
+  public void getExpenseDetailFromUI(String title, double amount, String payerName) {
+
+  }
+
+  @Override
+  public void populateSpinnerWithMembers(List<User> users) {
+
+  }
+
+  @Override
+  public User selectPayer(Group group, int position) {
+    return null;
+  }
+
+  @Override
+  public User selectPayer(Group group, User payer) {
+    return null;
+  }
+
+  @Override
+  public boolean validateExpenseInput(String title, double amount, String payerName) {
+    return false;
+  }
+
+  @Override
+  public Expense initialiseNewExpense(String title, double amount, String payerName) {
+    return null;
+  }
+
+  @Override
+  public double updateMembersBalance(User user, Group group, Expense expense) {
+    return 0;
+  }
+
+  @Override
+  public void saveNewExpense(Expense expense) {
+
+  }
+
+  @Override
+  public void writeExpenseToRemote(User user, Group group, Expense expense) {
+
+  }
+
+  @Override
+  public void updateUIWithNewExpense() {
+
   }
 }

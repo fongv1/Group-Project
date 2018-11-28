@@ -35,11 +35,22 @@ public class Group implements Serializable {
   @com.google.firebase.firestore.Exclude
   private List<Expense> expenses;
 
+  public List<Double> getMembersBalance() {
+    return membersBalance;
+  }
+
+  public void setMembersBalance(List<Double> membersBalance) {
+    this.membersBalance = membersBalance;
+  }
+
+  private List<Double> membersBalance;
+
 
   public Group() {
 
     // Initialise members and expenses lists
     members = new ArrayList<>();
+    membersBalance = new ArrayList<>();
     expenses = new ArrayList<>();
     userMembers = new ArrayList<>();
   }
@@ -48,6 +59,7 @@ public class Group implements Serializable {
     this.groupId = groupId;
     this.name = name;
     members = new ArrayList<>();
+    membersBalance = new ArrayList<>();
     expenses = new ArrayList<>();
     userMembers = new ArrayList<>();
   }
