@@ -8,7 +8,7 @@ import java.util.List;
 public interface GroupsActions {
 
   // Adding
-  void getNewGroupDetailsFromUi(String groupName);
+  Group getNewGroupDetailsFromUi(String groupName);
 
   boolean groupExists(List<Group> groups, String groupName);
 
@@ -17,7 +17,7 @@ public interface GroupsActions {
   // Actions
   Group initializeNewGroup(String groupName);
 
-  void saveNewGroup(List<Group> groups, Group group);
+  boolean saveNewGroup(User currentUser, List<Group> groups, Group group);
 
   void saveNewGroupToRemoteDb(User currentUser, Group group);
 
@@ -26,7 +26,9 @@ public interface GroupsActions {
   // Removing
   void removeGroup(List<Group> groups, Group group);
 
-  void rempoveGroupFromRemoteDb(User currentUser, Group group);
+  void removeGroupFromRemoteDb(User currentUser, Group group);
 
   void updateUiAfterRemovingGroup();
+
+  void fetchGroupsFromRemoteDb(User currentUser);
 }

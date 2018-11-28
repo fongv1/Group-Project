@@ -20,8 +20,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.*;
-import android.widget.*;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -76,9 +80,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
 
   @Contract(pure = true)
   @NonNull
-  private static TabLayout.BaseOnTabSelectedListener getOnTabSelectedListener(final FloatingActionButton fab,
-                                                                              final View.OnClickListener addContactFabListener,
-                                                                              final View.OnClickListener addGroupFabListener) {
+  private static TabLayout.BaseOnTabSelectedListener getOnTabSelectedListener(final
+                                                                                FloatingActionButton fab, final View.OnClickListener addContactFabListener, final View.OnClickListener addGroupFabListener) {
     return new TabLayout.BaseOnTabSelectedListener() {
       @Override
       public void onTabSelected(TabLayout.Tab tab) {
@@ -315,6 +318,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
     drawer.closeDrawer(GravityCompat.START);
     return true;
   }
+
   public void showInfoPopupWindow() {
     dialogBuilder = new AlertDialog.Builder(this);
     final View view = getLayoutInflater().inflate(R.layout.dialog_info_window, null);
@@ -344,7 +348,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
         List<User> dataset;
         contactName = view.findViewById(R.id.editText_dialog_add_contact_firstName);
         String newName = contactName.getText().toString();
-        if(!newName.trim().isEmpty()) {
+        if (!newName.trim().isEmpty()) {
           user.setFirstName(newName);
 
           contactSurname = view.findViewById(R.id.editText_dialog_add_contact_lastName);
@@ -355,11 +359,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
           String newEmail = contactEmail.getText().toString();
           user.setEmail(newEmail);
 
-          dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter()
-                                              .getDataset();
+          dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().getDataset();
           dataset.add(user);
           int position = dataset.size() - 1;
-          homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().notifyItemInserted(position);
+          homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter()
+                         .notifyItemInserted(position);
 
         }
         dialog.dismiss();
@@ -386,18 +390,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
         groupName = view.findViewById(R.id.editText_dialog_add_group);
         String newGroupName = groupName.getText().toString();
 
-        if(!newGroupName.trim().isEmpty()) {
-          group.setName(newGroupName);
-          List<Group> dataset = homeTabsAdapter.getGroupsTabFragment().getRecyclerAdapter().getDataset();
-          dataset.add(group);
-
-          int position = dataset.size() - 1;
-          homeTabsAdapter.getGroupsTabFragment().getRecyclerAdapter().notifyItemInserted(position);
+        if (!newGroupName.trim().isEmpty()) {
+          group = homeTabsAdapter.getGroupsTabFragment().getNewGroupDetailsFromUi(newGroupName);
+          // If the group exists
+          if (group == null) {
+            return;
+          }
+          FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+          User user = new User();
+          if (firebaseUser != null) {
+            user.setId(firebaseUser.getUid());
+            homeTabsAdapter.getGroupsTabFragment()
+                           .saveNewGroup(user, homeTabsAdapter.getGroupsTabFragment().getData(),
+                                         group);
+            homeTabsAdapter.getGroupsTabFragment().saveNewGroupToRemoteDb(user, group);
+          }
         }
         dialog.dismiss();
-
       }
-      });
-        dialog.show();
-    }
+    });
+    dialog.show();
+  }
 }
