@@ -4,7 +4,6 @@ package android.example.com.split.ui.tabfragment;
 import android.content.Context;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
-import android.example.com.split.ui.activity.HomeActivity;
 import android.example.com.split.ui.recycleradapter.ContactsRecyclerAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,7 +20,8 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter, User> implements ContactsActions{
+public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter, User>
+    implements ContactsActions {
 
   public ContactsTabFragment() {
     // Required empty public constructor
@@ -91,7 +91,7 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
 
   @Override
   public void addContact(User user) {
-    
+
   }
 
   @Override
@@ -115,7 +115,7 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
   }
 
   @Override
-  public void saveNewContactToRemote(User user) {
+  public void saveNewContactToRemote(User currentUser, User contact) {
 
   }
 
@@ -130,7 +130,7 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
   }
 
   @Override
-  public void removeContactFromDB(User user) {
+  public void removeContactFromDB(User currentUser, User contact) {
 
   }
 }

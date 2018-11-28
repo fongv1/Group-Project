@@ -7,24 +7,24 @@ import java.util.List;
 public interface ContactsActions {
 
   //Checks
-  public void addContact(User user);
+  void addContact(User user);
 
-  public void getContactDetailFromUI(String firstName, String lastName, String Email);
+  void getContactDetailFromUI(String firstName, String lastName, String Email);
 
-  public boolean contactExist(List<User> users, String firstName, String lastName);
+  boolean contactExist(List<User> users, String firstName, String lastName);
 
   //Actions
-  public User initialiseNewContact(String firstName, String lastName, String email);
+  User initialiseNewContact(String firstName, String lastName, String email);
 
-  public void saveNewContact(User user);
+  void saveNewContact(User user);
 
-  public void saveNewContactToRemote(User user);
+  void saveNewContactToRemote(User currentUser, User contact);
 
-  public void updateUIWithNewContact(User user);
+  void updateUIWithNewContact(User user);
 
   //Remove
-  public void removeContact(List<User> users, User user);
+  void removeContact(List<User> users, User user);
 
-  public void removeContactFromDB(User user);
+  void removeContactFromDB(User currentUser, User contact);
 
 }
