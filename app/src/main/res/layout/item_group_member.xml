@@ -29,6 +29,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0"
                 android:scaleType="centerInside"
+                android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/ic_person_black_24dp" />
 
             <TextView
@@ -36,25 +37,48 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:paddingTop="2dp"
+                android:layout_gravity="center_vertical"
                 android:text="@string/member_row_view"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
                 android:paddingLeft="20dp" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Balance"
-                android:textStyle="bold"
-                android:textColor="@color/colorPrimaryDark" />
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Balance"
+                    android:layout_gravity="center_vertical"
+                    android:paddingEnd="5dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:id="@+id/textView_group_item_currency"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingEnd="19dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:text="@string/sek" />
+
+            </LinearLayout>
+
+
 
             <ImageView
                 android:id="@+id/imageView_delete_member_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:layout_gravity="top"
+                android:layout_gravity="center_vertical"
                 android:paddingEnd="2dp"
                 app:srcCompat="@drawable/ic_clear_black_24dp" />
         </LinearLayout>
