@@ -13,7 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter, Expense> {
+public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter, Expense>
+    implements ExpensesActions {
 
   private static final String TAG = "ExpensesTabFragment";
   private Group group;

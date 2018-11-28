@@ -6,7 +6,6 @@ import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
-import android.example.com.split.ui.activity.HomeActivity;
 import android.example.com.split.ui.recycleradapter.GroupsRecyclerAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,9 +20,11 @@ import java.util.List;
 import java.util.Random;
 
 
-public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Group> {
+public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Group> implements
+    GroupsActions {
 
- private GroupsRecyclerAdapter groupsRecyclerAdapter;
+  private GroupsRecyclerAdapter groupsRecyclerAdapter;
+
   public GroupsTabFragment() {
     // Required empty public constructor
   }
@@ -41,13 +42,13 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
   private void initDataset() {
     setData(new ArrayList<Group>());
     Random rand = new Random();
-    
+
     for (int i = 0; i < 5; i++) {
       Group group = new Group();
       String groupName = "Group " + i;
       group.setName(groupName);
 
-      for(int j = 0; j < 5; j++){
+      for (int j = 0; j < 5; j++) {
         User user = new User();
         user.setFirstName("Member " + j);
         user.setLastName(groupName);
@@ -107,6 +108,56 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
   @Override
   public void onStart() {
     super.onStart();
+
+  }
+
+  @Override
+  public void getNewGroupDetailsFromUi(String groupName) {
+
+  }
+
+  @Override
+  public boolean groupExists(List<Group> groups, String groupName) {
+    return false;
+  }
+
+  @Override
+  public void addNewGroup(List<Group> groups, Group group) {
+
+  }
+
+  @Override
+  public Group initializeNewGroup(String groupName) {
+    return null;
+  }
+
+  @Override
+  public void saveNewGroup(List<Group> groups, Group group) {
+
+  }
+
+  @Override
+  public void saveNewGroupToRemoteDb(User currentUser, Group group) {
+
+  }
+
+  @Override
+  public void updateUiAfterAddingNewGroup() {
+
+  }
+
+  @Override
+  public void removeGroup(List<Group> groups, Group group) {
+
+  }
+
+  @Override
+  public void rempoveGroupFromRemoteDb(User currentUser, Group group) {
+
+  }
+
+  @Override
+  public void updateUiAfterRemovingGroup() {
 
   }
 }
