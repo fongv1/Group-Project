@@ -310,8 +310,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
       createContactPopupDialog();
     } else if (id == R.id.nav_info) {
       showInfoPopupWindow();
-    } else if (id == R.id.nav_manage) {
-      Toast.makeText(this, "add manage", Toast.LENGTH_LONG).show();
     }
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     drawer.closeDrawer(GravityCompat.START);
