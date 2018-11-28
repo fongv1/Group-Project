@@ -69,15 +69,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
   }
 
   @Override
-  public void onBackPressed() {
-    if (drawer.isDrawerOpen(GravityCompat.START)) {
-      drawer.closeDrawer(GravityCompat.START);
-    } else {
-      super.onBackPressed();
-    }
-  }
-
-  @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     Bundle bundle = getIntent().getExtras();
