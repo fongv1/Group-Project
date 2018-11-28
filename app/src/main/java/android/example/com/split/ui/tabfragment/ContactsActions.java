@@ -20,7 +20,8 @@ public interface ContactsActions {
 
   void saveNewContactToRemote(User currentUser, User contact);
 
-  void updateUIWithNewContact(User user);
+  public void updateUIWithNewContact();
+
 
   //Remove
   void removeContact(List<User> users, User user);

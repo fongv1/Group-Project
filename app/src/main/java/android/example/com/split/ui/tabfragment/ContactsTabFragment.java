@@ -120,7 +120,7 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
   }
 
   @Override
-  public void updateUIWithNewContact(User user) {
+  public void updateUIWithNewContact() {
 
   }
 
