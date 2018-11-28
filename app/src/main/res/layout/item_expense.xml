@@ -46,13 +46,30 @@
                     android:textStyle="bold"
                     android:text="@string/textView_expense_item" />
 
-                <TextView
-                    android:id="@+id/textView_amount_item"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textStyle="bold"
-                    android:text="@string/textView_amount_item" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textView_amount_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:paddingEnd="5dp"
+                        android:text="@string/textView_amount_item" />
+
+                    <TextView
+                        android:id="@+id/textView_group_item_currency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:text="@string/sek" />
+
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <TextView
