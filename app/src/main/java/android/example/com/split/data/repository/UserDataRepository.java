@@ -35,54 +35,56 @@ public class UserDataRepository {
 
   }
 
-  // create new user and add it to Auth user's list
+  // create new user if not exist and add it to Auth user's contact list
   public void addNewContact(final User user, final String userAuthId, final OnContactCreated
       listener) {
     db = FirebaseFirestore.getInstance();
-    db.collection("users").add(user)
-      .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-        @Override
-        public void onSuccess(DocumentReference documentReference) {
-          final String userId = documentReference.getId();
-          db.collection("users").document(userAuthId).get()
-            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+    // adding a new user to user collection (if we want to add join group)
+          db.collection("users").add(user)
+            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
               @Override
-              public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                  DocumentSnapshot snapshot = task.getResult();
-                  User myUser = snapshot.toObject(User.class);
-                  myUser.addToContactList(userId);
-                  db.collection("users").document(userAuthId).set(myUser)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                      @Override
-                      public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                          listener.onContactCreated(true);
-                        } else {
-                          listener.onContactCreated(false);
-                        }
+              public void onSuccess(DocumentReference documentReference) {
+                final String documentReferenceId = documentReference.getId();
+                // get current user
+                db.collection("users").document(userAuthId).get()
+                  .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                      if (task.isSuccessful()) {
+                        DocumentSnapshot snapshot = task.getResult();
+                        User myUser = snapshot.toObject(User.class);
+                        myUser.addToContactList(documentReferenceId);
+                        // update the current user by adding the created user to contact list
+                        db.collection("users").document(userAuthId).set(myUser)
+                          .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                              if (task.isSuccessful()) {
+                                listener.onContactCreated(true);
+                              } else {
+                                listener.onContactCreated(false);
+                              }
+                            }
+                          });
+
                       }
-                    });
-
-                }
+                    }
+                  });
               }
-            });
-        }
+            }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+              listener.onContactCreated(false);
 
-
-      }).addOnFailureListener(new OnFailureListener() {
-      @Override
-      public void onFailure(@NonNull Exception e) {
-        listener.onContactCreated(false);
-
-      }
-    });
+            }
+          });
 
   }
 
 
   // get the document is of the current auth user
-  public void getDocumentId(String user_auth_id, final OnUserId listener) {
+  public void getUserDocument(String user_auth_id, final OnUserId listener) {
     db = FirebaseFirestore.getInstance();
     final String[] data = {""};
     db.collection("users").limit(1).whereEqualTo("id", user_auth_id).get()
@@ -145,6 +147,8 @@ public class UserDataRepository {
       });
   }
 
+
+  // dont use this method
   // create new user and add it to Auth user's list
   public void addNewContact1(final User user, final String userAuthId, final OnContactCreated
       listener) {
@@ -171,7 +175,7 @@ public class UserDataRepository {
       });
   }
 
-  // get list of user's contact
+  // get the contact list for the currenrt user
 
   public void getContactlist(final String userAuthId, final OnGetContact listener) {
     db = FirebaseFirestore.getInstance();
@@ -179,25 +183,35 @@ public class UserDataRepository {
       .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
         @Override
         public void onSuccess(DocumentSnapshot documentSnapshot) {
-          final List<User> contactUserList = new ArrayList<>();
+
           if (documentSnapshot.exists()) {
+            final List<User> contactUserList = new ArrayList<>();
             User user = documentSnapshot.toObject(User.class);
+
             // list of users document id
             List<String> contactList = user.getContacts();
-            for (int i = 0; i < contactList.size() - 1; i++) {
+
+            for (int i = 0; i <= contactList.size() - 1; i++) {
               db.collection("users").document(contactList.get(i)).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+
                   @Override
                   public void onSuccess(DocumentSnapshot documentSnapshot) {
                     // list of contact usersList<User> contactUserList;
 
+
                     User contactUser = documentSnapshot.toObject(User.class);
+
                     contactUserList.add(contactUser);
+                    listener.onGetContact(contactUserList);
+
+
                   }
                 });
+
             }
 
-            listener.onGetContact(contactUserList);
+           // listener.onGetContact(contactUserList);
           }
 
         }
@@ -226,6 +240,64 @@ public class UserDataRepository {
     });
   }
 
+
+  // create new user if not exist and add it to Auth user's contact list
+  public void addNewContactAsCollection(final User user, final String userAuthId, final OnContactCreated
+      listener) {
+    db = FirebaseFirestore.getInstance();
+
+    // adding a new user to user collection (if we want to add join group)
+    db.collection("users").add(user)
+      .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        @Override
+        public void onSuccess(DocumentReference documentReference) {
+          final String documentReferenceId = documentReference.getId();
+          // get current user
+
+          User contact = new User();
+          contact.setId(documentReferenceId);
+          contact.setFirstName(user.getFirstName());
+          contact.setLastName(user.getLastName());
+          db.collection("users").document(userAuthId).collection("contacts").add(contact).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+              if(task.isSuccessful()){
+                listener.onContactCreated(true);
+              }
+              else {
+                listener.onContactCreated(false);
+              }
+            }
+          }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+              listener.onContactCreated(false);
+            }
+          });
+        }
+    });
+
+  }
+
+  // get the contact list collection for the currenrt user
+  public void getContactlistFromCollection(final String userAuthId, final OnGetContact listener) {
+    db = FirebaseFirestore.getInstance();
+    final List<User> contactUserList = new ArrayList<>();
+
+    db.collection("users").document(userAuthId).collection("contacts").get()
+      .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        @Override
+        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+          for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
+            User user = documentSnapshot.toObject(User.class);
+            contactUserList.add(user);
+          }
+          listener.onGetContact(contactUserList);
+        }
+      });
+
+  }
+
   public interface OnUserId {
 
     void onUserId(String userId);
@@ -246,6 +318,7 @@ public class UserDataRepository {
   public interface OnGetContact {
 
     void onGetContact(List<User> contactUser);
+    void onGetId(String id);
   }
 
   public interface IsUserExist {

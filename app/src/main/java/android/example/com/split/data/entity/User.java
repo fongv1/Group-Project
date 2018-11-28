@@ -47,6 +47,8 @@ public class User implements Serializable {
 
   public User() {
 
+    contacts = new ArrayList<String>();
+
   }
 
   //
