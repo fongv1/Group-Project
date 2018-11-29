@@ -17,27 +17,42 @@ import java.util.List;
 
 public class UserDataRepository {
 
-  private static final String TAG = "UserDataRepository";
   public static final String SUCCESS = "success";
   public static final String CONTACT_LIST = "contact_list";
+  private static final String TAG = "UserDataRepository";
   public OnUserId listener;
   private FirebaseFirestore db;
 
   // create new Auth user
   public void createNewUser(User user, String userAuthId, final OnUserCreated listener) {
     db = FirebaseFirestore.getInstance();
-    db.collection("users").document(userAuthId).set(user)
-      .addOnSuccessListener(new OnSuccessListener<Void>() {
+    if (userAuthId != null) {
+      db.collection("users").document(userAuthId).set(user)
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+          @Override
+          public void onSuccess(Void aVoid) {
+            listener.onUserCreated(true);
+          }
+        }).addOnFailureListener(new OnFailureListener() {
         @Override
-        public void onSuccess(Void aVoid) {
-          listener.onUserCreated(true);
+        public void onFailure(@NonNull Exception e) {
+          listener.onUserCreated(false);
         }
-      }).addOnFailureListener(new OnFailureListener() {
-      @Override
-      public void onFailure(@NonNull Exception e) {
-        listener.onUserCreated(false);
-      }
-    });
+      });
+    } else {
+      db.collection("users").add(user)
+        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+          @Override
+          public void onSuccess(DocumentReference documentReference) {
+            listener.onUserCreated(true);
+          }
+        }).addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+          listener.onUserCreated(false);
+        }
+      });
+    }
 
   }
 
@@ -231,41 +246,62 @@ public class UserDataRepository {
         @Override
         public void onSuccess(DocumentReference documentReference) {
           final String documentReferenceId = documentReference.getId();
-          // get current user
+          db.collection("users").document(documentReferenceId).update("id", documentReferenceId)
+            .addOnCompleteListener(
 
-          User contact = new User();
-          contact.setId(documentReferenceId);
-          contact.setFirstName(user.getFirstName());
-          contact.setLastName(user.getLastName());
-          db.collection("users").document(userAuthId).collection("contacts").add(contact).
-              addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
-              Message message = new Message();
-              Bundle data = new Bundle();
-              if(task.isSuccessful()){
-                data.putBoolean(SUCCESS, true);
-                message.setData(data);
-                listener.handleMessage(message);
-              }
-              else {
-                data.putBoolean(SUCCESS, false);
-                message.setData(data);
-                listener.handleMessage(message);
-              }
-            }
-          }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-              Message message = new Message();
-              Bundle data = new Bundle();
-              data.putBoolean(SUCCESS, false);
-              message.setData(data);
-              listener.handleMessage(message);
-            }
-          });
+                new OnCompleteListener<Void>() {
+                  @Override
+                  public void onComplete(@NonNull Task<Void> task) {
+                    User contact = new User();
+                    contact.setId(documentReferenceId);
+                    contact.setFirstName(user.getFirstName());
+                    contact.setLastName(user.getLastName());
+
+                    db.collection("users").document(userAuthId)
+                      .update("contacts", FieldValue.arrayUnion(contact.getId()))
+                      .addOnCompleteListener(
+
+                          new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                              if (task.isSuccessful()) {
+                                db.collection("users").document(documentReferenceId)
+                                  .update("contacts", FieldValue.arrayUnion(userAuthId))
+                                  .addOnCompleteListener(
+
+                                      new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                          Message message = new Message();
+                                          Bundle data = new Bundle();
+                                          if (task.isSuccessful()) {
+                                            data.putBoolean(SUCCESS, true);
+                                            message.setData(data);
+                                            listener.handleMessage(message);
+                                          } else {
+                                            data.putBoolean(SUCCESS, false);
+                                            message.setData(data);
+                                            listener.handleMessage(message);
+                                          }
+                                        }
+                                      });
+                              }
+                            }
+                          }).addOnFailureListener(new OnFailureListener() {
+                      @Override
+                      public void onFailure(@NonNull Exception e) {
+                        Message message = new Message();
+                        Bundle data = new Bundle();
+                        data.putBoolean(SUCCESS, false);
+                        message.setData(data);
+                        listener.handleMessage(message);
+                      }
+                    });
+                  }
+                });
+          // get current user
         }
-    });
+      });
 
   }
 
@@ -278,7 +314,7 @@ public class UserDataRepository {
       .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
         @Override
         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-          for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
+          for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
             User user = documentSnapshot.toObject(User.class);
             contactUserList.add(user);
           }
@@ -296,24 +332,24 @@ public class UserDataRepository {
 
   // remove a contact from conatct collection (tested)
 
-  public void removeContact(final String userId , String contactUserId , final Handler.Callback listener ){
+  public void removeContact(final String userId, String contactUserId, final Handler.Callback
+      listener) {
     db = FirebaseFirestore.getInstance();
-    db.collection("users").document(userId).collection("contacts").whereEqualTo("id",contactUserId)
+    db.collection("users").document(userId).collection("contacts").whereEqualTo("id", contactUserId)
       .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
       @Override
       public void onComplete(@NonNull Task<QuerySnapshot> task) {
         Message message = new Message();
         Bundle data = new Bundle();
         if (task.isSuccessful()) {
-          for (DocumentSnapshot document : task.getResult()){
-            db.collection("users").document(userId).collection("contacts").document(document.getId())
-              .delete();
+          for (DocumentSnapshot document : task.getResult()) {
+            db.collection("users").document(userId).collection("contacts")
+              .document(document.getId()).delete();
           }
           data.putBoolean(SUCCESS, true);
           message.setData(data);
           listener.handleMessage(message);
-        }
-        else {
+        } else {
           data.putBoolean(SUCCESS, false);
           message.setData(data);
           listener.handleMessage(message);
@@ -353,6 +389,7 @@ public class UserDataRepository {
   public interface OnGetContact {
 
     void onGetContact(List<User> contactUser);
+
     void onGetId(String id);
   }
 

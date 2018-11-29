@@ -1,5 +1,6 @@
 package android.example.com.split.data.entity;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.io.Serializable;
@@ -69,6 +70,15 @@ public class User implements Serializable {
     this.lastName = lastName;
     this.email = email;
     this.phoneNumber = phoneNumber;
+    contacts = new ArrayList<>();
+  }
+
+  public User(FirebaseUser currentUser) {
+    this.id = currentUser.getUid();
+    this.firstName = currentUser.getDisplayName();
+    this.lastName = currentUser.getDisplayName();
+    this.email = currentUser.getEmail();
+    this.phoneNumber = currentUser.getPhoneNumber();
     contacts = new ArrayList<>();
   }
 
