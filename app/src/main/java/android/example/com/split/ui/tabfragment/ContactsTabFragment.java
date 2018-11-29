@@ -4,6 +4,7 @@ package android.example.com.split.ui.tabfragment;
 import android.content.Context;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
+import android.example.com.split.data.repository.UserDataRepository;
 import android.example.com.split.ui.recycleradapter.ContactsRecyclerAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -91,22 +92,39 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
 
   @Override
   public void addContact(User user) {
+    List<User> users = new ArrayList<>();
+    // TODO fetch all the contacts
+    if (!contactExist(users, user.getFirstName(), user.getLastName())) {
+      users.add(user);
+    }
 
   }
 
   @Override
-  public void getContactDetailFromUI(String firstName, String lastName, String Email) {
-
+  public void getContactDetailFromUI(String firstName, String lastName, String email) {
+    User user = new User();
+    user.setFirstName(firstName);
+    user.setLastName(lastName);
+    user.setEmail(email);
   }
 
   @Override
   public boolean contactExist(List<User> users, String firstName, String lastName) {
+    for (User user : users) {
+      if (user.getFirstName().equals(firstName) && user.getLastName().equals(lastName)) {
+        return true;
+      }
+    }
     return false;
   }
 
   @Override
   public User initialiseNewContact(String firstName, String lastName, String email) {
-    return null;
+    User user = new User();
+    user.setFirstName(firstName);
+    user.setLastName(lastName);
+    user.setEmail(email);
+    return user;
   }
 
   @Override
@@ -121,12 +139,16 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
 
   @Override
   public void updateUIWithNewContact() {
-
+    getRecyclerAdapter().notifyDataSetChanged();
   }
 
   @Override
   public void removeContact(List<User> users, User user) {
-
+    if (user != null && users != null) {
+      if (users.contains(user)) {
+        users.remove(user);
+      }
+    }
   }
 
   @Override
