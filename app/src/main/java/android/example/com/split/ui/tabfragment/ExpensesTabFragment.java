@@ -1,5 +1,6 @@
 package android.example.com.split.ui.tabfragment;
 
+import android.content.Context;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
@@ -13,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 
 import java.util.List;
 
@@ -48,22 +50,29 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
 
   @Override
   public void addExpense(Group group, Expense expense) {
+    //User user = expense.getUser();
+    group.addExpense(expense);
 
   }
 
   @Override
-  public void getExpenseDetailFromUI(String title, double amount, String payerName) {
-
+  public Expense getExpenseDetailFromUI(String title, double amount, String payerName) {
+    Expense expense = initialiseNewExpense(title, amount, payerName);
+    return expense;
   }
 
   @Override
-  public void populateSpinnerWithMembers(List<User> users) {
+  public void populateSpinnerWithMembers(Context context, List<User> users) {
+    Spinner spinner = new Spinner(context);
 
   }
 
   @Override
   public User selectPayer(Group group, int position) {
-    return null;
+    String payer = group.getMembers().get(position);
+    User user = new User();
+    user.setFirstName(payer);
+    return user;
   }
 
   @Override
@@ -78,12 +87,28 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
 
   @Override
   public Expense initialiseNewExpense(String title, double amount, String payerName) {
-    return null;
+    Expense expense = new Expense();
+    expense.setTittle(title);
+    expense.setPaymentAmount(amount);
+    expense.setPayerName(payerName);
+    return expense;
   }
 
   @Override
-  public double updateMembersBalance(User user, Group group, Expense expense) {
-    return 0;
+  public List<Double> updateMembersBalance(User user, Group group, Expense expense) {
+
+//    List<Expense> expenses = group.getExpenses();
+//    Double sumOfExpenses = 0.0;
+//
+//    for(Expense e : expenses) {
+//      sumOfExpenses += e.getPaymentAmount();
+//    }
+//
+//    int numberOfmembers = group.getMembers().size();
+//    double eachMembersShare = expense.getPaymentAmount()/numberOfmembers;
+//    String payer = expense.getPayerId();
+
+    return null;
   }
 
   @Override
