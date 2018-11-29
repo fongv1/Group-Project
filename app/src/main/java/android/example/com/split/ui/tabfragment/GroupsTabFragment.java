@@ -11,7 +11,6 @@ import android.example.com.split.ui.recycleradapter.GroupsRecyclerAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,11 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -175,15 +171,18 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
   @Override
   public void saveNewGroupToRemoteDb(User currentUser, Group group) {
     GroupDataRepository repository = new GroupDataRepository();
-    repository.addGroup(currentUser, group, new OnCompleteListener<Void>() {
+    repository.addGroup(group, new Handler.Callback() {
       @Override
-      public void onComplete(@NonNull Task<Void> task) {
-        if (task.isSuccessful()) {
+      public boolean handleMessage(Message msg) {
+        if (msg.getData().getBoolean(GroupDataRepository.SUCCESS)) {
           Toast.makeText(getContext(), "Saved group in remote", Toast.LENGTH_SHORT).show();
-        } else {
+        }
+        else {
           Toast.makeText(getContext(), "Failed to save group in remote", Toast.LENGTH_SHORT).show();
         }
+        return false;
       }
+
     });
   }
 
@@ -204,16 +203,18 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
   @Override
   public void removeGroupFromRemoteDb(User currentUser, Group group) {
     GroupDataRepository repository = new GroupDataRepository();
-    repository.removeGroup(currentUser, group, new OnCompleteListener<DocumentSnapshot>() {
+    repository.removeGroup( group, new Handler.Callback() {
       @Override
-      public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-        if (task.isSuccessful()) {
+      public boolean handleMessage(Message msg) {
+        if (msg.getData().getBoolean(GroupDataRepository.SUCCESS)) {
           Toast.makeText(getContext(), "Group removed from remote", Toast.LENGTH_SHORT).show();
-        } else {
-          Toast.makeText(getContext(), "Failed to remove group from remote", Toast.LENGTH_SHORT)
-               .show();
         }
+        else {
+          Toast.makeText(getContext(), "Failed to remove group from remote", Toast.LENGTH_SHORT).show();
+        }
+        return false;
       }
+
     });
   }
 
@@ -231,6 +232,7 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
         if (msg.getData().getBoolean(GroupDataRepository.SUCCESS, false)) {
           List<Group> groups = (List<Group>) msg.getData().getSerializable(GroupDataRepository
                                                                                .GROUP_LIST);
+          // are we adding here to local memory
           getRecyclerAdapter().getDataset().addAll(groups);
         }
         getRecyclerAdapter().notifyDataSetChanged();

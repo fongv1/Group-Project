@@ -7,6 +7,8 @@ import android.example.com.split.data.entity.User;
 import android.example.com.split.data.repository.UserDataRepository;
 import android.example.com.split.ui.recycleradapter.ContactsRecyclerAdapter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +16,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +28,9 @@ import java.util.List;
  */
 public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter, User>
     implements ContactsActions {
+
+  private User currentUser;
+  private List<User> users = new ArrayList<>();
 
   public ContactsTabFragment() {
     // Required empty public constructor
@@ -88,24 +96,29 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
 
     setRecyclerAdapter(new ContactsRecyclerAdapter(getData()));
     recyclerView.setAdapter(getRecyclerAdapter());
+    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    User user = new User();
+    if (firebaseUser != null) {
+      user.setId(firebaseUser.getUid());
+      fetchContactListFromRemoteDb(user);
+    }
   }
 
   @Override
   public void addContact(User user) {
-    List<User> users = new ArrayList<>();
-    // TODO fetch all the contacts
-    if (!contactExist(users, user.getFirstName(), user.getLastName())) {
-      users.add(user);
-    }
+
+
 
   }
 
   @Override
-  public void getContactDetailFromUI(String firstName, String lastName, String email) {
-    User user = new User();
-    user.setFirstName(firstName);
-    user.setLastName(lastName);
-    user.setEmail(email);
+  public User getContactDetailFromUI(String firstName, String lastName, String email) {
+    User user = initialiseNewContact(firstName,lastName,email);
+    if (contactExist(users, user.getFirstName(), user.getLastName())) {
+      Toast.makeText(getActivity(), "user exists", Toast.LENGTH_SHORT).show();
+      return null;
+    }
+   return user;
   }
 
   @Override
@@ -134,6 +147,21 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
 
   @Override
   public void saveNewContactToRemote(User currentUser, User contact) {
+    String currentUserId = currentUser.getId();
+    UserDataRepository userDataRepository = new UserDataRepository();
+    userDataRepository.addNewContact(contact, currentUserId, new Handler.Callback() {
+      @Override
+      public boolean handleMessage(Message msg) {
+        if (msg.getData().getBoolean(UserDataRepository.SUCCESS, false)) {
+          Toast.makeText(getContext(), "Contact added to remote", Toast.LENGTH_SHORT).show();
+        }
+        else {
+          Toast.makeText(getContext(), "Failed to add contact to remote", Toast.LENGTH_SHORT).show();
+        }
+
+        return false;
+      }
+    });
 
   }
 
@@ -153,6 +181,41 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
 
   @Override
   public void removeContactFromDB(User currentUser, User contact) {
+    String currentUserId = currentUser.getId();
+    String contactId = contact.getId();
+    UserDataRepository userDataRepository = new UserDataRepository();
+    userDataRepository.removeContact(currentUserId, contactId, new Handler.Callback() {
+      @Override
+      public boolean handleMessage(Message msg) {
+        if (msg.getData().getBoolean(UserDataRepository.SUCCESS, false)) {
+          Toast.makeText(getContext(), "Contact removed from remote", Toast.LENGTH_SHORT).show();
+        }
+        else {
+          Toast.makeText(getContext(), "Failed to remove contact from remote", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+      }
+    });
 
   }
+
+  @Override
+  public void fetchContactListFromRemoteDb(User currentUser) {
+    String userId = currentUser.getId();
+    UserDataRepository userDataRepository = new UserDataRepository();
+    userDataRepository.getContactlist(userId, new Handler.Callback() {
+      @Override
+      public boolean handleMessage(Message msg) {
+        if (msg.getData().getBoolean(UserDataRepository.SUCCESS, false)) {
+          List<User> contactList = (List<User>) msg.getData().getSerializable(UserDataRepository.CONTACT_LIST);
+
+          getRecyclerAdapter().getDataset().addAll(contactList);
+        }
+        getRecyclerAdapter().notifyDataSetChanged();
+        return false;
+      }
+    });
+  }
+
+
 }
