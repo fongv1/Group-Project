@@ -1,6 +1,9 @@
 package android.example.com.split.data.repository;
 
 import android.example.com.split.data.entity.User;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -8,12 +11,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDataRepository {
 
   private static final String TAG = "UserDataRepository";
+  public static final String SUCCESS = "success";
+  public static final String CONTACT_LIST = "contact_list";
   public OnUserId listener;
   private FirebaseFirestore db;
 
@@ -36,7 +42,7 @@ public class UserDataRepository {
   }
 
   // create new user if not exist and add it to Auth user's contact list
-  public void addNewContact(final User user, final String userAuthId, final OnContactCreated
+/*  public void addNewContact(final User user, final String userAuthId, final OnContactCreated
       listener) {
     db = FirebaseFirestore.getInstance();
 
@@ -80,7 +86,7 @@ public class UserDataRepository {
             }
           });
 
-  }
+  }*/
 
 
   // get the document is of the current auth user
@@ -148,36 +154,9 @@ public class UserDataRepository {
   }
 
 
-  // dont use this method
-  // create new user and add it to Auth user's list
-  public void addNewContact1(final User user, final String userAuthId, final OnContactCreated
-      listener) {
-    db = FirebaseFirestore.getInstance();
-    db.collection("users").add(user)
-      .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-        @Override
-        public void onSuccess(DocumentReference documentReference) {
-          final String userId = documentReference.getId();
-          db.collection("users").document(userAuthId).
-              update("contacts", userId).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-              listener.onContactCreated(true);
-            }
-          }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-              listener.onContactCreated(false);
-            }
-          });
-        }
-
-      });
-  }
-
   // get the contact list for the currenrt user
 
-  public void getContactlist(final String userAuthId, final OnGetContact listener) {
+/*  public void getContactlist(final String userAuthId, final OnGetContact listener) {
     db = FirebaseFirestore.getInstance();
     db.collection("users").document(userAuthId).get()
       .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -216,7 +195,7 @@ public class UserDataRepository {
 
         }
       });
-  }
+  }*/
 
   // get user details
 
@@ -242,7 +221,7 @@ public class UserDataRepository {
 
 
   // create new user if not exist and add it to Auth user's contact list
-  public void addNewContactAsCollection(final User user, final String userAuthId, final OnContactCreated
+  public void addNewContact(final User user, final String userAuthId, final Handler.Callback
       listener) {
     db = FirebaseFirestore.getInstance();
 
@@ -258,20 +237,31 @@ public class UserDataRepository {
           contact.setId(documentReferenceId);
           contact.setFirstName(user.getFirstName());
           contact.setLastName(user.getLastName());
-          db.collection("users").document(userAuthId).collection("contacts").add(contact).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+          db.collection("users").document(userAuthId).collection("contacts").add(contact).
+              addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
+              Message message = new Message();
+              Bundle data = new Bundle();
               if(task.isSuccessful()){
-                listener.onContactCreated(true);
+                data.putBoolean(SUCCESS, true);
+                message.setData(data);
+                listener.handleMessage(message);
               }
               else {
-                listener.onContactCreated(false);
+                data.putBoolean(SUCCESS, false);
+                message.setData(data);
+                listener.handleMessage(message);
               }
             }
           }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-              listener.onContactCreated(false);
+              Message message = new Message();
+              Bundle data = new Bundle();
+              data.putBoolean(SUCCESS, false);
+              message.setData(data);
+              listener.handleMessage(message);
             }
           });
         }
@@ -280,7 +270,7 @@ public class UserDataRepository {
   }
 
   // get the contact list collection for the currenrt user
-  public void getContactlistFromCollection(final String userAuthId, final OnGetContact listener) {
+  public void getContactlist(final String userAuthId, final Handler.Callback listener) {
     db = FirebaseFirestore.getInstance();
     final List<User> contactUserList = new ArrayList<>();
 
@@ -292,7 +282,13 @@ public class UserDataRepository {
             User user = documentSnapshot.toObject(User.class);
             contactUserList.add(user);
           }
-          listener.onGetContact(contactUserList);
+
+          Message message = new Message();
+          Bundle data = new Bundle();
+          data.putBoolean(SUCCESS, false);
+          data.putSerializable(CONTACT_LIST, (Serializable) contactUserList);
+          message.setData(data);
+          listener.handleMessage(message);
         }
       });
 
@@ -300,27 +296,37 @@ public class UserDataRepository {
 
   // remove a contact from conatct collection (tested)
 
-  public void removeContactFromCollection(final String userId , String contactUserId , final OnItemRemoved listener ){
+  public void removeContact(final String userId , String contactUserId , final Handler.Callback listener ){
     db = FirebaseFirestore.getInstance();
     db.collection("users").document(userId).collection("contacts").whereEqualTo("id",contactUserId)
       .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
       @Override
       public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        Message message = new Message();
+        Bundle data = new Bundle();
         if (task.isSuccessful()) {
           for (DocumentSnapshot document : task.getResult()){
             db.collection("users").document(userId).collection("contacts").document(document.getId())
               .delete();
           }
-          listener.onItemRemoved(true);
+          data.putBoolean(SUCCESS, true);
+          message.setData(data);
+          listener.handleMessage(message);
         }
         else {
-          listener.onItemRemoved(false);
+          data.putBoolean(SUCCESS, false);
+          message.setData(data);
+          listener.handleMessage(message);
         }
       }
     }).addOnFailureListener(new OnFailureListener() {
       @Override
       public void onFailure(@NonNull Exception e) {
-        listener.onItemRemoved(false);
+        Message message = new Message();
+        Bundle data = new Bundle();
+        data.putBoolean(SUCCESS, false);
+        message.setData(data);
+        listener.handleMessage(message);
       }
     });
 

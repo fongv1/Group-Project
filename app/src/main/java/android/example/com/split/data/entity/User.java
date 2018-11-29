@@ -38,7 +38,8 @@ public class User implements Serializable {
    */
   private String phoneNumber;
 
-  private List<String> contacts;
+  @com.google.firebase.firestore.Exclude
+  private List<User> contacts;
 
 
   /**
@@ -47,7 +48,7 @@ public class User implements Serializable {
 
   public User() {
 
-    contacts = new ArrayList<String>();
+    contacts = new ArrayList<>();
 
   }
 
@@ -68,14 +69,14 @@ public class User implements Serializable {
     this.lastName = lastName;
     this.email = email;
     this.phoneNumber = phoneNumber;
-    contacts = new ArrayList<String>();
+    contacts = new ArrayList<>();
   }
 
-  public List<String> getContacts() {
+  public List<User> getContacts() {
     return contacts;
   }
 
-  public void setContacts(List<String> contacts) {
+  public void setContacts(List<User> contacts) {
     this.contacts = contacts;
   }
 
@@ -125,7 +126,7 @@ public class User implements Serializable {
     this.phoneNumber = phoneNumber;
   }
 
-  public void addToContactList(String newUser) {
+  public void addToContactList(User newUser) {
     contacts.add(newUser);
   }
 
