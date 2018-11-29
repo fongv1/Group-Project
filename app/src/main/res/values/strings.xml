@@ -84,8 +84,8 @@
     <string name="title_activity_member">Member</string>
     <string name="title_activity_contact">Contact</string>
     <string name="title_activity_detail">Detail</string>
-    <string name="total_share">Share</string>
-    <string name="balance">Balance</string>
+    <string name="total_share">Share 300 sek</string>
+    <string name="balance">Balance -250 sek</string>
     <string name="dialog_exit_button">exit</string>
     <string name="dialog_info_content">Split is a free app for family, friends and roommates. Split shows you a tally of who owes how much, by adding multiple payees and splitting your expenses. No more lost receipts or disagreements about the balance. Split is for brunch, utilities, or when you are on vacation</string>
     <string name="sek">SEK</string>
