@@ -137,6 +137,7 @@ public class GroupDataRepository  {
           if (!queryDocumentSnapshots.isEmpty()) {
             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
               Group group = documentSnapshot.toObject(Group.class);
+              //TODO fix the group id missing while saving a group
               group.setGroupId(documentSnapshot.getId());
               groupList.add(group);
             }
