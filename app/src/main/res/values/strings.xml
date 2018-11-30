@@ -73,7 +73,7 @@
     <string name="delete_group_button">Delete group button</string>
     <string name="group_item">Group item</string>
     <string name="group_member">Group member</string>
-    <string name="choose_contact">Choose from contacts: </string>
+    <string name="choose_contact">Choose from contactsUsers: </string>
     <string name="_0_00">0.00</string>
     <string name="full_screen_image">Full screen image</string>
     <string name="sign_in">SIGN IN</string>

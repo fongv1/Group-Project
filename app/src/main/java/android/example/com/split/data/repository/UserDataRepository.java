@@ -183,7 +183,7 @@ public class UserDataRepository {
             User user = documentSnapshot.toObject(User.class);
 
             // list of users document id
-            List<String> contactList = user.getContacts();
+            List<String> contactList = user.getContactsUsers();
 
             for (int i = 0; i <= contactList.size() - 1; i++) {
               db.collection("users").document(contactList.get(i)).get()

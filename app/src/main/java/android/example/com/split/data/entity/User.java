@@ -40,8 +40,9 @@ public class User implements Serializable {
   private String phoneNumber;
 
   @com.google.firebase.firestore.Exclude
-  private List<User> contacts;
+  private List<User> contactsUsers;
 
+  private List<String> contacts;
 
   /**
    * User
@@ -49,7 +50,8 @@ public class User implements Serializable {
 
   public User() {
 
-    contacts = new ArrayList<>();
+    contactsUsers = new ArrayList<>();
+    this.contacts = new ArrayList<>();
 
   }
 
@@ -60,6 +62,7 @@ public class User implements Serializable {
     this.lastName = lastName;
     this.email = email;
     this.phoneNumber = phoneNumber;
+    this.contacts = new ArrayList<>();
   }
 
 
@@ -70,7 +73,8 @@ public class User implements Serializable {
     this.lastName = lastName;
     this.email = email;
     this.phoneNumber = phoneNumber;
-    contacts = new ArrayList<>();
+    contactsUsers = new ArrayList<>();
+    this.contacts = new ArrayList<>();
   }
 
   public User(FirebaseUser currentUser) {
@@ -79,15 +83,16 @@ public class User implements Serializable {
     this.lastName = currentUser.getDisplayName();
     this.email = currentUser.getEmail();
     this.phoneNumber = currentUser.getPhoneNumber();
-    contacts = new ArrayList<>();
+    contactsUsers = new ArrayList<>();
+    this.contacts = new ArrayList<>();
   }
 
-  public List<User> getContacts() {
-    return contacts;
+  public List<User> getContactsUsers() {
+    return contactsUsers;
   }
 
-  public void setContacts(List<User> contacts) {
-    this.contacts = contacts;
+  public void setContactsUsers(List<User> contactsUsers) {
+    this.contactsUsers = contactsUsers;
   }
 
   public String getId() {
@@ -137,10 +142,18 @@ public class User implements Serializable {
   }
 
   public void addToContactList(User newUser) {
-    contacts.add(newUser);
+    contactsUsers.add(newUser);
   }
 
   public String toString() {
     return firstName + " " + lastName;
+  }
+
+  public List<String> getContacts() {
+    return contacts;
+  }
+
+  public void setContacts(List<String> contacts) {
+    this.contacts = contacts;
   }
 }
