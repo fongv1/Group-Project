@@ -8,6 +8,8 @@ import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.example.com.split.data.repository.GroupDataRepository;
 import android.example.com.split.ui.recycleradapter.GroupsRecyclerAdapter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -84,25 +86,37 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
       savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_tab_groups, container, false);
     //setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_expenses);
-    getGroupsData();
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      getGroupsData();
+    }
     return rootView;
   }
 
   private void getGroupsData() {
     setData(new ArrayList<Group>());
     GroupDataRepository repository = new GroupDataRepository();
-    repository
-        .getGroupList(FirebaseAuth.getInstance().getCurrentUser().getUid(), new Handler.Callback() {
-          @Override
-          public boolean handleMessage(Message msg) {
+    repository.getGroupList(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                            new Handler.Callback() {
+                              @Override
+                              public boolean handleMessage(Message msg) {
 
-            List<Group> groups = (List<Group>) msg.getData()
-                                                  .getSerializable(GroupDataRepository.GROUP_LIST);
-            setData(groups);
-            setupRecyclerView(getView(), R.id.recyclerView_fragment_tab_expenses);
-            return false;
-          }
-        });
+                                List<Group> groups = (List<Group>) msg.getData()
+                                                                      .getSerializable(
+                                                                          GroupDataRepository
+                                                                              .GROUP_LIST);
+                                setData(groups);
+                                setupRecyclerView(getView(),
+                                                  R.id.recyclerView_fragment_tab_expenses);
+                                return false;
+                              }
+                            });
   }
 
   @Override

@@ -2,6 +2,7 @@ package android.example.com.split.ui.activity;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.example.com.split.FeatureFlags;
 import android.example.com.split.R;
@@ -9,6 +10,8 @@ import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.example.com.split.data.repository.UserDataRepository;
 import android.example.com.split.ui.tabsadapter.HomeTabsAdapter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -111,46 +114,54 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_home);
-
-    if (AUTHENTICATION) {
-      if (auth == null) {
-        auth = FirebaseAuth.getInstance();
+    ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext()
+        .getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    if (!isConnected) {
+      Toast.makeText(this, "No connection", Toast.LENGTH_SHORT).show();
+    } else {
+      if (AUTHENTICATION) {
+        if (auth == null) {
+          auth = FirebaseAuth.getInstance();
+        }
+        auth.addAuthStateListener(authStateListener);
+        if (auth.getCurrentUser() == null) {
+          startSignInActivity();
+        } else {
+          final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+          // to check if authenticated user exists on data base
+          handleUserDatabase(firebaseUser);
+        }
       }
-      auth.addAuthStateListener(authStateListener);
-      if (auth.getCurrentUser() == null) {
-        startSignInActivity();
-      } else {
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        // to check if authenticated user exists on data base
-        handleUserDatabase(firebaseUser);
+      // Remember that you should never show the action bar if the
+      // status bar is hi
+      ActionBar actionBar = getActionBar();
+      if (actionBar != null) {
+        actionBar.hide();
       }
+      Toolbar toolbar = findViewById(R.id.toolbar_app_bar_main);
+      setSupportActionBar(toolbar);
+      DrawerLayout drawer = findViewById(R.id.drawer_layout);
+      ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                                                               R.string.navigation_drawer_open,
+                                                               R.string.navigation_drawer_close);
+      drawer.addDrawerListener(toggle);
+      toggle.syncState();
+      NavigationView navigationView = findViewById(R.id.nav_view_activity_home);
+      navigationView.setNavigationItemSelectedListener(this);
+      ViewPager viewPager = findViewById(R.id.viewpager_app_bar_main);
+      homeTabsAdapter = new HomeTabsAdapter(this, getSupportFragmentManager());
+      viewPager.setAdapter(homeTabsAdapter);
+      TabLayout tabLayout = findViewById(R.id.tabLayout_app_bar_main);
+      tabLayout.setupWithViewPager(viewPager);
+      FloatingActionButton fab = findViewById(R.id.fab_app_bar_main);
+      fab.setOnClickListener(addContactFabListener);
+      onTabSelectedListener = getOnTabSelectedListener(fab, addContactFabListener,
+                                                       addGroupFabListener);
+      tabLayout.addOnTabSelectedListener(onTabSelectedListener);
     }
-    // Remember that you should never show the action bar if the
-    // status bar is hi
-    ActionBar actionBar = getActionBar();
-    if (actionBar != null) {
-      actionBar.hide();
-    }
-    Toolbar toolbar = findViewById(R.id.toolbar_app_bar_main);
-    setSupportActionBar(toolbar);
-    DrawerLayout drawer = findViewById(R.id.drawer_layout);
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                                                             R.string.navigation_drawer_open,
-                                                             R.string.navigation_drawer_close);
-    drawer.addDrawerListener(toggle);
-    toggle.syncState();
-    NavigationView navigationView = findViewById(R.id.nav_view_activity_home);
-    navigationView.setNavigationItemSelectedListener(this);
-    ViewPager viewPager = findViewById(R.id.viewpager_app_bar_main);
-    homeTabsAdapter = new HomeTabsAdapter(this, getSupportFragmentManager());
-    viewPager.setAdapter(homeTabsAdapter);
-    TabLayout tabLayout = findViewById(R.id.tabLayout_app_bar_main);
-    tabLayout.setupWithViewPager(viewPager);
-    FloatingActionButton fab = findViewById(R.id.fab_app_bar_main);
-    fab.setOnClickListener(addContactFabListener);
-    onTabSelectedListener = getOnTabSelectedListener(fab, addContactFabListener,
-                                                     addGroupFabListener);
-    tabLayout.addOnTabSelectedListener(onTabSelectedListener);
   }
 
   private void handleUserDatabase(final FirebaseUser firebaseUser) {
@@ -165,18 +176,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
           Toast.makeText(HomeActivity.this, "Checking", Toast.LENGTH_SHORT).show();
           if (userExist == false) {
             User user = getUser();
-            userRepository
-                .createNewUser(user, currentUserId, new UserDataRepository.OnUserCreated() {
-                  @Override
-                  public void onUserCreated(Boolean userCreated) {
-                    if (userCreated == true)
-                      Toast.makeText(HomeActivity.this, "Current user added", Toast.LENGTH_SHORT)
-                           .show();
-                    else
-                      Toast.makeText(HomeActivity.this, "Current user error", Toast.LENGTH_SHORT)
-                           .show();
-                  }
-                });
+            userRepository.createNewUser(user, currentUserId,
+                                         new UserDataRepository.OnUserCreated() {
+                                           @Override
+                                           public void onUserCreated(Boolean userCreated) {
+                                             if (userCreated == true)
+                                               Toast.makeText(HomeActivity.this,
+                                                              "Current user added",
+                                                              Toast.LENGTH_SHORT).show();
+                                             else
+                                               Toast.makeText(HomeActivity.this,
+                                                              "Current user error",
+                                                              Toast.LENGTH_SHORT).show();
+                                           }
+                                         });
           } else {
             Toast.makeText(HomeActivity.this, "User exists", Toast.LENGTH_SHORT).show();
           }
@@ -370,7 +383,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
           dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().getDataset();
           dataset.add(contact);
           int position = dataset.size() - 1;
-          homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter()
+          homeTabsAdapter.getContactsTabFragment()
+                         .getRecyclerAdapter()
                          .notifyItemInserted(position);
 
         }

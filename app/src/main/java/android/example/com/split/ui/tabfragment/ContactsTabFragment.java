@@ -7,6 +7,8 @@ import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
 import android.example.com.split.data.repository.UserDataRepository;
 import android.example.com.split.ui.recycleradapter.ContactsRecyclerAdapter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -105,23 +107,33 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
       savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_tab_contacts, container, false);
-    FirebaseAuth auth = FirebaseAuth.getInstance();
-    FirebaseUser firebaseUser = auth.getCurrentUser();
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    db.collection("users")
-      .document(firebaseUser.getUid())
-      .addSnapshotListener(getActivity(), new EventListener<DocumentSnapshot>() {
-        @Override
-        public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot, @javax
-            .annotation.Nullable FirebaseFirestoreException e) {
-          Log.d(TAG, "onEvent: ");
-          if (e != null) {
-            Log.w(TAG, "onEvent: ", e);
-            return;
+
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      FirebaseAuth auth = FirebaseAuth.getInstance();
+      FirebaseUser firebaseUser = auth.getCurrentUser();
+      FirebaseFirestore db = FirebaseFirestore.getInstance();
+      db.collection("users")
+        .document(firebaseUser.getUid())
+        .addSnapshotListener(getActivity(), new EventListener<DocumentSnapshot>() {
+          @Override
+          public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot,
+                              @javax.annotation.Nullable FirebaseFirestoreException e) {
+            Log.d(TAG, "onEvent: ");
+            if (e != null) {
+              Log.w(TAG, "onEvent: ", e);
+              return;
+            }
+            getContactsData();
           }
-          getContactsData();
-        }
-      });
+        });
+    }
     return rootView;
   }
 

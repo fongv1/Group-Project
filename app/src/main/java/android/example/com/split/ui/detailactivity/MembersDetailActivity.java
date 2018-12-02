@@ -1,11 +1,9 @@
 package android.example.com.split.ui.detailactivity;
 
-import android.content.Intent;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.widget.TextView;

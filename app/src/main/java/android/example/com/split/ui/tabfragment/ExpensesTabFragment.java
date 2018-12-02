@@ -7,6 +7,8 @@ import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.example.com.split.data.repository.ExpensesDataRepository;
 import android.example.com.split.ui.recycleradapter.ExpensesRecyclerAdapter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -37,7 +39,16 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
     Bundle bundle = getArguments();
     group = (Group) bundle.get("group");
     //gets the expenses from the group
-    setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_expenses);
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_expenses);
+    }
     return rootView;
   }
 
@@ -133,8 +144,9 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
       @Override
       public boolean handleMessage(Message msg) {
         if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS, false)) {
-          List<Expense> expenseList = (List<Expense>) msg.getData().getSerializable(
-              ExpensesDataRepository.EXPENSE_LIST);
+          List<Expense> expenseList = (List<Expense>) msg.getData()
+                                                         .getSerializable(
+                                                             ExpensesDataRepository.EXPENSE_LIST);
           // are we adding here to local memory
           setData(expenseList);
           setupRecyclerView(getView(), R.id.recyclerView_fragment_tab_expenses);

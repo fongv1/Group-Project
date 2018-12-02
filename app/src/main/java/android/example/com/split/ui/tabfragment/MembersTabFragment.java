@@ -1,9 +1,12 @@
 package android.example.com.split.ui.tabfragment;
 
+import android.content.Context;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.example.com.split.ui.recycleradapter.MembersRecyclerAdapter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,7 +37,16 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                            @Nullable Bundle savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_tab_members, container, false);
-    setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_expenses);
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_expenses);
+    }
     return rootView;
   }
 

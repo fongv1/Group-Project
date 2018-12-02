@@ -1,6 +1,7 @@
 package android.example.com.split.ui.detailactivity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
@@ -9,6 +10,8 @@ import android.example.com.split.data.entity.User;
 import android.example.com.split.ui.tabfragment.ExpensesTabFragment;
 import android.example.com.split.ui.tabfragment.MembersTabFragment;
 import android.example.com.split.ui.tabsadapter.GroupTabsAdapter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -20,10 +23,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +107,17 @@ public class GroupDetailActivity extends BaseDetailActivity {
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        addMemberPopupDialog();
+        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext()
+            .getSystemService(
+            Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if (!isConnected) {
+          Toast.makeText(getApplicationContext(), "Not connected", Toast.LENGTH_SHORT).show();
+        } else {
+          addMemberPopupDialog();
+        }
       }
     });
 
@@ -122,8 +132,19 @@ public class GroupDetailActivity extends BaseDetailActivity {
           floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //Toast.makeText(HomeActivity.this, "add contact", Toast.LENGTH_LONG).show();
-              addMemberPopupDialog();
+              ConnectivityManager connectivityManager = (ConnectivityManager)
+                  getApplicationContext()
+                  .getSystemService(Context.CONNECTIVITY_SERVICE);
+              NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+              boolean isConnected =
+                  activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+              if (!isConnected) {
+                Toast.makeText(getApplicationContext(), "Not connected", Toast.LENGTH_SHORT).show();
+              } else {
+                //Toast.makeText(HomeActivity.this, "add contact", Toast.LENGTH_LONG).show();
+                addMemberPopupDialog();
+              }
             }
           });
 
@@ -133,7 +154,18 @@ public class GroupDetailActivity extends BaseDetailActivity {
             @Override
             public void onClick(View v) {
               //Toast.makeText(HomeActivity.this, "add groups", Toast.LENGTH_LONG).show();
-              addExpensePopupDialog();
+              ConnectivityManager connectivityManager = (ConnectivityManager)
+                  getApplicationContext()
+                  .getSystemService(Context.CONNECTIVITY_SERVICE);
+              NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+              boolean isConnected =
+                  activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+              if (!isConnected) {
+                Toast.makeText(getApplicationContext(), "Not connected", Toast.LENGTH_SHORT).show();
+              } else {
+                addExpensePopupDialog();
+              }
             }
           });
         }

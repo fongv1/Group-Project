@@ -1,8 +1,11 @@
 package android.example.com.split.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.example.com.split.R;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -90,26 +93,36 @@ public class FullscreenActivity extends AppCompatActivity {
     Runnable authenticationRunnable = new Runnable() {
       @Override
       public void run() {
-        if (auth.getCurrentUser() != null) {
-          Intent intent = new Intent(FullscreenActivity.this, HomeActivity.class);
-          intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NEW_TASK);
-          startActivity(intent);
-          finish();
+        ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext()
+            .getSystemService(
+            Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        if (!isConnected) {
+          Toast.makeText(getApplicationContext(), "Not connected", Toast.LENGTH_SHORT).show();
         } else {
-          signInButton.setVisibility(View.VISIBLE);
-          signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              // Choose authentication providers
-              List<AuthUI.IdpConfig> providers = Collections
-                  .singletonList(new AuthUI.IdpConfig.EmailBuilder().build());
+          if (auth.getCurrentUser() != null) {
+            Intent intent = new Intent(FullscreenActivity.this, HomeActivity.class);
+            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+          } else {
+            signInButton.setVisibility(View.VISIBLE);
+            signInButton.setOnClickListener(new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                // Choose authentication providers
+                List<AuthUI.IdpConfig> providers = Collections.singletonList(
+                    new AuthUI.IdpConfig.EmailBuilder().build());
 
-              // Create and launch sign-in intent
-              startActivityForResult(
-                  AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers)
-                        .build(), RC_SIGN_IN);
-            }
-          });
+                // Create and launch sign-in intent
+                startActivityForResult(AuthUI.getInstance()
+                                             .createSignInIntentBuilder()
+                                             .setAvailableProviders(providers)
+                                             .build(), RC_SIGN_IN);
+              }
+            });
+          }
         }
       }
     };
