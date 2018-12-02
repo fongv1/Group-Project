@@ -24,7 +24,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +60,9 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
     //List<User> loadedContacts = new ArrayList<>();
     //setData(loadedContacts);
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    db.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).get()
+    db.collection("users")
+      .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+      .get()
       .addOnCompleteListener(
 
           new OnCompleteListener<DocumentSnapshot>() {
@@ -71,13 +75,15 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
                 List<String> myContactsIds = currentUser.getContacts();
                 if (myContactsIds != null && !myContactsIds.isEmpty()) {
                   for (String contactId : myContactsIds) {
-                    db.collection("users").document(contactId).get()
+                    db.collection("users")
+                      .document(contactId)
+                      .get()
                       .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                           DocumentSnapshot contactUserDocumentSnapshot = task.getResult();
-                          if(contactUserDocumentSnapshot.exists()){
+                          if (contactUserDocumentSnapshot.exists()) {
                             User contactUser = contactUserDocumentSnapshot.toObject(User.class);
                             getData().add(contactUser);
                           }
@@ -101,7 +107,23 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
       savedInstanceState) {
     View rootView = inflater.inflate(R.layout.fragment_tab_contacts, container, false);
-    getContactsData();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser firebaseUser = auth.getCurrentUser();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    db.collection("users")
+      .document(firebaseUser.getUid())
+      .addSnapshotListener(getActivity(), new EventListener<DocumentSnapshot>() {
+        @Override
+        public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot, @javax
+            .annotation.Nullable FirebaseFirestoreException e) {
+          Log.d(TAG, "onEvent: ");
+          if (e != null) {
+            Log.w(TAG, "onEvent: ", e);
+            return;
+          }
+          getContactsData();
+        }
+      });
     return rootView;
   }
 
@@ -247,8 +269,9 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
       @Override
       public boolean handleMessage(Message msg) {
         if (msg.getData().getBoolean(UserDataRepository.SUCCESS, false)) {
-          List<User> contactList = (List<User>) msg.getData().getSerializable(
-              UserDataRepository.CONTACT_LIST);
+          List<User> contactList = (List<User>) msg.getData()
+                                                   .getSerializable(
+                                                       UserDataRepository.CONTACT_LIST);
 
           getRecyclerAdapter().getDataset().addAll(contactList);
         }
