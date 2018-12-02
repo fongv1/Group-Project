@@ -16,7 +16,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
@@ -213,8 +212,11 @@ public class GroupDetailActivity extends BaseDetailActivity {
         memberName = (EditText) view.findViewById(R.id.editText_dialog_add_member);
         String newName = memberName.getText().toString();
 
-        if(!newName.trim().isEmpty()) {
+        if (!newName.trim().isEmpty()) {
           user.setFirstName(newName);
+
+          membersTabFragment.saveNewMemberInGroupToRemoteDb(group, user);
+
           // add the new user to the dataset in the MembersRecyclerAdapter
           List<User> dataset = membersTabFragment.getRecyclerAdapter().getDataset();
           dataset.add(user);
@@ -266,8 +268,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
         int memberPosition = expenseSpinner.getSelectedItemPosition();
         User member = group.getUserMembers().get(memberPosition);
 
-        if(!newTitle.trim().isEmpty() &&
-            newAmount > 0.0) {
+        if (!newTitle.trim().isEmpty() && newAmount > 0.0) {
 
           expense.setTittle(newTitle);
           expense.setPaymentAmount(newAmount);
@@ -294,11 +295,11 @@ public class GroupDetailActivity extends BaseDetailActivity {
     if (strNumber != null && strNumber.length() > 0) {
       try {
         return Double.parseDouble(strNumber);
-      } catch(Exception e) {
+      } catch (Exception e) {
         return -1;   // -1 marks this field is wrong. or make a function validates field first ...
       }
-    }
-    else return 0;
+    } else
+      return 0;
   }
 
 }

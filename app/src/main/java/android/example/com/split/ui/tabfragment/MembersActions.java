@@ -21,7 +21,7 @@ public interface MembersActions {
 
   void saveNewMemberInGroup(User newMember, Group group);
 
-  void saveNewMemberInGroupToRemoteDb(User newMember, Group group);
+  void saveNewMemberInGroupToRemoteDb(Group group, final User memberId);
 
   void updateUiAfterAddingNewMemberToGroup();
 

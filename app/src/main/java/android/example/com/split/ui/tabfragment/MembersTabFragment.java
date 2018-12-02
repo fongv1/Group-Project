@@ -12,6 +12,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -76,8 +84,98 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
   }
 
   @Override
-  public void saveNewMemberInGroupToRemoteDb(User newMember, Group group) {
+  public void saveNewMemberInGroupToRemoteDb(final Group group, final User user) {
+    if (user.getId() != null) {
+      addMemberToGroup(user.getId(), group, new OnSuccessListener<Void>() {
 
+        @Override
+        public void onSuccess(Void aVoid) {
+          Toast.makeText(getContext(), "New Member added to the group.", Toast.LENGTH_SHORT).show();
+        }
+      });
+    } else {
+      createNewUserDocument(group, user, new OnSuccessListener<DocumentReference>() {
+        @Override
+        public void onSuccess(DocumentReference documentReference) {
+          final String userId = documentReference.getId();
+          FirebaseFirestore db = FirebaseFirestore.getInstance();
+          CollectionReference usersCollection = db.collection("users");
+          DocumentReference userDocument = usersCollection.document(userId);
+          updateIdInUserDocument(userDocument, userId, new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+              addMemberToGroup(userId, group, new OnSuccessListener<Void>() {
+
+                @Override
+                public void onSuccess(Void aVoid) {
+                  Toast.makeText(getContext(), "New Member added to the group.", Toast.LENGTH_SHORT)
+                       .show();
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  }
+
+  private void createNewUserDocument(final Group group, User user, final
+  OnSuccessListener<DocumentReference> onSuccessListener) {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference usersCollection = db.collection("users");
+    usersCollection.add(user)
+                   .addOnSuccessListener(onSuccessListener)
+                   .addOnFailureListener(new OnFailureListener() {
+                     @Override
+                     public void onFailure(@NonNull Exception e) {
+
+                     }
+                   })
+                   .addOnCanceledListener(new OnCanceledListener() {
+                     @Override
+                     public void onCanceled() {
+
+                     }
+                   });
+  }
+
+  private void updateIdInUserDocument(DocumentReference userDocument, String userId, final
+  OnSuccessListener<Void> onSuccessListener) {
+    userDocument.update("id", userId)
+                .addOnSuccessListener(onSuccessListener)
+                .addOnFailureListener(new OnFailureListener() {
+                  @Override
+                  public void onFailure(@NonNull Exception e) {
+
+                  }
+                })
+                .addOnCanceledListener(new OnCanceledListener() {
+                  @Override
+                  public void onCanceled() {
+
+                  }
+                });
+  }
+
+  private void addMemberToGroup(String userId, Group group, final OnSuccessListener<Void>
+      onSuccessListener) {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference groupsCollRef = db.collection("groups");
+    DocumentReference groupDocRef = groupsCollRef.document(group.getGroupId());
+    groupDocRef.update("members", FieldValue.arrayUnion(userId))
+               .addOnSuccessListener(onSuccessListener)
+               .addOnFailureListener(new OnFailureListener() {
+                 @Override
+                 public void onFailure(@NonNull Exception e) {
+                   Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                 }
+               })
+               .addOnCanceledListener(new OnCanceledListener() {
+                 @Override
+                 public void onCanceled() {
+                   Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                 }
+               });
   }
 
   @Override
