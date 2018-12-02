@@ -101,22 +101,31 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
 
   private void getGroupsData() {
     setData(new ArrayList<Group>());
-    GroupDataRepository repository = new GroupDataRepository();
-    repository.getGroupList(FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                            new Handler.Callback() {
-                              @Override
-                              public boolean handleMessage(Message msg) {
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-                                List<Group> groups = (List<Group>) msg.getData()
-                                                                      .getSerializable(
-                                                                          GroupDataRepository
-                                                                              .GROUP_LIST);
-                                setData(groups);
-                                setupRecyclerView(getView(),
-                                                  R.id.recyclerView_fragment_tab_expenses);
-                                return false;
-                              }
-                            });
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      GroupDataRepository repository = new GroupDataRepository();
+      repository.getGroupList(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                              new Handler.Callback() {
+                                @Override
+                                public boolean handleMessage(Message msg) {
+
+                                  List<Group> groups = (List<Group>) msg.getData()
+                                                                        .getSerializable(
+                                                                            GroupDataRepository
+                                                                                .GROUP_LIST);
+                                  setData(groups);
+                                  setupRecyclerView(getView(),
+                                                    R.id.recyclerView_fragment_tab_expenses);
+                                  return false;
+                                }
+                              });
+    }
   }
 
   @Override
@@ -202,19 +211,29 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
 
   @Override
   public void saveNewGroupToRemoteDb(User currentUser, Group group) {
-    GroupDataRepository repository = new GroupDataRepository();
-    repository.addGroup(group, new Handler.Callback() {
-      @Override
-      public boolean handleMessage(Message msg) {
-        if (msg.getData().getBoolean(GroupDataRepository.SUCCESS)) {
-          Toast.makeText(getContext(), "Saved group in remote", Toast.LENGTH_SHORT).show();
-        } else {
-          Toast.makeText(getContext(), "Failed to save group in remote", Toast.LENGTH_SHORT).show();
-        }
-        return false;
-      }
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-    });
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      GroupDataRepository repository = new GroupDataRepository();
+      repository.addGroup(group, new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+          if (msg.getData().getBoolean(GroupDataRepository.SUCCESS)) {
+            Toast.makeText(getContext(), "Saved group in remote", Toast.LENGTH_SHORT).show();
+          } else {
+            Toast.makeText(getContext(), "Failed to save group in remote", Toast.LENGTH_SHORT)
+                 .show();
+          }
+          return false;
+        }
+
+      });
+    }
   }
 
   @Override
@@ -233,20 +252,29 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
 
   @Override
   public void removeGroupFromRemoteDb(User currentUser, Group group) {
-    GroupDataRepository repository = new GroupDataRepository();
-    repository.removeGroup(group, new Handler.Callback() {
-      @Override
-      public boolean handleMessage(Message msg) {
-        if (msg.getData().getBoolean(GroupDataRepository.SUCCESS)) {
-          Toast.makeText(getContext(), "Group removed from remote", Toast.LENGTH_SHORT).show();
-        } else {
-          Toast.makeText(getContext(), "Failed to remove group from remote", Toast.LENGTH_SHORT)
-               .show();
-        }
-        return false;
-      }
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-    });
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      GroupDataRepository repository = new GroupDataRepository();
+      repository.removeGroup(group, new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+          if (msg.getData().getBoolean(GroupDataRepository.SUCCESS)) {
+            Toast.makeText(getContext(), "Group removed from remote", Toast.LENGTH_SHORT).show();
+          } else {
+            Toast.makeText(getContext(), "Failed to remove group from remote", Toast.LENGTH_SHORT)
+                 .show();
+          }
+          return false;
+        }
+
+      });
+    }
   }
 
   @Override
@@ -256,19 +284,28 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
 
   @Override
   public void fetchGroupsFromRemoteDb(User currentUser) {
-    GroupDataRepository repository = new GroupDataRepository();
-    repository.getGroupList(currentUser.getId(), new Handler.Callback() {
-      @Override
-      public boolean handleMessage(Message msg) {
-        if (msg.getData().getBoolean(GroupDataRepository.SUCCESS, false)) {
-          List<Group> groups = (List<Group>) msg.getData()
-                                                .getSerializable(GroupDataRepository.GROUP_LIST);
-          // are we adding here to local memory
-          getRecyclerAdapter().getDataset().addAll(groups);
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      GroupDataRepository repository = new GroupDataRepository();
+      repository.getGroupList(currentUser.getId(), new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+          if (msg.getData().getBoolean(GroupDataRepository.SUCCESS, false)) {
+            List<Group> groups = (List<Group>) msg.getData()
+                                                  .getSerializable(GroupDataRepository.GROUP_LIST);
+            // are we adding here to local memory
+            getRecyclerAdapter().getDataset().addAll(groups);
+          }
+          getRecyclerAdapter().notifyDataSetChanged();
+          return false;
         }
-        getRecyclerAdapter().notifyDataSetChanged();
-        return false;
-      }
-    });
+      });
+    }
   }
 }

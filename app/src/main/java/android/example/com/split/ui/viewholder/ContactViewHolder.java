@@ -1,15 +1,19 @@
 package android.example.com.split.ui.viewholder;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.example.com.split.OnDeleteItemListener;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.example.com.split.ui.detailactivity.ContactDetailActivity;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 // Provides reference to the views for each data item
 // When create more complex group view, it should be removed in a separate java file
@@ -48,9 +52,19 @@ public class ContactViewHolder extends BaseViewHolder<User> {
     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
       public void onClick(DialogInterface dialog, int id) {
         // User clicked OK button
+        ConnectivityManager connectivityManager = (ConnectivityManager) getItemView().getContext()
+                                                                                     .getSystemService(
+                                                                                         Context
+                                                                                             .CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        deleteItem(position);
-        getOnDeleteItemListener().onDelete(getItemData().getId());
+        if (!isConnected) {
+          Toast.makeText(getItemView().getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+        } else {
+          deleteItem(position);
+          getOnDeleteItemListener().onDelete(getItemData().getId());
+        }
       }
     });
     //Set other dialog properties

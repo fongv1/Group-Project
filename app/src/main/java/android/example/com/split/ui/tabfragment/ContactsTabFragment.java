@@ -175,9 +175,19 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
 
       @Override
       public void onDelete(String id) {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = auth.getCurrentUser();
-        removeContact(currentUser.getUid(), id);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity()
+            .getSystemService(
+            Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if (!isConnected) {
+          Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+        } else {
+          FirebaseAuth auth = FirebaseAuth.getInstance();
+          FirebaseUser currentUser = auth.getCurrentUser();
+          removeContact(currentUser.getUid(), id);
+        }
       }
     }));
     recyclerView.setAdapter(getRecyclerAdapter());

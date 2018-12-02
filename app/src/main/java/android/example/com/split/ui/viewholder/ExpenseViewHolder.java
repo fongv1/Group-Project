@@ -1,6 +1,7 @@
 package android.example.com.split.ui.viewholder;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.example.com.split.OnDeleteItemListener;
 import android.example.com.split.OnEditItemListener;
@@ -9,6 +10,8 @@ import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.example.com.split.ui.detailactivity.ExpensesDetailActivity;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
@@ -17,15 +20,16 @@ import android.widget.*;
 // When create more complex group view, it should be removed in a separate java file
 public class ExpenseViewHolder extends BaseViewHolder<Expense> {
 
+  public TextView payerTextView;
   // Each group data item is just a String presented as a textView in this case
   private TextView expenseTextView;
   private TextView amountTextView;
-  public TextView payerTextView;
   private ImageView editButton;
   private ImageView deleteButton;
 
   // Initializes the ViewHolder TextView from the item_group XML resource
-  public ExpenseViewHolder(View itemView, OnDeleteItemListener deleteListener, OnEditItemListener editListener) {
+  public ExpenseViewHolder(View itemView, OnDeleteItemListener deleteListener, OnEditItemListener
+      editListener) {
     super(itemView, ExpensesDetailActivity.class, "Expense", false);
     setOnDeleteItemListener(deleteListener);
     setOnEditItemListener(editListener);
@@ -43,8 +47,8 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
     final EditText editTitle = (EditText) view.findViewById(R.id.editText_dialog_add_expense_title);
     editTitle.setText(expense.getTittle());
     //takes the already existing amount and sets it to the amount field
-    final EditText editAmount = (EditText) view
-        .findViewById(R.id.editText_dialog_add_expense_amount);
+    final EditText editAmount = (EditText) view.findViewById(
+        R.id.editText_dialog_add_expense_amount);
     editAmount.setText("" + expense.getPaymentAmount());
 
     // set the spinner with all the members of this group
@@ -64,33 +68,41 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
     saveButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        //takes the title input from the text field
-        String newTitle = editTitle.getText().toString();
+        ConnectivityManager connectivityManager = (ConnectivityManager) getItemView().getContext()
+                                                                                     .getSystemService(
+                                                                                         Context
+                                                                                             .CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        //takes the amount input from the text field
-        Double newAmount = Double.parseDouble(editAmount.getText().toString());
+        if (!isConnected) {
+          Toast.makeText(getItemView().getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+        } else {
+          //takes the title input from the text field
+          String newTitle = editTitle.getText().toString();
+
+          //takes the amount input from the text field
+          Double newAmount = Double.parseDouble(editAmount.getText().toString());
 
 
+          if (!newTitle.trim().equals("") && newAmount != 0.0) {
+            // updates the title
+            expense.setTittle(newTitle);
 
-        if(!newTitle.trim().equals("") && newAmount != 0.0) {
-          // updates the title
-          expense.setTittle(newTitle);
+            //updates the amount
+            expense.setPaymentAmount(newAmount);
+            // takes the selected member from its position in the spinner
+            int memberPosition = expenseSpinner.getSelectedItemPosition();
+            User member = group.getUserMembers().get(memberPosition);
+            expense.setUser(member);
 
-          //updates the amount
-          expense.setPaymentAmount(newAmount);
-          // takes the selected member from its position in the spinner
-          int memberPosition = expenseSpinner.getSelectedItemPosition();
-          User member = group.getUserMembers().get(memberPosition);
-          expense.setUser(member);
+            Toast.makeText(v.getContext(), "Saved!", Toast.LENGTH_SHORT).show();
+            // Notifies tha adapter that the item at that position is changed
+            editItem(position);
+          } else {
+            Toast.makeText(v.getContext(), "Not saved!", Toast.LENGTH_SHORT).show();
 
-          Toast.makeText(v.getContext(), "Saved!", Toast.LENGTH_SHORT).show();
-          // Notifies tha adapter that the item at that position is changed
-          editItem(position);
-        }
-
-        else {
-          Toast.makeText(v.getContext(), "Not saved!", Toast.LENGTH_SHORT).show();
-
+          }
         }
 
         dialog.dismiss();
@@ -106,13 +118,35 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
     builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
       public void onClick(DialogInterface dialog, int id) {
         // User cancelled the dialog
+        ConnectivityManager connectivityManager = (ConnectivityManager) getItemView().getContext()
+                                                                                     .getSystemService(
+                                                                                         Context
+                                                                                             .CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if (!isConnected) {
+          Toast.makeText(getItemView().getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+        } else {
+        }
       }
     });
 
     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
       public void onClick(DialogInterface dialog, int id) {
         // User clicked OK button
-        deleteItem(position);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getItemView().getContext()
+                                                                                     .getSystemService(
+                                                                                         Context
+                                                                                             .CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if (!isConnected) {
+          Toast.makeText(getItemView().getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+        } else {
+          deleteItem(position);
+        }
       }
     });
 

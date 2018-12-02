@@ -377,7 +377,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
           User myUser = null;
           if (currentUser != null) {
             myUser = new User(currentUser);
-            homeTabsAdapter.getContactsTabFragment().saveNewContactToRemote(myUser, contact);
+            ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext
+                ().getSystemService(
+                Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+            boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+            if (!isConnected) {
+              Toast.makeText(getApplicationContext(), "Not connected", Toast.LENGTH_SHORT).show();
+            } else {
+              homeTabsAdapter.getContactsTabFragment().saveNewContactToRemote(myUser, contact);
+            }
           }
 
           dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().getDataset();
@@ -418,14 +428,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
           if (group == null) {
             return;
           }
-          FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-          User user = new User();
-          if (firebaseUser != null) {
-            user.setId(firebaseUser.getUid());
-            homeTabsAdapter.getGroupsTabFragment()
-                           .saveNewGroup(user, homeTabsAdapter.getGroupsTabFragment().getData(),
-                                         group);
-            homeTabsAdapter.getGroupsTabFragment().saveNewGroupToRemoteDb(user, group);
+          ConnectivityManager connectivityManager = (ConnectivityManager) getApplicationContext()
+              .getSystemService(
+              Context.CONNECTIVITY_SERVICE);
+          NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+          boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+          if (!isConnected) {
+            Toast.makeText(getApplicationContext(), "Not connected", Toast.LENGTH_SHORT).show();
+          } else {
+            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            User user = new User();
+            if (firebaseUser != null) {
+              user.setId(firebaseUser.getUid());
+              homeTabsAdapter.getGroupsTabFragment()
+                             .saveNewGroup(user, homeTabsAdapter.getGroupsTabFragment().getData(),
+                                           group);
+              homeTabsAdapter.getGroupsTabFragment().saveNewGroupToRemoteDb(user, group);
+            }
           }
         }
         dialog.dismiss();

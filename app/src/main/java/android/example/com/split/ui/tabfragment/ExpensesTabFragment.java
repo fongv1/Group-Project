@@ -112,23 +112,30 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
 
   @Override
   public void writeExpenseToRemote(Group group, Expense expense) {
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-    String groupId = group.getGroupId();
-    ExpensesDataRepository expensesDataRepository = new ExpensesDataRepository();
-    expensesDataRepository.addExpenses(groupId, expense, new Handler.Callback() {
-      @Override
-      public boolean handleMessage(Message msg) {
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      String groupId = group.getGroupId();
+      ExpensesDataRepository expensesDataRepository = new ExpensesDataRepository();
+      expensesDataRepository.addExpenses(groupId, expense, new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
 
-        if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS)) {
-          Toast.makeText(getContext(), "Expense saved in remote", Toast.LENGTH_SHORT).show();
-        } else {
-          Toast.makeText(getContext(), "Failed to save expense in remote", Toast.LENGTH_SHORT)
-               .show();
+          if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS)) {
+            Toast.makeText(getContext(), "Expense saved in remote", Toast.LENGTH_SHORT).show();
+          } else {
+            Toast.makeText(getContext(), "Failed to save expense in remote", Toast.LENGTH_SHORT)
+                 .show();
+          }
+          return false;
         }
-        return false;
-      }
-    });
-
+      });
+    }
   }
 
   @Override
@@ -138,59 +145,85 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
 
   @Override
   public void fetchExpensesListFromRemote(Group group) {
-    String groupId = group.getGroupId();
-    ExpensesDataRepository expensesDataRepository = new ExpensesDataRepository();
-    expensesDataRepository.getExpensesList(groupId, new Handler.Callback() {
-      @Override
-      public boolean handleMessage(Message msg) {
-        if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS, false)) {
-          List<Expense> expenseList = (List<Expense>) msg.getData()
-                                                         .getSerializable(
-                                                             ExpensesDataRepository.EXPENSE_LIST);
-          // are we adding here to local memory
-          setData(expenseList);
-          setupRecyclerView(getView(), R.id.recyclerView_fragment_tab_expenses);
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      String groupId = group.getGroupId();
+      ExpensesDataRepository expensesDataRepository = new ExpensesDataRepository();
+      expensesDataRepository.getExpensesList(groupId, new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+          if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS, false)) {
+            List<Expense> expenseList = (List<Expense>) msg.getData()
+                                                           .getSerializable(
+                                                               ExpensesDataRepository.EXPENSE_LIST);
+            // are we adding here to local memory
+            setData(expenseList);
+            setupRecyclerView(getView(), R.id.recyclerView_fragment_tab_expenses);
+          }
+          return false;
         }
-        return false;
-      }
-    });
+      });
+    }
   }
 
   @Override
   public void fetchSingleExpenseFromRemote(Group group, Expense expense) {
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-    String groupId = group.getGroupId();
-    String expenseId = expense.getId();
-    ExpensesDataRepository expensesDataRepository = new ExpensesDataRepository();
-    expensesDataRepository.fetchExpense(groupId, expenseId, new Handler.Callback() {
-      @Override
-      public boolean handleMessage(Message msg) {
-        if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS, false)) {
-          Expense newExpense = (Expense) msg.getData()
-                                            .getSerializable(ExpensesDataRepository.EXPENSE);
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      String groupId = group.getGroupId();
+      String expenseId = expense.getId();
+      ExpensesDataRepository expensesDataRepository = new ExpensesDataRepository();
+      expensesDataRepository.fetchExpense(groupId, expenseId, new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+          if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS, false)) {
+            Expense newExpense = (Expense) msg.getData()
+                                              .getSerializable(ExpensesDataRepository.EXPENSE);
+          }
+          return false;
         }
-        return false;
-      }
-    });
+      });
+    }
   }
 
   @Override
   public void removeExpenseFromRemote(Group group, Expense expense) {
-    String groupId = group.getGroupId();
-    String expenseId = expense.getId();
-    ExpensesDataRepository expensesDataRepository = new ExpensesDataRepository();
-    expensesDataRepository.removeExpense(groupId, expenseId, new Handler.Callback() {
-      @Override
-      public boolean handleMessage(Message msg) {
-        if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS)) {
-          Toast.makeText(getContext(), "Expense saved in remote", Toast.LENGTH_SHORT).show();
-        } else {
-          Toast.makeText(getContext(), "Failed to save expense in remote", Toast.LENGTH_SHORT)
-               .show();
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      String groupId = group.getGroupId();
+      String expenseId = expense.getId();
+      ExpensesDataRepository expensesDataRepository = new ExpensesDataRepository();
+      expensesDataRepository.removeExpense(groupId, expenseId, new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+          if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS)) {
+            Toast.makeText(getContext(), "Expense saved in remote", Toast.LENGTH_SHORT).show();
+          } else {
+            Toast.makeText(getContext(), "Failed to save expense in remote", Toast.LENGTH_SHORT)
+                 .show();
+          }
+          return false;
         }
-        return false;
-      }
-    });
+      });
+    }
   }
 
 

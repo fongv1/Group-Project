@@ -97,97 +97,136 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
 
   @Override
   public void saveNewMemberInGroupToRemoteDb(final Group group, final User user) {
-    if (user.getId() != null) {
-      addMemberToGroup(user.getId(), group, new OnSuccessListener<Void>() {
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        @Override
-        public void onSuccess(Void aVoid) {
-          Toast.makeText(getContext(), "New Member added to the group.", Toast.LENGTH_SHORT).show();
-        }
-      });
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
     } else {
-      createNewUserDocument(group, user, new OnSuccessListener<DocumentReference>() {
-        @Override
-        public void onSuccess(DocumentReference documentReference) {
-          final String userId = documentReference.getId();
-          FirebaseFirestore db = FirebaseFirestore.getInstance();
-          CollectionReference usersCollection = db.collection("users");
-          DocumentReference userDocument = usersCollection.document(userId);
-          updateIdInUserDocument(userDocument, userId, new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-              addMemberToGroup(userId, group, new OnSuccessListener<Void>() {
+      if (user.getId() != null) {
+        addMemberToGroup(user.getId(), group, new OnSuccessListener<Void>() {
 
-                @Override
-                public void onSuccess(Void aVoid) {
-                  Toast.makeText(getContext(), "New Member added to the group.", Toast.LENGTH_SHORT)
-                       .show();
-                }
-              });
-            }
-          });
-        }
-      });
+          @Override
+          public void onSuccess(Void aVoid) {
+            Toast.makeText(getContext(), "New Member added to the group.", Toast.LENGTH_SHORT)
+                 .show();
+          }
+        });
+      } else {
+        createNewUserDocument(group, user, new OnSuccessListener<DocumentReference>() {
+          @Override
+          public void onSuccess(DocumentReference documentReference) {
+            final String userId = documentReference.getId();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference usersCollection = db.collection("users");
+            DocumentReference userDocument = usersCollection.document(userId);
+            updateIdInUserDocument(userDocument, userId, new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void aVoid) {
+                addMemberToGroup(userId, group, new OnSuccessListener<Void>() {
+
+                  @Override
+                  public void onSuccess(Void aVoid) {
+                    Toast.makeText(getContext(), "New Member added to the group.",
+                                   Toast.LENGTH_SHORT).show();
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
     }
   }
 
   private void createNewUserDocument(final Group group, User user, final
   OnSuccessListener<DocumentReference> onSuccessListener) {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference usersCollection = db.collection("users");
-    usersCollection.add(user)
-                   .addOnSuccessListener(onSuccessListener)
-                   .addOnFailureListener(new OnFailureListener() {
-                     @Override
-                     public void onFailure(@NonNull Exception e) {
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-                     }
-                   })
-                   .addOnCanceledListener(new OnCanceledListener() {
-                     @Override
-                     public void onCanceled() {
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      FirebaseFirestore db = FirebaseFirestore.getInstance();
+      CollectionReference usersCollection = db.collection("users");
+      usersCollection.add(user)
+                     .addOnSuccessListener(onSuccessListener)
+                     .addOnFailureListener(new OnFailureListener() {
+                       @Override
+                       public void onFailure(@NonNull Exception e) {
 
-                     }
-                   });
+                       }
+                     })
+                     .addOnCanceledListener(new OnCanceledListener() {
+                       @Override
+                       public void onCanceled() {
+
+                       }
+                     });
+    }
   }
 
   private void updateIdInUserDocument(DocumentReference userDocument, String userId, final
   OnSuccessListener<Void> onSuccessListener) {
-    userDocument.update("id", userId)
-                .addOnSuccessListener(onSuccessListener)
-                .addOnFailureListener(new OnFailureListener() {
-                  @Override
-                  public void onFailure(@NonNull Exception e) {
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-                  }
-                })
-                .addOnCanceledListener(new OnCanceledListener() {
-                  @Override
-                  public void onCanceled() {
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      userDocument.update("id", userId)
+                  .addOnSuccessListener(onSuccessListener)
+                  .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
 
-                  }
-                });
+                    }
+                  })
+                  .addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+
+                    }
+                  });
+    }
   }
 
   private void addMemberToGroup(String userId, Group group, final OnSuccessListener<Void>
       onSuccessListener) {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference groupsCollRef = db.collection("groups");
-    DocumentReference groupDocRef = groupsCollRef.document(group.getGroupId());
-    groupDocRef.update("members", FieldValue.arrayUnion(userId))
-               .addOnSuccessListener(onSuccessListener)
-               .addOnFailureListener(new OnFailureListener() {
-                 @Override
-                 public void onFailure(@NonNull Exception e) {
-                   Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
-                 }
-               })
-               .addOnCanceledListener(new OnCanceledListener() {
-                 @Override
-                 public void onCanceled() {
-                   Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
-                 }
-               });
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      FirebaseFirestore db = FirebaseFirestore.getInstance();
+      CollectionReference groupsCollRef = db.collection("groups");
+      DocumentReference groupDocRef = groupsCollRef.document(group.getGroupId());
+      groupDocRef.update("members", FieldValue.arrayUnion(userId))
+                 .addOnSuccessListener(onSuccessListener)
+                 .addOnFailureListener(new OnFailureListener() {
+                   @Override
+                   public void onFailure(@NonNull Exception e) {
+                     Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT)
+                          .show();
+                   }
+                 })
+                 .addOnCanceledListener(new OnCanceledListener() {
+                   @Override
+                   public void onCanceled() {
+                     Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT)
+                          .show();
+                   }
+                 });
+    }
   }
 
   @Override
