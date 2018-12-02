@@ -48,7 +48,9 @@ public class ContactViewHolder extends BaseViewHolder<User> {
     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
       public void onClick(DialogInterface dialog, int id) {
         // User clicked OK button
+
         deleteItem(position);
+        getOnDeleteItemListener().onDelete(getItemData().getId());
       }
     });
     //Set other dialog properties

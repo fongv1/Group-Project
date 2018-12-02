@@ -45,6 +45,10 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
 
   public abstract void bind(User user, int position);
 
+  public OnDeleteItemListener getOnDeleteItemListener() {
+    return onDeleteItemListener;
+  }
+
   protected abstract void bind(Group group, T expense, int position);
 
   protected void onItemClicked() {

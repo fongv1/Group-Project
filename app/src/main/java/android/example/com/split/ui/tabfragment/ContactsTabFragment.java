@@ -2,6 +2,7 @@ package android.example.com.split.ui.tabfragment;
 
 
 import android.content.Context;
+import android.example.com.split.OnDeleteItemListener;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
 import android.example.com.split.data.repository.UserDataRepository;
@@ -23,10 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -157,7 +155,19 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
     LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
     recyclerView.setLayoutManager(mLayoutManager);
 
-    setRecyclerAdapter(new ContactsRecyclerAdapter(getData()));
+    setRecyclerAdapter(new ContactsRecyclerAdapter(getData(), new OnDeleteItemListener() {
+      @Override
+      public void onDelete(int position) {
+
+      }
+
+      @Override
+      public void onDelete(String id) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        removeContact(currentUser.getUid(), id);
+      }
+    }));
     recyclerView.setAdapter(getRecyclerAdapter());
     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     User user = new User();
@@ -165,6 +175,27 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
       user.setId(firebaseUser.getUid());
       fetchContactListFromRemoteDb(user);
     }
+  }
+
+  private void removeContact(String id, String id1) {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser currentUser = auth.getCurrentUser();
+    db.collection("users")
+      .document(currentUser.getUid())
+      .update("contacts", FieldValue.arrayRemove(id1))
+      .addOnCompleteListener(
+
+          new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+              if (task.isSuccessful()) {
+                Toast.makeText(getContext(), "Contact removed", Toast.LENGTH_SHORT).show();
+              } else {
+                Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+              }
+            }
+          });
   }
 
   @Override
@@ -245,20 +276,22 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
   public void removeContactFromDB(User currentUser, User contact) {
     String currentUserId = currentUser.getId();
     String contactId = contact.getId();
-    UserDataRepository userDataRepository = new UserDataRepository();
-    userDataRepository.removeContact(currentUserId, contactId, new Handler.Callback() {
-      @Override
-      public boolean handleMessage(Message msg) {
-        if (msg.getData().getBoolean(UserDataRepository.SUCCESS, false)) {
-          Toast.makeText(getContext(), "Contact removed from remote", Toast.LENGTH_SHORT).show();
-        } else {
-          Toast.makeText(getContext(), "Failed to remove contact from remote", Toast.LENGTH_SHORT)
-               .show();
-        }
-        return false;
-      }
-    });
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    db.collection("users")
+      .document(currentUserId)
+      .update("contacts", FieldValue.arrayRemove(contactId))
+      .addOnCompleteListener(
 
+          new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+              if (task.isSuccessful()) {
+                Toast.makeText(getContext(), "Contact removed", Toast.LENGTH_SHORT).show();
+              } else {
+                Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+              }
+            }
+          });
   }
 
   @Override

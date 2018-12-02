@@ -47,6 +47,11 @@ public class ExpensesRecyclerAdapter extends BaseRecyclerAdapter<ExpenseViewHold
     // - replace the contents of the view with that element
     holder.bind(group, getDataset().get(position), position);
   }
+
+  @Override
+  public void onDelete(String id) {
+
+  }
 }
 
 

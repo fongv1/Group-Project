@@ -43,6 +43,11 @@ public class MembersRecyclerAdapter extends BaseRecyclerAdapter<MemberViewHolder
     // - replace the contents of the view with that element
     holder.bind(getDataset().get(position), position);
   }
+
+  @Override
+  public void onDelete(String id) {
+
+  }
 }
 
 

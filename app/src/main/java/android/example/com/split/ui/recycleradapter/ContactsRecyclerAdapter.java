@@ -1,5 +1,6 @@
 package android.example.com.split.ui.recycleradapter;
 
+import android.example.com.split.OnDeleteItemListener;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.User;
 import android.example.com.split.ui.viewholder.ContactViewHolder;
@@ -15,9 +16,17 @@ import java.util.List;
 // TextView widgets
 public class ContactsRecyclerAdapter extends BaseRecyclerAdapter<ContactViewHolder, User> {
 
+  private OnDeleteItemListener onDeleteItemListener;
+
   // Create the adapter with a dataset
-  public ContactsRecyclerAdapter(List<User> contacts) {
+  public ContactsRecyclerAdapter(List<User> contacts, OnDeleteItemListener onDeleteItemListener) {
     super(contacts);
+    this.onDeleteItemListener = onDeleteItemListener;
+  }
+
+  @Override
+  public void onDelete(int position) {
+    super.onDelete(position);
   }
 
   // Create new views (invoked by the layout manager)
@@ -42,6 +51,11 @@ public class ContactsRecyclerAdapter extends BaseRecyclerAdapter<ContactViewHold
     // - get element from your dataset at this position
     // - replace the contents of the view with that element
     holder.bind(null, getDataset().get(position), position);
+  }
+
+  @Override
+  public void onDelete(String id) {
+    onDeleteItemListener.onDelete(id);
   }
 }
 

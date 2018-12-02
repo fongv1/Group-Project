@@ -43,6 +43,11 @@ public class GroupsRecyclerAdapter extends BaseRecyclerAdapter<GroupViewHolder, 
     // - replace the contents of the view with that element
     holder.bind(getDataset().get(position), null, position);
   }
+
+  @Override
+  public void onDelete(String id) {
+
+  }
 }
 
 
