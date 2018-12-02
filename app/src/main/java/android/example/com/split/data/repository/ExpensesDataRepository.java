@@ -20,7 +20,9 @@ public class ExpensesDataRepository {
     public static final String SUCCESS = "success";
     public static final String EXPENSE_ID = "expense-id";
     public static final String UPDATE_SUCCESS = "update-success";
-    private FirebaseFirestore db;
+  public static final String EXPENSE_LIST = "expense-list";
+  public static final String EXPENSE = "expense";
+  private FirebaseFirestore db;
 
     // add expense to a group
     public void addExpenses(final String groupId , Expense expense , final Handler.Callback listener){
@@ -77,7 +79,7 @@ public class ExpensesDataRepository {
 
                       }
                       data.putBoolean(SUCCESS, true);
-                      data.putSerializable("expense-list", (Serializable) expenseList);
+                      data.putSerializable(EXPENSE_LIST, (Serializable) expenseList);
                       message.setData(data);
                       listener.handleMessage(message);
                   }
@@ -98,6 +100,42 @@ public class ExpensesDataRepository {
 
             }
         });
+    }
+
+    // fetch one expense
+    public void fetchExpense(String groupId , String expenseId , final Handler.Callback listener){
+      db = FirebaseFirestore.getInstance();
+      db.collection("groups").document(groupId).collection("expenses").document(expenseId)
+        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+          Message message = new Message();
+          final Bundle data = new Bundle();
+          if(task.isSuccessful()){
+            Expense expense = task.getResult().toObject(Expense.class);
+            expense.setId(task.getResult().getId());
+
+            data.putBoolean(SUCCESS, true);
+            data.putSerializable(EXPENSE, expense);
+            message.setData(data);
+            listener.handleMessage(message);
+          }
+          else {
+            data.putBoolean(SUCCESS, false);
+            message.setData(data);
+            listener.handleMessage(message);
+          }
+        }
+      }).addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+          Message message = new Message();
+          Bundle data = new Bundle();
+          data.putBoolean(SUCCESS, false);
+          message.setData(data);
+          listener.handleMessage(message);
+        }
+      });
     }
 
     // update expense in a group expenses list

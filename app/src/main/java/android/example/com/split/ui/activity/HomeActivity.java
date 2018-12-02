@@ -344,23 +344,31 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
     saveButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        User user = new User();
+        User contact = new User();
         List<User> dataset;
         contactName = view.findViewById(R.id.editText_dialog_add_contact_firstName);
         String newName = contactName.getText().toString();
         if (!newName.trim().isEmpty()) {
-          user.setFirstName(newName);
+          contact.setFirstName(newName);
 
           contactSurname = view.findViewById(R.id.editText_dialog_add_contact_lastName);
           String newSurname = contactSurname.getText().toString();
-          user.setLastName(newSurname);
+          contact.setLastName(newSurname);
 
           contactEmail = view.findViewById(R.id.editText_dialog_add_contact_email);
           String newEmail = contactEmail.getText().toString();
-          user.setEmail(newEmail);
+          contact.setEmail(newEmail);
+
+          FirebaseAuth auth = FirebaseAuth.getInstance();
+          FirebaseUser currentUser = auth.getCurrentUser();
+          User myUser = null;
+          if (currentUser != null) {
+            myUser = new User(currentUser);
+            homeTabsAdapter.getContactsTabFragment().saveNewContactToRemote(myUser, contact);
+          }
 
           dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().getDataset();
-          dataset.add(user);
+          dataset.add(contact);
           int position = dataset.size() - 1;
           homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter()
                          .notifyItemInserted(position);

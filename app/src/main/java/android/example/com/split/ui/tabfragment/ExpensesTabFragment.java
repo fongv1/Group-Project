@@ -5,8 +5,11 @@ import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
+import android.example.com.split.data.repository.ExpensesDataRepository;
 import android.example.com.split.ui.recycleradapter.ExpensesRecyclerAdapter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,11 +17,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.List;
 
-public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter, Expense> implements ExpensesActions{
+public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter, Expense>
+    implements ExpensesActions {
 
   private static final String TAG = "ExpensesTabFragment";
   private Group group;
@@ -46,33 +50,28 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
     setData(group.getExpenses());
     setRecyclerAdapter(new ExpensesRecyclerAdapter(getData(), group));
     recyclerView.setAdapter(getRecyclerAdapter());
+    //fetchExpensesListFromRemote(group);
   }
 
   @Override
   public void addExpense(Group group, Expense expense) {
-    //User user = expense.getUser();
-    group.addExpense(expense);
 
   }
 
   @Override
   public Expense getExpenseDetailFromUI(String title, double amount, String payerName) {
-    Expense expense = initialiseNewExpense(title, amount, payerName);
-    return expense;
+
+    return null;
   }
 
   @Override
   public void populateSpinnerWithMembers(Context context, List<User> users) {
-    Spinner spinner = new Spinner(context);
 
   }
 
   @Override
   public User selectPayer(Group group, int position) {
-    String payer = group.getMembers().get(position);
-    User user = new User();
-    user.setFirstName(payer);
-    return user;
+    return null;
   }
 
   @Override
@@ -87,27 +86,11 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
 
   @Override
   public Expense initialiseNewExpense(String title, double amount, String payerName) {
-    Expense expense = new Expense();
-    expense.setTittle(title);
-    expense.setPaymentAmount(amount);
-    expense.setPayerName(payerName);
-    return expense;
+    return null;
   }
 
   @Override
   public List<Double> updateMembersBalance(User user, Group group, Expense expense) {
-
-//    List<Expense> expenses = group.getExpenses();
-//    Double sumOfExpenses = 0.0;
-//
-//    for(Expense e : expenses) {
-//      sumOfExpenses += e.getPaymentAmount();
-//    }
-//
-//    int numberOfmembers = group.getMembers().size();
-//    double eachMembersShare = expense.getPaymentAmount()/numberOfmembers;
-//    String payer = expense.getPayerId();
-
     return null;
   }
 
@@ -117,7 +100,23 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
   }
 
   @Override
-  public void writeExpenseToRemote(User user, Group group, Expense expense) {
+  public void writeExpenseToRemote(Group group, Expense expense) {
+
+    String groupId = group.getGroupId();
+    ExpensesDataRepository expensesDataRepository = new ExpensesDataRepository();
+    expensesDataRepository.addExpenses(groupId, expense, new Handler.Callback() {
+      @Override
+      public boolean handleMessage(Message msg) {
+
+        if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS)) {
+          Toast.makeText(getContext(), "Expense saved in remote", Toast.LENGTH_SHORT).show();
+        } else {
+          Toast.makeText(getContext(), "Failed to save expense in remote", Toast.LENGTH_SHORT)
+               .show();
+        }
+        return false;
+      }
+    });
 
   }
 
@@ -125,4 +124,62 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
   public void updateUIWithNewExpense() {
 
   }
+
+  @Override
+  public void fetchExpensesListFromRemote(Group group) {
+    String groupId = group.getGroupId();
+    ExpensesDataRepository expensesDataRepository = new ExpensesDataRepository();
+    expensesDataRepository.getExpensesList(groupId, new Handler.Callback() {
+      @Override
+      public boolean handleMessage(Message msg) {
+        if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS, false)) {
+          List<Expense> expenseList = (List<Expense>) msg.getData().getSerializable(
+              ExpensesDataRepository.EXPENSE_LIST);
+          // are we adding here to local memory
+          setData(expenseList);
+          setupRecyclerView(getView(), R.id.recyclerView_fragment_tab_expenses);
+        }
+        return false;
+      }
+    });
+  }
+
+  @Override
+  public void fetchSingleExpenseFromRemote(Group group, Expense expense) {
+
+    String groupId = group.getGroupId();
+    String expenseId = expense.getId();
+    ExpensesDataRepository expensesDataRepository = new ExpensesDataRepository();
+    expensesDataRepository.fetchExpense(groupId, expenseId, new Handler.Callback() {
+      @Override
+      public boolean handleMessage(Message msg) {
+        if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS, false)) {
+          Expense newExpense = (Expense) msg.getData()
+                                            .getSerializable(ExpensesDataRepository.EXPENSE);
+        }
+        return false;
+      }
+    });
+  }
+
+  @Override
+  public void removeExpenseFromRemote(Group group, Expense expense) {
+    String groupId = group.getGroupId();
+    String expenseId = expense.getId();
+    ExpensesDataRepository expensesDataRepository = new ExpensesDataRepository();
+    expensesDataRepository.removeExpense(groupId, expenseId, new Handler.Callback() {
+      @Override
+      public boolean handleMessage(Message msg) {
+        if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS)) {
+          Toast.makeText(getContext(), "Expense saved in remote", Toast.LENGTH_SHORT).show();
+        } else {
+          Toast.makeText(getContext(), "Failed to save expense in remote", Toast.LENGTH_SHORT)
+               .show();
+        }
+        return false;
+      }
+    });
+  }
+
+
 }

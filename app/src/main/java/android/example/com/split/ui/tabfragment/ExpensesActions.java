@@ -4,7 +4,6 @@ import android.content.Context;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
-import android.widget.Spinner;
 
 import java.util.List;
 
@@ -26,8 +25,14 @@ public interface ExpensesActions {
   public List<Double>  updateMembersBalance(User user, Group group, Expense expense);
   // total share is omited
   public void saveNewExpense(Expense expense);
-  public void writeExpenseToRemote(User user, Group group, Expense expense);
+  public void writeExpenseToRemote(Group group, Expense expense);
   public void updateUIWithNewExpense();
+
+  public void fetchExpensesListFromRemote(Group group);
+
+  public void fetchSingleExpenseFromRemote(Group group,Expense expense);
+
+  public void removeExpenseFromRemote(Group group,Expense expense);
 
 
 

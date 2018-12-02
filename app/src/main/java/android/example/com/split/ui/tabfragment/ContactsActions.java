@@ -9,7 +9,7 @@ public interface ContactsActions {
   //Checks
   void addContact(User user);
 
-  void getContactDetailFromUI(String firstName, String lastName, String Email);
+  User getContactDetailFromUI(String firstName, String lastName, String Email);
 
   boolean contactExist(List<User> users, String firstName, String lastName);
 
@@ -27,5 +27,7 @@ public interface ContactsActions {
   void removeContact(List<User> users, User user);
 
   void removeContactFromDB(User currentUser, User contact);
+
+  void fetchContactListFromRemoteDb(User currentUser);
 
 }

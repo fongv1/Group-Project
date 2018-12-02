@@ -1,5 +1,6 @@
 package android.example.com.split.data.entity;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.io.Serializable;
@@ -38,8 +39,10 @@ public class User implements Serializable {
    */
   private String phoneNumber;
 
-  private List<String> contacts;
+  @com.google.firebase.firestore.Exclude
+  private List<User> contactsUsers;
 
+  private List<String> contacts;
 
   /**
    * User
@@ -47,7 +50,8 @@ public class User implements Serializable {
 
   public User() {
 
-    contacts = new ArrayList<String>();
+    contactsUsers = new ArrayList<>();
+    this.contacts = new ArrayList<>();
 
   }
 
@@ -58,6 +62,7 @@ public class User implements Serializable {
     this.lastName = lastName;
     this.email = email;
     this.phoneNumber = phoneNumber;
+    this.contacts = new ArrayList<>();
   }
 
 
@@ -68,15 +73,26 @@ public class User implements Serializable {
     this.lastName = lastName;
     this.email = email;
     this.phoneNumber = phoneNumber;
-    contacts = new ArrayList<String>();
+    contactsUsers = new ArrayList<>();
+    this.contacts = new ArrayList<>();
   }
 
-  public List<String> getContacts() {
-    return contacts;
+  public User(FirebaseUser currentUser) {
+    this.id = currentUser.getUid();
+    this.firstName = currentUser.getDisplayName();
+    this.lastName = currentUser.getDisplayName();
+    this.email = currentUser.getEmail();
+    this.phoneNumber = currentUser.getPhoneNumber();
+    contactsUsers = new ArrayList<>();
+    this.contacts = new ArrayList<>();
   }
 
-  public void setContacts(List<String> contacts) {
-    this.contacts = contacts;
+  public List<User> getContactsUsers() {
+    return contactsUsers;
+  }
+
+  public void setContactsUsers(List<User> contactsUsers) {
+    this.contactsUsers = contactsUsers;
   }
 
   public String getId() {
@@ -125,11 +141,19 @@ public class User implements Serializable {
     this.phoneNumber = phoneNumber;
   }
 
-  public void addToContactList(String newUser) {
-    contacts.add(newUser);
+  public void addToContactList(User newUser) {
+    contactsUsers.add(newUser);
   }
 
   public String toString() {
     return firstName + " " + lastName;
+  }
+
+  public List<String> getContacts() {
+    return contacts;
+  }
+
+  public void setContacts(List<String> contacts) {
+    this.contacts = contacts;
   }
 }
