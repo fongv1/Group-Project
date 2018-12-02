@@ -114,14 +114,16 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
                               new Handler.Callback() {
                                 @Override
                                 public boolean handleMessage(Message msg) {
-
-                                  List<Group> groups = (List<Group>) msg.getData()
-                                                                        .getSerializable(
-                                                                            GroupDataRepository
-                                                                                .GROUP_LIST);
+                                  final List<Group> groups;
+                                  if (msg.getData().getBoolean(GroupDataRepository.SUCCESS, false)) {
+                                    groups = (List<Group>) msg.getData()
+                                                              .getSerializable(GroupDataRepository.GROUP_LIST);
+                                  }
+                                  else {
+                                    groups = new ArrayList<>();
+                                  }
                                   setData(groups);
-                                  setupRecyclerView(getView(),
-                                                    R.id.recyclerView_fragment_tab_expenses);
+                                  setupRecyclerView(getView(), R.id.recyclerView_fragment_tab_expenses);
                                   return false;
                                 }
                               });

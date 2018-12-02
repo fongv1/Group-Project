@@ -14,7 +14,10 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerView.ViewHolder, M> 
 
   private List<M> data;
 
-  BaseRecyclerAdapter(List<M> myDataset) {
+  BaseRecyclerAdapter(final List<M> myDataset) {
+    if (myDataset == null) {
+      throw new NullPointerException();
+    }
     this.data = myDataset;
   }
 
