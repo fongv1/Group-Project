@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout_dialog_add_member"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -12,7 +13,7 @@
 
         <RelativeLayout
             android:id="@+id/relativeLayout_dialog_add_member"
-            android:padding="25dp"
+            android:padding="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -30,16 +31,42 @@
                 android:id="@+id/editText_dialog_add_member"
                 android:layout_below="@id/textView_dialog_add_member"
                 android:layout_width="match_parent"
+                android:inputType=""
                 android:hint="@string/hint_add_member"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                tools:ignore="Autofill" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="2dp"
+                android:layout_alignBottom="@id/button_dialog_add_member_save"
+                android:layout_below="@+id/editText_dialog_add_member"
+                android:layout_marginBottom="61dp">
+
+                <TextView
+                    android:id="@+id/textView_choose_contact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:hint="@string/choose_contact"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_choose_contact"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/button_dialog_add_member_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/editText_dialog_add_member"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="88dp"
                 android:background="@color/colorPrimaryDark"
                 android:text="@string/save_member"
                 android:textColor="@android:color/white"

@@ -19,18 +19,18 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView_payer_item"
+            <ImageView
+                android:id="@+id/imageView_money_item"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textColor="@color/colorPrimaryDark"
-                android:layout_gravity="top"
-                android:textStyle="bold"
-                android:text="@string/textView_payer_item" />
+                android:layout_height="match_parent"
+                android:contentDescription="@string/edit_expense_button"
+                android:paddingRight="20dp"
+                android:scaleType="center"
+                android:layout_weight="0"
+                app:srcCompat="@drawable/money_expenses" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -46,32 +46,59 @@
                     android:textStyle="bold"
                     android:text="@string/textView_expense_item" />
 
-                <TextView
-                    android:id="@+id/textView_amount_item"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textStyle="bold"
-                    android:text="@string/textView_amount_item" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textView_amount_item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:paddingEnd="5dp"
+                        android:text="@string/textView_amount_item" />
+
+                    <TextView
+                        android:id="@+id/textView_group_item_currency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="bold"
+                        android:text="@string/sek" />
+
+                </LinearLayout>
+
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView_payer_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_gravity="left"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="10dp"
+                android:textStyle="bold"
+                android:text="@string/textView_payer_item" />
 
             <ImageView
                 android:id="@+id/imageView_edit_expense_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
                 android:layout_gravity="top"
-                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/edit_expense_button"
                 app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
 
             <ImageView
                 android:id="@+id/imageView_delete_expense_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
                 android:layout_gravity="top"
+                android:contentDescription="@string/delete_expense_button"
                 app:srcCompat="@drawable/ic_clear_black_24dp" />
-
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

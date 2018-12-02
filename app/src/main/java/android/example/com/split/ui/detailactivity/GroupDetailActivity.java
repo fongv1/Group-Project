@@ -1,6 +1,7 @@
 package android.example.com.split.ui.detailactivity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
@@ -9,15 +10,15 @@ import android.example.com.split.ui.tabfragment.ExpensesTabFragment;
 import android.example.com.split.ui.tabfragment.MembersTabFragment;
 import android.example.com.split.ui.tabsadapter.GroupTabsAdapter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GroupDetailActivity extends BaseDetailActivity {
@@ -62,23 +64,17 @@ public class GroupDetailActivity extends BaseDetailActivity {
    */
   private ViewPager mViewPager;
 
-  @Override
-  public void onBackPressed() {
-    if (drawer.isDrawerOpen(GravityCompat.START)) {
-      drawer.closeDrawer(GravityCompat.START);
-    } else {
-      super.onBackPressed();
-    }
+  public GroupDetailActivity() {
+    init(R.string.title_activity_group, R.layout.activity_detail_group, R.menu.menu_group);
   }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_detail_group);
-
     Bundle bundle = getIntent().getExtras();
     if (bundle != null) {
       group = (Group) bundle.get("Group");
+      setTitle(group.getName());
     }
 
     // add member and expense
@@ -89,17 +85,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
     expenseAmount = (EditText) findViewById(R.id.editText_dialog_add_expense_amount);
     //expensePayee = (EditText) findViewById(R.id.);
     addExpenseButton = (Button) findViewById(R.id.button_dialog_add_expense_save);
-
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_activity_detail_group);
-    setSupportActionBar(toolbar);
-
-    drawer = findViewById(R.id.drawer_layout_group_detail);
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                                                             R.string.navigation_drawer_open,
-                                                             R.string.navigation_drawer_close);
-
-    drawer.addDrawerListener(toggle);
-    toggle.syncState();
 
     // create bundle to pass the group to the TabFragments
     Bundle groupBundle = new Bundle();
@@ -176,13 +161,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
   }
 
   @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.menu_group, menu);
-    return true;
-  }
-
-  @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     // Handle action bar item clicks here. The action bar will
     // automatically handle clicks on the Home/Up button, so long
@@ -191,6 +169,22 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
     //noinspection SimplifiableIfStatement
     if (id == R.id.action_settings) {
+      return true;
+    } else if (id == R.id.home) {
+      Intent upIntent = NavUtils.getParentActivityIntent(this);
+      if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+        // This activity is NOT part of this app's task, so create a new task
+        // when navigating up, with a synthesized back stack.
+        TaskStackBuilder.create(this)
+                        // Add all of this activity's parents to the back stack
+                        .addNextIntentWithParentStack(upIntent)
+                        // Navigate up to the closest parent
+                        .startActivities();
+      } else {
+        // This activity is part of this app's task, so simply
+        // navigate up to the logical parent activity.
+        NavUtils.navigateUpTo(this, upIntent);
+      }
       return true;
     }
 
@@ -203,6 +197,13 @@ public class GroupDetailActivity extends BaseDetailActivity {
     dialogBuilder.setView(view);
     dialog = dialogBuilder.create();
 
+    // set the spinner to show all the contacts
+    final Spinner contactsSpinner = (Spinner) view.findViewById(R.id.spinner_choose_contact);
+    ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item,
+                                                        getContactsData());
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    contactsSpinner.setAdapter(adapter);
+
     Button saveButton = (Button) view.findViewById(R.id.button_dialog_add_member_save);
     saveButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -211,14 +212,17 @@ public class GroupDetailActivity extends BaseDetailActivity {
         // takes the name user input from the text field
         memberName = (EditText) view.findViewById(R.id.editText_dialog_add_member);
         String newName = memberName.getText().toString();
-        user.setFirstName(newName);
-        // add the new user to the dataset in the MembersRecyclerAdapter
-        List<User> dataset = membersTabFragment.getRecyclerAdapter().getDataset();
-        dataset.add(user);
 
-        // Notifies that the item at the last position is created
-        int position = dataset.size() - 1;
-        membersTabFragment.getRecyclerAdapter().notifyItemInserted(position);
+        if(!newName.trim().isEmpty()) {
+          user.setFirstName(newName);
+          // add the new user to the dataset in the MembersRecyclerAdapter
+          List<User> dataset = membersTabFragment.getRecyclerAdapter().getDataset();
+          dataset.add(user);
+
+          // Notifies that the item at the last position is created
+          int position = dataset.size() - 1;
+          membersTabFragment.getRecyclerAdapter().notifyItemInserted(position);
+        }
 
         dialog.dismiss();
       }
@@ -227,13 +231,19 @@ public class GroupDetailActivity extends BaseDetailActivity {
     dialog.show();
   }
 
+  @NonNull
+  private List<User> getContactsData() {
+
+    return new ArrayList<>();
+  }
+
   private void addExpensePopupDialog() {
     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
     final View view = getLayoutInflater().inflate(R.layout.dialog_add_expense, null);
     dialogBuilder.setView(view);
     dialog = dialogBuilder.create();
 
-    expenseSpinner = (Spinner) view.findViewById(R.id.spinner_choose_member);
+    final Spinner expenseSpinner = (Spinner) view.findViewById(R.id.spinner_choose_member);
     ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item,
                                                         group.getUserMembers());
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -245,30 +255,50 @@ public class GroupDetailActivity extends BaseDetailActivity {
       public void onClick(View v) {
         Expense expense = new Expense();
         // takes the title user input from the text field
-        expenseTitle = (EditText) view.findViewById(R.id.editText_dialog_add_expense_title);
+        expenseTitle = view.findViewById(R.id.editText_dialog_add_expense_title);
         String newTitle = expenseTitle.getText().toString();
-        expense.setTittle(newTitle);
+
         // takes the amount user input from the text field
-        expenseAmount = (EditText) view.findViewById(R.id.editText_dialog_add_expense_amount);
-        Double newAmount = Double.parseDouble(expenseAmount.getText().toString());
-        expense.setPaymentAmount(newAmount);
+        expenseAmount = view.findViewById(R.id.editText_dialog_add_expense_amount);
+        double newAmount = ParseDouble(expenseAmount.getText().toString());
+
         // takes the selected member from its position in the spinner
         int memberPosition = expenseSpinner.getSelectedItemPosition();
         User member = group.getUserMembers().get(memberPosition);
-        expense.setUser(member);
 
-        // add the new expense to the dataset in the ExpensesRecyclerAdapter
-        List<Expense> dataset = expensesTabFragment.getData();
-        dataset.add(expense);
+        if(!newTitle.trim().isEmpty() &&
+            newAmount > 0.0) {
 
-        // Notifies that the item at the last position is created
-        int position = dataset.size() - 1;
-        expensesTabFragment.getRecyclerAdapter().notifyItemInserted(position);
+          expense.setTittle(newTitle);
+          expense.setPaymentAmount(newAmount);
+          expense.setUser(member);
+          expense.setPayerName(member.getFirstName());
+
+          // add the new expense to the dataset in the ExpensesRecyclerAdapter
+          List<Expense> dataset = expensesTabFragment.getData();
+          dataset.add(expense);
+
+          // Notifies that the item at the last position is created
+          int position = dataset.size() - 1;
+          expensesTabFragment.getRecyclerAdapter().notifyItemInserted(position);
+
+        }
 
         dialog.dismiss();
       }
     });
     dialog.show();
+  }
+
+  double ParseDouble(String strNumber) {
+    if (strNumber != null && strNumber.length() > 0) {
+      try {
+        return Double.parseDouble(strNumber);
+      } catch(Exception e) {
+        return -1;   // -1 marks this field is wrong. or make a function validates field first ...
+      }
+    }
+    else return 0;
   }
 
 }

@@ -7,43 +7,68 @@ import java.io.Serializable;
 /**
  * Share
  */
-class Share implements Payment, Serializable, com.alaskalany.lib.model.Share {
+public class Share implements Payment, Serializable {
 
-  /**
-   * True if the share is paid
-   */
-  private boolean paid;
-  /* Share amount */
-  private double shareAmount;
-  /**
-   * The {@link User} ID associated to this share
-   */
+  private String id;
   private String userId;
+  private String memberName;
+  // Total amount paid by user
+  private double paidAmount;
+  // Total share per member
+  private double totalShare;
+  // amount is settled
+  private boolean isSetteled;
 
-  /**
-   * Share
-   */
   public Share() {
+    this.isSetteled = false;
   }
 
-  /**
-   * Check if share is paid
-   *
-   * @return boolean True if the share is paid
-   */
+  public Share(String id, String userId, String memberName, double paidAmount, double
+      totalShare) {
+    this.id = id;
+    this.userId = userId;
+    this.memberName = memberName;
+    this.paidAmount = paidAmount;
+    this.totalShare = totalShare;
+    this.isSetteled = false;
+  }
+
+  public String getId() {
+
+    return id;
+  }
+
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
   @Override
-  public boolean isPaid() {
-    return paid;
+  public void setSetteled(boolean setteled) {
+    this.isSetteled = setteled;
+  }
+
+
+  public String getMemberName() {
+    return memberName;
+  }
+
+  public void setMemberName(String memberName) {
+    this.memberName = memberName;
   }
 
   /**
    * Set share is paid
    *
-   * @param paid True to set the share as paid
    */
   @Override
-  public void setPaid(boolean paid) {
-    this.paid = paid;
+  public void setPaidAmount(double paidAmount) {
+    this.paidAmount = paidAmount;
+  }
+
+  @Override
+  public double getPaidAmount() {
+    return paidAmount;
   }
 
   /**
@@ -52,26 +77,26 @@ class Share implements Payment, Serializable, com.alaskalany.lib.model.Share {
    * @return double the amount of the share
    */
   @Override
-  public double getAmount() {
-    return shareAmount;
+  public double getTotalShare() {
+    return totalShare;
   }
 
   /**
    * Set share amount
    *
-   * @param shareAmount Set the share amount
+   * @param totalShare Set the share amount
    */
   @Override
-  public void setAmount(double shareAmount) {
-    this.shareAmount = shareAmount;
+  public void setTotalShare(double totalShare) {
+    this.totalShare = totalShare;
   }
+
 
   /**
    * Get user ID
    *
    * @return Get the {@link User} the ID
    */
-  @Override
   public String getUserId() {
     return userId;
   }
@@ -81,8 +106,8 @@ class Share implements Payment, Serializable, com.alaskalany.lib.model.Share {
    *
    * @param userId Set the {@link User} ID
    */
-  @Override
   public void setUserId(String userId) {
     this.userId = userId;
   }
+
 }

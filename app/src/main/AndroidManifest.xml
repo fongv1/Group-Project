@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="android.example.com.split">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -8,15 +9,18 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <!-- ACTIVITY -->
         <activity
             android:name=".ui.activity.HomeActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,26 +28,38 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.detailactivity.GroupDetailActivity"
-            android:label="@string/title_activity_group"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ui.detailactivity.ExpensesDetailActivity"
-            android:label="@string/title_activity_group"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".ui.detailactivity.MembersDetailActivity"
-            android:label="@string/title_activity_group"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <!-- ACTIVITY -->
         <activity
             android:name=".ui.activity.FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/FullscreenTheme" />
-
-        <activity android:name=".ui.detailactivity.ContactDetailActivity"></activity>
+        <!-- ACTIVITY -->
+        <activity
+            android:name=".ui.detailactivity.GroupDetailActivity"
+            android:parentActivityName=".ui.activity.HomeActivity"
+            android:launchMode="singleTop"
+            android:label="@string/title_activity_group"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!-- ACTIVITY -->
+        <activity
+            android:name=".ui.detailactivity.ExpensesDetailActivity"
+            android:parentActivityName=".ui.detailactivity.GroupDetailActivity"
+            android:label="@string/title_activity_expense"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!-- ACTIVITY -->
+        <activity
+            android:name=".ui.detailactivity.MembersDetailActivity"
+            android:parentActivityName=".ui.detailactivity.GroupDetailActivity"
+            android:label="@string/title_activity_member"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!-- ACTIVITY -->
+        <activity
+            android:name=".ui.detailactivity.ContactDetailActivity"
+            android:parentActivityName=".ui.activity.HomeActivity"
+            android:label="@string/title_activity_contact"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!-- ACTIVITY -->
     </application>
-
 
 </manifest>

@@ -13,4 +13,8 @@ public interface Share {
   String getUserId();
 
   void setUserId(String userId);
+
+  void setId(String id);
+
+  String getId();
 }

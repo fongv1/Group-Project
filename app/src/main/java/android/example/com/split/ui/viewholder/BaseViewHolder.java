@@ -3,6 +3,7 @@ package android.example.com.split.ui.viewholder;
 import android.content.Context;
 import android.content.Intent;
 import android.example.com.split.OnDeleteItemListener;
+import android.example.com.split.OnEditItemListener;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.support.annotation.CallSuper;
@@ -21,10 +22,12 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
   private final String title;
   private T itemData;
   private OnDeleteItemListener onDeleteItemListener;
+  private OnEditItemListener onEditItemListener;
+  private boolean hasDetail;
 
-  protected BaseViewHolder(View itemView, Class<? extends FragmentActivity> detailActivityClass,
-                           String title) {
+  protected BaseViewHolder(View itemView, Class<? extends FragmentActivity> detailActivityClass, String title, boolean hasDetail) {
     super(itemView);
+    this.hasDetail = hasDetail;
     findAllViews(itemView);
     context = itemView.getContext();
     this.detailActivityClass = detailActivityClass;
@@ -45,7 +48,9 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
   protected abstract void bind(Group group, T expense, int position);
 
   protected void onItemClicked() {
-    startDetailActivity();
+    if(hasDetail){
+      startDetailActivity();
+    }
   }
 
   protected View getItemView() {
@@ -58,6 +63,14 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
 
   protected void deleteItem(int position) {
     onDeleteItemListener.onDelete(position);
+  }
+
+  protected void setOnEditItemListener(OnEditItemListener onEditItemListener) {
+    this.onEditItemListener = onEditItemListener;
+  }
+
+  protected void editItem(int position) {
+    onEditItemListener.onEdit(position);
   }
 
   @Override
