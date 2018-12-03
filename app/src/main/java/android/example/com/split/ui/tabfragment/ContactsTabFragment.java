@@ -22,8 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.*;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.*;
@@ -261,8 +260,123 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
   }
 
   @Override
-  public void saveNewContactToRemote(User currentUser, User contact) {
-    String currentUserId = currentUser.getId();
+  public void saveNewContactToRemote(final User currentUser, final User contact) {
+
+
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      if (contact.getId() != null) {
+
+        addContactToUser(currentUser.getId(), contact, new OnSuccessListener<Void>() {
+
+          @Override
+          public void onSuccess(Void aVoid) {
+            Toast.makeText(getContext(), "New Member added to the group.", Toast.LENGTH_SHORT)
+                 .show();
+          }
+        });
+      } else {
+        Log.d(TAG, "saveNewContactToRemote: start to create new");
+
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").add(contact).addOnSuccessListener(new OnSuccessListener
+            <DocumentReference>() {
+          @Override
+          public void onSuccess(DocumentReference documentReference) {
+            final String userId = documentReference.getId();
+            Log.d(TAG, "saveNewContactToRemote:" + userId);
+
+            CollectionReference usersCollection = db.collection("users");
+            DocumentReference userDocument = usersCollection.document(userId);
+            Log.d(TAG, "saveNewContactToRemote: start to update new");
+            updateIdInUserDocument(userDocument, userId, new OnSuccessListener<Void>() {
+              @Override
+              public void onSuccess(Void aVoid) {
+                Log.d(TAG, "saveNewContactToRemote: start to add contact new" + currentUser.getId());
+                contact.setId(userId);
+                addContactToUser(currentUser.getId(), contact, new OnSuccessListener<Void>() {
+
+                  @Override
+                  public void onSuccess(Void aVoid) {
+
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+    }
+  }
+
+
+
+  private void updateIdInUserDocument(DocumentReference userDocument, String userId, final
+  OnSuccessListener<Void> onSuccessListener) {
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      userDocument.update("id", userId)
+                  .addOnSuccessListener(onSuccessListener)
+                  .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                  })
+                  .addOnCanceledListener(new OnCanceledListener() {
+                    @Override
+                    public void onCanceled() {
+
+                    }
+                  });
+    }
+  }
+
+      private void addContactToUser(String userId, User contact, final OnSuccessListener<Void>
+      onSuccessListener) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+            Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if (!isConnected) {
+          Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+        } else {
+          FirebaseFirestore db = FirebaseFirestore.getInstance();
+          CollectionReference groupsCollRef = db.collection("users");
+          DocumentReference groupDocRef = groupsCollRef.document(userId);
+          groupDocRef.update("contacts", FieldValue.arrayUnion(contact.getId()))
+                     .addOnSuccessListener(onSuccessListener)
+                     .addOnFailureListener(new OnFailureListener() {
+                       @Override
+                       public void onFailure(@NonNull Exception e) {
+                         Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT)
+                              .show();
+                       }
+                     })
+                     .addOnCanceledListener(new OnCanceledListener() {
+                       @Override
+                       public void onCanceled() {
+                         Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT)
+                              .show();
+                       }
+                     });
+        }
+      }
+
+    /*String currentUserId = currentUser.getId();
     UserDataRepository userDataRepository = new UserDataRepository();
     userDataRepository.addNewContact(contact, currentUserId, new Handler.Callback() {
       @Override
@@ -276,9 +390,9 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
 
         return false;
       }
-    });
+    });*/
 
-  }
+
 
   @Override
   public void updateUIWithNewContact() {
@@ -338,3 +452,5 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
 
 
 }
+
+
