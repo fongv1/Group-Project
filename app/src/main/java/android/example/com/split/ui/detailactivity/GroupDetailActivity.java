@@ -343,8 +343,9 @@ public class GroupDetailActivity extends BaseDetailActivity {
     dialog = dialogBuilder.create();
 
     final Spinner expenseSpinner = (Spinner) view.findViewById(R.id.spinner_choose_member);
-    ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item,
-                                                        group.getUserMembers());
+    ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item);
+    getMembersData(adapter);
+
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     expenseSpinner.setAdapter(adapter);
 
@@ -361,16 +362,17 @@ public class GroupDetailActivity extends BaseDetailActivity {
         expenseAmount = view.findViewById(R.id.editText_dialog_add_expense_amount);
         double newAmount = ParseDouble(expenseAmount.getText().toString());
 
-        // takes the selected member from its position in the spinner
-        int memberPosition = expenseSpinner.getSelectedItemPosition();
-        User member = group.getUserMembers().get(memberPosition);
+        // takes the selected member from the spinner
+        User member = (User) expenseSpinner.getSelectedItem();
 
         if (!newTitle.trim().isEmpty() && newAmount > 0.0) {
 
           expense.setTittle(newTitle);
           expense.setPaymentAmount(newAmount);
-          expense.setUser(member);
-          expense.setPayerName(member.getFirstName());
+          expense.setPayerId(member.getId());
+          expense.setPayerName(member.toString());
+
+          expensesTabFragment.writeExpenseToRemote(group, expense);
 
           // add the new expense to the dataset in the ExpensesRecyclerAdapter
           List<Expense> dataset = expensesTabFragment.getData();
@@ -386,6 +388,46 @@ public class GroupDetailActivity extends BaseDetailActivity {
       }
     });
     dialog.show();
+  }
+
+  private List<User> getMembersData(final ArrayAdapter<User> spinnerAdapter) {
+    final List<User> loadedMembers = new ArrayList<>();
+
+    final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    db.collection("groups")
+      .document(group.getGroupId())
+      .get()
+      .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+          if (task.isSuccessful()) {
+            DocumentSnapshot groupDocumentSnapshot = task.getResult();
+            Group currentGroup = groupDocumentSnapshot.toObject(Group.class);
+
+            List<String> membersIds = currentGroup.getMembers();
+            if (membersIds != null && !membersIds.isEmpty()) {
+              for (String memberId : membersIds) {
+                db.collection("users")
+                  .document(memberId)
+                  .get()
+                  .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                      DocumentSnapshot memberUserDocumentSnapshot = task.getResult();
+                      if (memberUserDocumentSnapshot.exists()) {
+                        User memberUser = memberUserDocumentSnapshot.toObject(User.class);
+                        loadedMembers.add(memberUser);
+                        spinnerAdapter.add(memberUser);
+                      }
+                    }
+                  });
+              }
+            }
+          }
+
+        }
+      });
+    return loadedMembers;
   }
 
   double ParseDouble(String strNumber) {
