@@ -21,9 +21,15 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +50,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
   private ExpensesTabFragment expensesTabFragment;
   private MembersTabFragment membersTabFragment;
+  private static final String TAG = "GroupDetailActivity";
 
   private Group group;
 
@@ -235,6 +242,20 @@ public class GroupDetailActivity extends BaseDetailActivity {
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     contactsSpinner.setAdapter(adapter);
 
+    contactsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+      @Override
+      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        User user = (User) parent.getSelectedItem();
+        // Toast.makeText(getBaseContext(),user.getId(),Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onItemSelected: " + position);
+      }
+
+      @Override
+      public void onNothingSelected(AdapterView<?> parent) {
+
+      }
+    });
+
     Button saveButton = (Button) view.findViewById(R.id.button_dialog_add_member_save);
     saveButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -267,8 +288,48 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
   @NonNull
   private List<User> getContactsData() {
+    //initDataset();
+    final List<User> loadedContacts = new ArrayList<>();
+    //setData(loadedContacts);
+    final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    db.collection("users")
+      .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+      .get()
+      .addOnCompleteListener(
 
-    return new ArrayList<>();
+          new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+              if (task.isSuccessful()) {
+                DocumentSnapshot userDocumentSnapshot = task.getResult();
+                User currentUser = userDocumentSnapshot.toObject(User.class);
+
+                List<String> myContactsIds = currentUser.getContacts();
+                if (myContactsIds != null && !myContactsIds.isEmpty()) {
+                  for (String contactId : myContactsIds) {
+                    db.collection("users")
+                      .document(contactId)
+                      .get()
+                      .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                          DocumentSnapshot contactUserDocumentSnapshot = task.getResult();
+                          if (contactUserDocumentSnapshot.exists()) {
+                            User contactUser = contactUserDocumentSnapshot.toObject(User.class);
+                            loadedContacts.add(contactUser);
+                          }
+
+                        }
+                      });
+                  }
+
+                }
+              }
+            }
+          });
+
+    return loadedContacts;
   }
 
   private void addExpensePopupDialog() {
