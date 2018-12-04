@@ -3,6 +3,7 @@ package android.example.com.split.ui.viewholder;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.example.com.split.OnDeleteItemListener;
+import android.example.com.split.OnEditItemListener;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
@@ -19,13 +20,15 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
   // Each group data item is just a String presented as a textView in this case
   private TextView expenseTextView;
   private TextView amountTextView;
+  public TextView payerTextView;
   private ImageView editButton;
   private ImageView deleteButton;
 
   // Initializes the ViewHolder TextView from the item_group XML resource
-  public ExpenseViewHolder(View itemView, OnDeleteItemListener listener) {
-    super(itemView, ExpensesDetailActivity.class, "Expense");
-    setOnDeleteItemListener(listener);
+  public ExpenseViewHolder(View itemView, OnDeleteItemListener deleteListener, OnEditItemListener editListener) {
+    super(itemView, ExpensesDetailActivity.class, "Expense", false);
+    setOnDeleteItemListener(deleteListener);
+    setOnEditItemListener(editListener);
   }
 
   private void editExpensePopupDialog(final Group group, final Expense expense, final int
@@ -63,19 +66,33 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
       public void onClick(View v) {
         //takes the title input from the text field
         String newTitle = editTitle.getText().toString();
-        // updates the title
-        expense.setTittle(newTitle);
+
         //takes the amount input from the text field
         Double newAmount = Double.parseDouble(editAmount.getText().toString());
-        //updates the amount
-        expense.setPaymentAmount(newAmount);
-        // takes the selected member from its position in the spinner
-        int memberPosition = expenseSpinner.getSelectedItemPosition();
-        User member = group.getUserMembers().get(memberPosition);
-        expense.setUser(member);
 
-        Toast.makeText(v.getContext(), "Saved!", Toast.LENGTH_SHORT).show();
-        // Notifies tha adapter that the item at that position is changed
+
+
+        if(!newTitle.trim().equals("") && newAmount != 0.0) {
+          // updates the title
+          expense.setTittle(newTitle);
+
+          //updates the amount
+          expense.setPaymentAmount(newAmount);
+          // takes the selected member from its position in the spinner
+          int memberPosition = expenseSpinner.getSelectedItemPosition();
+          User member = group.getUserMembers().get(memberPosition);
+          expense.setUser(member);
+
+          Toast.makeText(v.getContext(), "Saved!", Toast.LENGTH_SHORT).show();
+          // Notifies tha adapter that the item at that position is changed
+          editItem(position);
+        }
+
+        else {
+          Toast.makeText(v.getContext(), "Not saved!", Toast.LENGTH_SHORT).show();
+
+        }
+
         dialog.dismiss();
       }
     });
@@ -112,6 +129,7 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
   protected void findAllViews(View itemView) {
     expenseTextView = (TextView) itemView.findViewById(R.id.textView_expense_item);
     amountTextView = (TextView) itemView.findViewById(R.id.textView_amount_item);
+    payerTextView = (TextView) itemView.findViewById(R.id.textView_payer_item);
     editButton = (ImageView) itemView.findViewById(R.id.imageView_edit_expense_item);
     deleteButton = (ImageView) itemView.findViewById(R.id.imageView_delete_expense_item);
   }
@@ -123,7 +141,6 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
 
   @Override
   public void bind(User user, int position) {
-
   }
 
   @Override
@@ -131,6 +148,8 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
     super.bind(expense);
     expenseTextView.setText(getItemData().getTittle());
     amountTextView.setText("" + getItemData().getPaymentAmount());
+    payerTextView.setText(getItemData().getPayerName());
+    //payerTextView.setText(getItemData().getUser().getFirstName());
     editButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {

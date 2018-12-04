@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.example.com.split.FeatureFlags;
 import android.example.com.split.R;
+import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.example.com.split.data.repository.UserDataRepository;
 import android.example.com.split.ui.tabsadapter.HomeTabsAdapter;
@@ -59,6 +60,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
   private EditText contactName;
   private EditText contactSurname;
   private EditText contactEmail;
+  private EditText groupName;
 
   private HomeTabsAdapter homeTabsAdapter;
 
@@ -68,7 +70,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
       createContactPopupDialog();
     }
   };
-  private EditText groupName;
   private final View.OnClickListener addGroupFabListener = new View.OnClickListener() {
     @Override
     public void onClick(View v) {
@@ -108,6 +109,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
   protected void onCreate(Bundle savedInstanceState) {
 
     super.onCreate(savedInstanceState);
+
     setContentView(R.layout.activity_home);
 
     if (AUTHENTICATION) {
@@ -123,10 +125,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
         handleUserDatabase(firebaseUser);
       }
     }
-    View decorView = getWindow().getDecorView();
-    // Hide the status bar.
-    int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-    decorView.setSystemUiVisibility(uiOptions);
     // Remember that you should never show the action bar if the
     // status bar is hi
     ActionBar actionBar = getActionBar();
@@ -309,23 +307,31 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
     // Handle navigation view item clicks here.
     int id = item.getItemId();
 
-    if (id == R.id.nav_new) {
-      // Handle the camera action
-    } else if (id == R.id.nav_join) {
-
+    if (id == R.id.nav_new_group) {
+      createGroupPopupDialog();
+    } else if (id == R.id.nav_new_contact) {
+      createContactPopupDialog();
     } else if (id == R.id.nav_info) {
-
-    } else if (id == R.id.nav_manage) {
-
-    } else if (id == R.id.nav_share) {
-
-    } else if (id == R.id.nav_send) {
-
+      showInfoPopupWindow();
     }
-
     DrawerLayout drawer = findViewById(R.id.drawer_layout);
     drawer.closeDrawer(GravityCompat.START);
     return true;
+  }
+
+  public void showInfoPopupWindow() {
+    dialogBuilder = new AlertDialog.Builder(this);
+    final View view = getLayoutInflater().inflate(R.layout.dialog_info_window, null);
+    dialogBuilder.setView(view);
+    dialog = dialogBuilder.create();
+    Button exitButton = view.findViewById(R.id.button_dialog_info_exit);
+    exitButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        dialog.dismiss();
+      }
+    });
+    dialog.show();
   }
 
   private void createContactPopupDialog() {
@@ -334,29 +340,40 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
     dialogBuilder.setView(view);
     dialog = dialogBuilder.create();
 
-    Button saveButton = (Button) view.findViewById(R.id.button_dialog_add_contact_save);
+    Button saveButton = view.findViewById(R.id.button_dialog_add_contact_save);
     saveButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        User user = new User();
-        contactName = (EditText) view.findViewById(R.id.editText_dialog_add_contact_firstName);
+        User contact = new User();
+        List<User> dataset;
+        contactName = view.findViewById(R.id.editText_dialog_add_contact_firstName);
         String newName = contactName.getText().toString();
-        user.setFirstName(newName);
+        if (!newName.trim().isEmpty()) {
+          contact.setFirstName(newName);
 
-        contactSurname = (EditText) view.findViewById(R.id.editText_dialog_add_contact_lastName);
-        String newSurname = contactSurname.getText().toString();
-        user.setLastName(newSurname);
+          contactSurname = view.findViewById(R.id.editText_dialog_add_contact_lastName);
+          String newSurname = contactSurname.getText().toString();
+          contact.setLastName(newSurname);
 
-        contactEmail = (EditText) view.findViewById(R.id.editText_dialog_add_contact_email);
-        String newEmail = contactEmail.getText().toString();
-        user.setEmail(newEmail);
+          contactEmail = view.findViewById(R.id.editText_dialog_add_contact_email);
+          String newEmail = contactEmail.getText().toString();
+          contact.setEmail(newEmail);
 
-        List<User> dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().getDataset();
-        dataset.add(user);
+          FirebaseAuth auth = FirebaseAuth.getInstance();
+          FirebaseUser currentUser = auth.getCurrentUser();
+          User myUser = null;
+          if (currentUser != null) {
+            myUser = new User(currentUser);
+            homeTabsAdapter.getContactsTabFragment().saveNewContactToRemote(myUser, contact);
+          }
 
-        int position = dataset.size() - 1;
-        homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().notifyItemInserted(position);
+          dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().getDataset();
+          dataset.add(contact);
+          int position = dataset.size() - 1;
+          homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter()
+                         .notifyItemInserted(position);
 
+        }
         dialog.dismiss();
       }
     });
@@ -367,12 +384,39 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
 
   private void createGroupPopupDialog() {
     dialogBuilder = new AlertDialog.Builder(this);
-    View view = getLayoutInflater().inflate(R.layout.dialog_add_group, null);
+    final View view = getLayoutInflater().inflate(R.layout.dialog_add_group, null);
     groupName = findViewById(R.id.editText_dialog_add_group);
 
     dialogBuilder.setView(view);
     dialog = dialogBuilder.create();
-    dialog.show();
 
+    Button saveButton = view.findViewById(R.id.button_dialog_add_group_save);
+    saveButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Group group = new Group();
+        groupName = view.findViewById(R.id.editText_dialog_add_group);
+        String newGroupName = groupName.getText().toString();
+
+        if (!newGroupName.trim().isEmpty()) {
+          group = homeTabsAdapter.getGroupsTabFragment().getNewGroupDetailsFromUi(newGroupName);
+          // If the group exists
+          if (group == null) {
+            return;
+          }
+          FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+          User user = new User();
+          if (firebaseUser != null) {
+            user.setId(firebaseUser.getUid());
+            homeTabsAdapter.getGroupsTabFragment()
+                           .saveNewGroup(user, homeTabsAdapter.getGroupsTabFragment().getData(),
+                                         group);
+            homeTabsAdapter.getGroupsTabFragment().saveNewGroupToRemoteDb(user, group);
+          }
+        }
+        dialog.dismiss();
+      }
+    });
+    dialog.show();
   }
 }

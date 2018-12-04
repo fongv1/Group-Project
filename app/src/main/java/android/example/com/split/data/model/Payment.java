@@ -2,11 +2,14 @@ package android.example.com.split.data.model;
 
 public interface Payment {
 
-  boolean isPaid();
 
-  void setPaid(boolean paid);
+  void setSetteled(boolean setteled);
 
-  double getAmount();
+  void setPaidAmount(double paidAmount);
 
-  void setAmount(double shareAmount);
+  double getPaidAmount();
+
+  double getTotalShare();
+
+  void setTotalShare(double shareAmount);
 }

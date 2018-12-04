@@ -13,7 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, User> {
+import java.util.List;
+
+public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, User> implements
+    MembersActions {
 
   private static final String TAG = "MembersTabFragment";
   private Group group;
@@ -40,5 +43,65 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
     setData(group.getUserMembers());
     setRecyclerAdapter(new MembersRecyclerAdapter(getData()));
     recyclerView.setAdapter(getRecyclerAdapter());
+  }
+
+  @Override
+  public void addNewMember(User member) {
+
+  }
+
+  @Override
+  public List<User> getContactsNotInAGroup(Group group, List<User> contacts) {
+    return null;
+  }
+
+  @Override
+  public User selectContactFromContacts(List<User> contacts, User contact) {
+    return null;
+  }
+
+  @Override
+  public boolean isContactMemberInGroup(User contact, Group group) {
+    return false;
+  }
+
+  @Override
+  public User initializeNewGroupMember(User newMember, Group group) {
+    return null;
+  }
+
+  @Override
+  public void saveNewMemberInGroup(User newMember, Group group) {
+
+  }
+
+  @Override
+  public void saveNewMemberInGroupToRemoteDb(User newMember, Group group) {
+
+  }
+
+  @Override
+  public void updateUiAfterAddingNewMemberToGroup() {
+
+  }
+
+  @Override
+  public void removeGroupMember(User member, Group group) {
+
+  }
+
+  @Override
+  public boolean groupMemberHasZeroBalanceInGroup(User user, Group group) {
+    return false;
+  }
+
+  @Override
+  public void removeGroupMemberInRemoteDb(User member, Group group) {
+
+  }
+
+  @Override
+  public void updateUiAfterRemovingGroupMember() {
+
   }
 }

@@ -15,9 +15,8 @@ import com.google.firebase.firestore.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class GroupDataRepository extends Repository<Group> {
+public class GroupDataRepository  {
 
   public static final String SUCCESS = "success";
   public static final String GROUP_ID = "group-id";
@@ -27,8 +26,7 @@ public class GroupDataRepository extends Repository<Group> {
   private FirebaseFirestore db;
 
   // create new group
-  @Override
-  public void createItem(Group group, final Handler.Callback listener) {
+  public void addGroup(Group group, final Handler.Callback listener) {
     db = FirebaseFirestore.getInstance();
     final String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
     db.collection("groups").add(group)
@@ -40,7 +38,7 @@ public class GroupDataRepository extends Repository<Group> {
             String documentId = documentReference.getId();
 
             // add the created user to the group
-            addCurrentMember(documentId, user);
+           // addCurrentMember(documentId, user);
 
             Message message = new Message();
             final Bundle data = new Bundle();
@@ -68,15 +66,7 @@ public class GroupDataRepository extends Repository<Group> {
     db.collection("groups").document(documentId).update("members", FieldValue.arrayUnion(user));
   }
 
-  @Override
-  public void getItem(String itemId) {
 
-  }
-
-  @Override
-  public void updateItem(String itemId) {
-
-  }
 
   // add a member to a group
   public void addGroupMember(String groupId, String memberId, final Handler.Callback listener) {
@@ -105,33 +95,34 @@ public class GroupDataRepository extends Repository<Group> {
   }
 
   // add expense to a group
+  // should be changed
 
-  public void addGroupExpense(String groupId, Map<String, Object> expense, final Handler.Callback
-      listener) {
-    db = FirebaseFirestore.getInstance();
-    DocumentReference groupDocument = db.collection("groups").document(groupId);
-    // add new expense to this group
-    groupDocument.update("expenses", expense).addOnCompleteListener(new OnCompleteListener<Void>() {
-      @Override
-      public void onComplete(@NonNull Task<Void> task) {
-        if (task.isSuccessful()) {
-          Message message = new Message();
-          final Bundle data = new Bundle();
-          data.putBoolean(SUCCESS, true);
-          message.setData(data);
-          listener.handleMessage(message);
-        } else {
-          Message message = new Message();
-          final Bundle data = new Bundle();
-          data.putBoolean(SUCCESS, false);
-          message.setData(data);
-          listener.handleMessage(message);
-        }
-      }
-    });
+  /* public void addGroupExpense(String groupId , Map<String, Object> expense , final Handler
+  .Callback listener){
+       db = FirebaseFirestore.getInstance();
+       DocumentReference groupDocument = db.collection("groups").document(groupId);
+       // add new expense to this group
+       groupDocument.update("expenses",expense).addOnCompleteListener(new
+       OnCompleteListener<Void>() {
+           @Override
+           public void onComplete(@NonNull Task<Void> task) {
+               if (task.isSuccessful()){
+                   Message message = new Message();
+                   final Bundle data = new Bundle();
+                   data.putBoolean(SUCCESS, true);
+                   message.setData(data);
+                   listener.handleMessage(message);
+               } else{
+                   Message message = new Message();
+                   final Bundle data = new Bundle();
+                   data.putBoolean(SUCCESS, false);
+                   message.setData(data);
+                   listener.handleMessage(message);
+               }
+           }
+       });
 
-  }
-
+   }*/
   // get the list of user's groups
   public void getGroupList(String userId, final Handler.Callback listener) {
     db = FirebaseFirestore.getInstance();
@@ -146,6 +137,8 @@ public class GroupDataRepository extends Repository<Group> {
           if (!queryDocumentSnapshots.isEmpty()) {
             for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
               Group group = documentSnapshot.toObject(Group.class);
+              //TODO fix the group id missing while saving a group
+              group.setGroupId(documentSnapshot.getId());
               groupList.add(group);
             }
             data.putBoolean(SUCCESS, true);
@@ -170,5 +163,48 @@ public class GroupDataRepository extends Repository<Group> {
       }
     });
   }
+// not correct method
+  /*public void removeGroup(User currentUser, Group group, OnCompleteListener<DocumentSnapshot>
+      listener) {
+    db.collection("users").document(currentUser.getId()).collection("groups")
+      .document(group.getGroupId()).get().addOnCompleteListener(listener);
+  }*/
 
+  public void removeGroup(Group group , final Handler.Callback listener ){
+    db = FirebaseFirestore.getInstance();
+    db.collection("groups").document(group.getGroupId())
+      .delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+      @Override
+      public void onComplete(@NonNull Task<Void> task) {
+        Message message = new Message();
+        Bundle data = new Bundle();
+        if(task.isSuccessful()) {
+          data.putBoolean(SUCCESS, true);
+          message.setData(data);
+          listener.handleMessage(message);
+        }
+        else {
+          data.putBoolean(SUCCESS, false);
+          message.setData(data);
+          listener.handleMessage(message);
+        }
+      }
+    }).addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception e) {
+        Message message = new Message();
+        Bundle data = new Bundle();
+        data.putBoolean(SUCCESS, false);
+        message.setData(data);
+        listener.handleMessage(message);
+      }
+    });
+
+  }
+
+
+ /* public void addGroup(User currentUser, Group group, OnCompleteListener<Void> listener) {
+    db = FirebaseFirestore.getInstance();
+    db.collection("groups").document().set(group).addOnCompleteListener(listener);
+  }*/
 }

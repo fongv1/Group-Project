@@ -33,7 +33,7 @@ public class MembersRecyclerAdapter extends BaseRecyclerAdapter<MemberViewHolder
   @Override
   @NonNull
   protected MemberViewHolder getViewHolder(View v) {
-    return new MemberViewHolder(v);
+    return new MemberViewHolder(v, this);
   }
 
   // Replace the contents of a view (invoked by the layout manager)
@@ -41,8 +41,7 @@ public class MembersRecyclerAdapter extends BaseRecyclerAdapter<MemberViewHolder
   public void onBindViewHolder(@NonNull MemberViewHolder holder, int position) {
     // - get element from your dataset at this position
     // - replace the contents of the view with that element
-    User user = getDataset().get(position);
-    holder.bind(user);
+    holder.bind(getDataset().get(position), position);
   }
 }
 
