@@ -12,18 +12,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import com.google.android.gms.tasks.OnCanceledListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.android.gms.tasks.*;
+import com.google.firebase.firestore.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, User> implements
@@ -36,7 +33,9 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                            @Nullable Bundle savedInstanceState) {
-    View rootView = inflater.inflate(R.layout.fragment_tab_members, container, false);
+    Bundle bundle = getArguments();
+    group = (Group) bundle.get("group");
+    final View rootView = inflater.inflate(R.layout.fragment_tab_members, container, false);
     ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
         Context.CONNECTIVITY_SERVICE);
     NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
@@ -45,8 +44,46 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
     if (!isConnected) {
       Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
     } else {
-      setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_expenses);
+      final FirebaseFirestore db = FirebaseFirestore.getInstance();
+      db.collection("groups")
+        .document(group.getGroupId())
+        .get()
+        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+          @Override
+          public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            if (task.isSuccessful()) {
+              DocumentSnapshot snapshot = task.getResult();
+              Group myGroup = snapshot.toObject(Group.class);
+              group = myGroup;
+              final List<User> membersList = new ArrayList<>();
+              for (String memberId : group.getMembers()) {
+                db.collection("users")
+                  .document(memberId)
+                  .get()
+                  .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                      boolean successful = task.isSuccessful();
+                      Log.d(TAG, "onComplete: successful: " + successful);
+                      if (successful) {
+                        DocumentSnapshot userSnapshot = task.getResult();
+                        User myMember = userSnapshot.toObject(User.class);
+                        Log.d(TAG, "onComplete: memberId: " + myMember.getId());
+                        membersList.add(myMember);
+                        group.addUserMember(myMember);
+                        getRecyclerAdapter().notifyDataSetChanged();
+                      }
+                    }
+                  });
+              }
+              setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_expenses);
+            }
+          }
+        });
     }
+
     return rootView;
   }
 
@@ -57,12 +94,11 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
     LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
     recyclerView.setLayoutManager(mLayoutManager);
     // Create bundle to get the group passed from the GroupDetailActivity
-    Bundle bundle = getArguments();
-    group = (Group) bundle.get("group");
     //gets the expenses from the group
     setData(group.getUserMembers());
     setRecyclerAdapter(new MembersRecyclerAdapter(getData()));
     recyclerView.setAdapter(getRecyclerAdapter());
+
   }
 
   @Override
