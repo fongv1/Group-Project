@@ -47,7 +47,7 @@
 
                 <TextView
                     android:id="@+id/textView_choose_contact"
-                    android:layout_width="204dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:hint="@string/choose_contact"

@@ -237,15 +237,18 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
     // set the spinner to show all the contacts
     final Spinner contactsSpinner = (Spinner) view.findViewById(R.id.spinner_choose_contact);
-    ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item,
-                                                        getContactsData());
+    ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item);
+    getContactsData(adapter);
+
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     contactsSpinner.setAdapter(adapter);
 
+    // final EditText memberEditText = (EditText) view.findViewById(R.id.editText_dialog_add_member);
     contactsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         User user = (User) parent.getSelectedItem();
+        // memberEditText.setText(user.toString());
         // Toast.makeText(getBaseContext(),user.getId(),Toast.LENGTH_SHORT).show();
         Log.d(TAG, "onItemSelected: " + position);
       }
@@ -287,7 +290,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
   }
 
   @NonNull
-  private List<User> getContactsData() {
+  private List<User> getContactsData(final ArrayAdapter<User> spinnerAdapter) {
     //initDataset();
     final List<User> loadedContacts = new ArrayList<>();
     //setData(loadedContacts);
@@ -318,6 +321,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
                           if (contactUserDocumentSnapshot.exists()) {
                             User contactUser = contactUserDocumentSnapshot.toObject(User.class);
                             loadedContacts.add(contactUser);
+                            spinnerAdapter.add(contactUser);
                           }
 
                         }
