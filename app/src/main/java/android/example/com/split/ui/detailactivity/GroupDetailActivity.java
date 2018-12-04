@@ -28,6 +28,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.Serializable;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class GroupDetailActivity extends BaseDetailActivity {
@@ -89,7 +91,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
       @Override
       public void onClick(View v) {
 
-        showPopup();
+        showPopup(v);
       }
     });
 
@@ -369,6 +371,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
   public Double getShare() {
     if (group.getMembers().size() != 0) {
       share = sum / group.getUserMembers().size();
+
     }
     return share;
   }
@@ -382,22 +385,25 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
   public String getResultString(){
     String result = "";
+
+    //String.format("%.0f", doubleValue)
+
     if(!getShare().isNaN()) {
-      result = "The share for each person is: " + getShare() + "\n";
+
+      result = result + "The share for each person is " + String.format("%.0f",getShare()) + " SEK \n";
+
       Iterator it = baseHashMap.entrySet().iterator();
       while (it.hasNext()) {
         Map.Entry pair = (Map.Entry)it.next();
+
         Double rest = (Double) pair.getValue() - getShare();
+
         if(rest > 0) {
-          result = result + pair.getKey() + " should get paid " + rest + "\n";
-        }
-
-        else if (rest < 0) {
-          result = result + pair.getKey() + " should pay " + rest * -1 + "\n";
-        }
-
-        else {
-          result = result + pair.getKey() + " should pay nothing \n";
+          result = result + pair.getKey() + " should get paid " + String.format("%.0f",rest) + " SEK \n";
+        } else if (rest < 0) {
+          result = result + pair.getKey() + " should pay " + String.format("%.0f",rest * -1) + " SEK \n";
+        } else {
+          result = result + pair.getKey() + " should pay nothing \n \n";
         }
 
         it.remove(); // avoids a ConcurrentModificationException
@@ -409,9 +415,14 @@ public class GroupDetailActivity extends BaseDetailActivity {
   }
 
 
-  private void showPopup() {
+  private void showPopup(View v) {
     //if you call this method correctly then you do not need to wrap
     // this method by try-catch block which affects performance
+
+    dialogBuilder = new AlertDialog.Builder(this);
+
+    dialogBuilder.setView(v);
+    dialog = dialogBuilder.create();
 
     LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -435,5 +446,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
     //show popup window after you have done initialization of views
     pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
   }
+
 
 }
