@@ -59,7 +59,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold"
-                    android:text="Balance" />
+                    android:text="Balance"
+                    android:textSize="12sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -72,7 +73,8 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:paddingEnd="5dp"
                         android:textStyle="bold"
-                        android:text="@string/amount" />
+                        android:text="@string/amount"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/textView_group_item_currency"
@@ -80,7 +82,8 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorPrimaryDark"
                         android:textStyle="bold"
-                        android:text="@string/sek" />
+                        android:text="@string/sek"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
             </LinearLayout>

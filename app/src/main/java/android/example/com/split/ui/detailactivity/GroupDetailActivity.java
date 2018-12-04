@@ -510,7 +510,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
         Map.Entry pair = (Map.Entry)it.next();
         Double rest = (Double) pair.getValue() - getShare();
         if(rest > 0) {
-          result = result + pair.getKey() + " should be paid " + rest + "\n";
+          result = result + pair.getKey() + " should get paid " + rest + "\n";
         }
 
         else if (rest < 0) {
