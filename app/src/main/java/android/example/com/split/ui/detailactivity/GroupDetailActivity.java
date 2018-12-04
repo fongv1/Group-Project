@@ -63,7 +63,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
   private Group group;
   private Double sum = 0.0;
   private Double share = 0.0;
-  private TextView textView;
 
   private HashMap<String, Double> baseHashMap = new HashMap<>();
 
@@ -504,13 +503,28 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
   public String getResultString(){
     String result = "";
-    Iterator it = baseHashMap.entrySet().iterator();
-    while (it.hasNext()) {
-      Map.Entry pair = (Map.Entry)it.next();
-      Double d = (Double) pair.getValue() - getShare();
-      result = result + pair.getKey() + " = " + d;
-      it.remove(); // avoids a ConcurrentModificationException
+    if(!getShare().isNaN()) {
+      result = "The share for each person is: " + getShare() + "\n";
+      Iterator it = baseHashMap.entrySet().iterator();
+      while (it.hasNext()) {
+        Map.Entry pair = (Map.Entry)it.next();
+        Double rest = (Double) pair.getValue() - getShare();
+        if(rest > 0) {
+          result = result + pair.getKey() + " should be paid " + rest + "\n";
+        }
+
+        else if (rest < 0) {
+          result = result + pair.getKey() + " should pay " + rest * -1 + "\n";
+        }
+
+        else {
+          result = result + pair.getKey() + " should pay nothing \n";
+        }
+
+        it.remove(); // avoids a ConcurrentModificationException
+      }
     }
+
     return result;
 
   }
