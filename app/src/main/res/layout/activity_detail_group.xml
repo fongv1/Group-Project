@@ -27,7 +27,17 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
+                android:textColor="@android:color/black"
                 android:layout_height="?attr/actionBarSize" />
+
+            <Button
+                android:id="@+id/sButton"
+                style="@style/FirebaseUI.Button"
+                android:background="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                android:text="Settle Up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
 
         </android.support.design.widget.CollapsingToolbarLayout>
