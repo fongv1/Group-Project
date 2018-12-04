@@ -1,5 +1,6 @@
 package android.example.com.split.ui.detailactivity;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -21,12 +22,13 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.*;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
+import java.util.*;
 
 public class GroupDetailActivity extends BaseDetailActivity {
 
@@ -46,6 +48,12 @@ public class GroupDetailActivity extends BaseDetailActivity {
   private MembersTabFragment membersTabFragment;
 
   private Group group;
+  private Double sum = 0.0;
+  private Double share = 0.0;
+  private TextView textView;
+
+  private HashMap<String, Double> baseHashMap = new HashMap<>();
+
 
   /**
    * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -62,6 +70,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
    * The {@link ViewPager} that will host the section contents.
    */
   private ViewPager mViewPager;
+  private Button sButton;
 
   public GroupDetailActivity() {
     init(R.string.title_activity_group, R.layout.activity_detail_group, R.menu.menu_group);
@@ -75,6 +84,15 @@ public class GroupDetailActivity extends BaseDetailActivity {
       group = (Group) bundle.get("Group");
       setTitle(group.getName());
     }
+
+    sButton = (Button) findViewById(R.id.sButton);
+    sButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+
+        showPopup();
+      }
+    });
 
     // add member and expense
     memberName = (EditText) findViewById(R.id.editText_dialog_add_member);
@@ -245,6 +263,8 @@ public class GroupDetailActivity extends BaseDetailActivity {
         String newName = memberName.getText().toString();
 
         if (!newName.trim().isEmpty()) {
+          baseHashMap.put(newName, 0.0);
+
           user.setFirstName(newName);
 
           membersTabFragment.saveNewMemberInGroupToRemoteDb(group, user);
@@ -271,7 +291,8 @@ public class GroupDetailActivity extends BaseDetailActivity {
     return new ArrayList<>();
   }
 
-  private void addExpensePopupDialog() {
+  private Map<String, Double> addExpensePopupDialog() {
+
     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
     final View view = getLayoutInflater().inflate(R.layout.dialog_add_expense, null);
     dialogBuilder.setView(view);
@@ -298,9 +319,17 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
         // takes the selected member from its position in the spinner
         int memberPosition = expenseSpinner.getSelectedItemPosition();
-        User member = group.getUserMembers().get(memberPosition);
+
+        User member = new User();
+        if(!group.getUserMembers().isEmpty()) {
+           member = group.getUserMembers().get(memberPosition);
+        }
+
 
         if (!newTitle.trim().isEmpty() && newAmount > 0.0) {
+
+          sum += newAmount;
+          baseHashMap.put(member.getFirstName(), baseHashMap.get(member.getFirstName()) + newAmount);
 
           expense.setTittle(newTitle);
           expense.setPaymentAmount(newAmount);
@@ -321,7 +350,11 @@ public class GroupDetailActivity extends BaseDetailActivity {
       }
     });
     dialog.show();
+
+    return baseHashMap;
   }
+
+
 
   double ParseDouble(String strNumber) {
     if (strNumber != null && strNumber.length() > 0) {
@@ -332,6 +365,61 @@ public class GroupDetailActivity extends BaseDetailActivity {
       }
     } else
       return 0;
+  }
+
+  public Double getShare() {
+    if (group.getMembers().size() != 0) {
+      share = sum / group.getUserMembers().size();
+    }
+    return share;
+  }
+
+  public HashMap<String, Double> calculator() {
+    for (String s : baseHashMap.keySet()) {
+      baseHashMap.put(s, baseHashMap.get(s));
+    }
+    return baseHashMap;
+  }
+
+  public String getResultString(){
+    String result = "";
+    Iterator it = baseHashMap.entrySet().iterator();
+    while (it.hasNext()) {
+      Map.Entry pair = (Map.Entry)it.next();
+      Double d = (Double) pair.getValue() - getShare();
+      result = result + pair.getKey() + " = " + d;
+      it.remove(); // avoids a ConcurrentModificationException
+    }
+    return result;
+
+  }
+
+
+  private void showPopup() {
+    //if you call this method correctly then you do not need to wrap
+    // this method by try-catch block which affects performance
+
+    LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+    View layout = inflater.inflate(R.layout.dialog_settle_up, (ViewGroup) findViewById(R.id.popup_element), false);
+
+    final PopupWindow pwindo = new PopupWindow(layout, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+    //get txt view from "layout" which will be added into popup window
+    //before it you tried to find view in activity container
+    TextView txt = (TextView) layout.findViewById(R.id.textView_dialog_settle_up);
+    txt.setText(getResultString());
+
+    //init your button
+    Button btnClosePopup = (Button) layout.findViewById(R.id.btn_close_popup);
+    btnClosePopup.setOnClickListener(new View.OnClickListener() {
+      public void onClick(View v) {
+        pwindo.dismiss();
+      }
+    });
+
+    //show popup window after you have done initialization of views
+    pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
   }
 
 }

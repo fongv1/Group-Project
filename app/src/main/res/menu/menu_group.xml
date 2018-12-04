@@ -2,9 +2,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.detailactivity.GroupDetailActivity">
-    <item
-        android:id="@+id/action_settings"
+<!--    <item
+        android:id="@+id/settle_up"
         android:orderInCategory="100"
         android:title="Settle Up"
-        app:showAsAction="always" />
+        app:showAsAction="always" />-->
+
 </menu>
