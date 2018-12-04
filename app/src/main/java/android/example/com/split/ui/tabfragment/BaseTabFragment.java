@@ -13,6 +13,11 @@ public abstract class BaseTabFragment<T extends BaseRecyclerAdapter, M extends S
 
   protected RecyclerView recyclerView;
   private T recyclerAdapter;
+
+  public BaseTabFragment() {
+
+  }
+
   private List<M> data;
 
   public T getRecyclerAdapter() {

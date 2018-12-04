@@ -390,12 +390,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
             }
           }
 
-          dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().getDataset();
+        /* dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().getDataset();
           dataset.add(contact);
           int position = dataset.size() - 1;
           homeTabsAdapter.getContactsTabFragment()
                          .getRecyclerAdapter()
-                         .notifyItemInserted(position);
+                         .notifyItemInserted(position);*/
 
         }
         dialog.dismiss();

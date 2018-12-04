@@ -20,7 +20,7 @@ public abstract class BaseRecyclerAdapter<T extends RecyclerView.ViewHolder, M> 
     }
     this.data = myDataset;
   }
-
+  public  BaseRecyclerAdapter () {}
   // Create new views (invoked by the layout manager)
   @NonNull
   @Override
