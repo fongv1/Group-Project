@@ -23,19 +23,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 // Provides reference to the views for each data item
 // When create more complex group view, it should be removed in a separate java file
 public class MemberViewHolder extends BaseViewHolder<User> {
+  private Group group;
 
   public ImageView deleteButton;
   // Each group data item is just a String presented as a textView in this case
   private TextView itemTextView;
 
   // Initializes the ViewHolder TextView from the item_group XML resource
-  public MemberViewHolder(View itemView, OnDeleteItemListener onDeleteListener) {
+  public MemberViewHolder(View itemView, OnDeleteItemListener onDeleteListener, Group group) {
 
     super(itemView, MembersDetailActivity.class, "Member", true);
     setOnDeleteItemListener(onDeleteListener);
+    this.group = group;
   }
 
-  private void deleteMemberDialog(final int position) {
+  private void deleteMemberDialog(final User user, final int position) {
     AlertDialog.Builder builder = new AlertDialog.Builder(getItemView().getContext());
     // Add the buttons
     builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -47,19 +49,8 @@ public class MemberViewHolder extends BaseViewHolder<User> {
     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
       public void onClick(DialogInterface dialog, int id) {
         // User clicked OK button
-        ConnectivityManager connectivityManager = (ConnectivityManager) getItemView().getContext()
-                                                                                     .getSystemService(
-                                                                                         Context
-                                                                                             .CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
-        if (!isConnected) {
-          Toast.makeText(getItemView().getContext(), "Not connected", Toast.LENGTH_SHORT).show();
-        } else {
-
-  //        deleteMember(group , );
-        }
+      deleteMember(group, user.getId(), position );
       }
     });
 
@@ -111,14 +102,14 @@ public class MemberViewHolder extends BaseViewHolder<User> {
   }
 
   @Override
-  public void bind(User user, final int position) {
+  public void bind(final User user, final int position) {
     super.bind(user);
     //mTextView.setText(getItemData().getFirstName() + " " + getItemData().getLastName());
     itemTextView.setText(user.getFirstName() + "");
     deleteButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        deleteMemberDialog(position);
+        deleteMemberDialog(user, position);
       }
     });
   }

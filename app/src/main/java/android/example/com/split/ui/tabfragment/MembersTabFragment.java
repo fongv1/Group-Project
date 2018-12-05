@@ -54,10 +54,9 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
           public void onComplete(@NonNull Task<DocumentSnapshot> task) {
             if (task.isSuccessful()) {
               DocumentSnapshot snapshot = task.getResult();
-              Group myGroup = snapshot.toObject(Group.class);
-              group = myGroup;
+              final Group myGroup = snapshot.toObject(Group.class);
               final List<User> membersList = new ArrayList<>();
-              for (String memberId : group.getMembers()) {
+              for (String memberId : myGroup.getMembers()) {
                 db.collection("users")
                   .document(memberId)
                   .get()
@@ -72,13 +71,14 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
                         User myMember = userSnapshot.toObject(User.class);
                         Log.d(TAG, "onComplete: memberId: " + myMember.getId());
                         membersList.add(myMember);
-                        group.addUserMember(myMember);
+                        myGroup.addUserMember(myMember);
                         getRecyclerAdapter().notifyDataSetChanged();
                       }
                     }
                   });
               }
-              setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_expenses);
+              setData(membersList);
+              setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_members);
             }
           }
         });
@@ -95,8 +95,7 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
     recyclerView.setLayoutManager(mLayoutManager);
     // Create bundle to get the group passed from the GroupDetailActivity
     //gets the expenses from the group
-    setData(group.getUserMembers());
-    setRecyclerAdapter(new MembersRecyclerAdapter(getData()));
+    setRecyclerAdapter(new MembersRecyclerAdapter(getData(), group));
     recyclerView.setAdapter(getRecyclerAdapter());
 
   }
@@ -158,6 +157,7 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             CollectionReference usersCollection = db.collection("users");
             DocumentReference userDocument = usersCollection.document(userId);
+            user.setId(userId);
             updateIdInUserDocument(userDocument, userId, new OnSuccessListener<Void>() {
               @Override
               public void onSuccess(Void aVoid) {

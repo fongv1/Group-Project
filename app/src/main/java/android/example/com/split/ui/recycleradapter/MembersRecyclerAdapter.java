@@ -1,6 +1,7 @@
 package android.example.com.split.ui.recycleradapter;
 
 import android.example.com.split.R;
+import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.example.com.split.ui.viewholder.MemberViewHolder;
 import android.support.annotation.NonNull;
@@ -15,9 +16,12 @@ import java.util.List;
 // TextView widgets
 public class MembersRecyclerAdapter extends BaseRecyclerAdapter<MemberViewHolder, User> {
 
+  private Group group;
+
   // Create the adapter with a dataset
-  public MembersRecyclerAdapter(List<User> groupMembers) {
+  public MembersRecyclerAdapter(List<User> groupMembers, Group group) {
     super(groupMembers);
+    this.group = group;
   }
 
   // Create new views (invoked by the layout manager)
@@ -33,7 +37,7 @@ public class MembersRecyclerAdapter extends BaseRecyclerAdapter<MemberViewHolder
   @Override
   @NonNull
   protected MemberViewHolder getViewHolder(View v) {
-    return new MemberViewHolder(v, this);
+    return new MemberViewHolder(v, this, group);
   }
 
   // Replace the contents of a view (invoked by the layout manager)
