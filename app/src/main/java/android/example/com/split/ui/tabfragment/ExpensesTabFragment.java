@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter, Expense>
@@ -161,6 +162,9 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
             List<Expense> expenseList = (List<Expense>) msg.getData()
                                                            .getSerializable(
                                                                ExpensesDataRepository.EXPENSE_LIST);
+            if (expenseList == null) {
+              expenseList = new ArrayList<>();
+            }
             // are we adding here to local memory
             setData(expenseList);
             setupRecyclerView(getView(), R.id.recyclerView_fragment_tab_expenses);
