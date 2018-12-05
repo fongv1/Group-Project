@@ -99,4 +99,8 @@ public abstract class BaseViewHolder<T extends Serializable> extends RecyclerVie
     intent.putExtra(title, getItemData());
     context.startActivity(intent);
   }
+
+  protected Context getContext() {
+    return context;
+  }
 }
