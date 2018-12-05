@@ -10,10 +10,14 @@ import android.example.com.split.data.entity.User;
 import android.example.com.split.ui.detailactivity.GroupDetailActivity;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 // Provides reference to the views for each data item
 // When create more complex group view, it should be removed in a separate java file
@@ -23,14 +27,16 @@ public class GroupViewHolder extends BaseViewHolder<Group> {
   // Each group data item is just a String presented as a textView in this case
   private TextView mTextView;
   private TextView expenseTextView;
+  private Group group;
 
   // Initializes the ViewHolder TextView from the item_group XML resource
   public GroupViewHolder(View itemView, OnDeleteItemListener listener) {
     super(itemView, GroupDetailActivity.class, "Group", true);
     setOnDeleteItemListener(listener);
+
   }
 
-  private void deleteGroupPopupDialog(final int position) {
+  private void deleteGroupPopupDialog(final Group group , final int position) {
     AlertDialog.Builder builder = new AlertDialog.Builder(getItemView().getContext());
     // Add the buttons
     builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -53,18 +59,48 @@ public class GroupViewHolder extends BaseViewHolder<Group> {
         } else {
           // User clicked OK button
           // notifyItemRemoved is done in onDelete method in BaseRecyclerAdapter
-          deleteItem(position);
+          deleteGroup(group,position);
+
         }
       }
     });
 
     //Set other dialog properties
-    builder.setMessage("Delete group?");
+    builder.setMessage("Delete group?" + group.getGroupId());
 
     // Create the AlertDialog
     AlertDialog dialog = builder.create();
     dialog.show();
 
+  }
+
+  public void deleteGroup(Group group, final int position) {
+    ConnectivityManager connectivityManager = (ConnectivityManager) getItemView().getContext()
+                                                                                 .getSystemService(
+                                                                                     Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      String groupId = group.getGroupId();
+      FirebaseFirestore db = FirebaseFirestore.getInstance();
+      db.collection("groups").
+          document(groupId).delete().
+            addOnSuccessListener(new OnSuccessListener<Void>() {
+        @Override
+        public void onSuccess(Void aVoid) {
+          Toast.makeText(getContext(), "Group deleted", Toast.LENGTH_SHORT).show();
+          deleteItem(position);
+        }
+      }).addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+          Toast.makeText(getContext(), "Failed to delete group", Toast.LENGTH_SHORT).show();
+        }
+      });
+    }
   }
 
   @Override
@@ -86,7 +122,7 @@ public class GroupViewHolder extends BaseViewHolder<Group> {
   }
 
   @Override
-  public void bind(Group group, Group expense, final int position) {
+  public void bind(final Group group, Group expense, final int position) {
     super.bind(group);
     mTextView.setText(getItemData().getName());
     if (group.getExpenses().size() > 0) {
@@ -95,7 +131,7 @@ public class GroupViewHolder extends BaseViewHolder<Group> {
     deleteButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        deleteGroupPopupDialog(position);
+        deleteGroupPopupDialog(group,position);
       }
     });
   }
