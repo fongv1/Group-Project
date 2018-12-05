@@ -53,7 +53,93 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
 
   }
 
-  private void getContactsData() {
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+      savedInstanceState) {
+    View rootView = inflater.inflate(R.layout.fragment_tab_contacts, container, false);
+
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      FirebaseAuth auth = FirebaseAuth.getInstance();
+      String currentUserId = auth.getCurrentUser().getUid();
+      /*
+      FirebaseFirestore db = FirebaseFirestore.getInstance();
+      db.collection("users")
+        .document(firebaseUser.getUid())
+        .addSnapshotListener(getActivity(), new EventListener<DocumentSnapshot>() {
+          @Override
+          public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot,
+                              @javax.annotation.Nullable FirebaseFirestoreException e) {
+            Log.d(TAG, "onEvent: ");
+            if (e != null) {
+              Log.w(TAG, "onEvent: ", e);
+              return;
+            }
+            getContactsData();
+          }
+        });*/
+      //getContactsData();
+      fetchContactListFromRemote(currentUserId);
+    }
+    return rootView;
+  }
+
+  public void fetchContactListFromRemote(String userId) {
+    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
+        Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    final List<User> contactList = new ArrayList<>();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      final FirebaseFirestore db = FirebaseFirestore.getInstance();
+      db.collection("users").document(userId).get()
+        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+          @Override
+          public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            if (task.isSuccessful()) {
+              DocumentSnapshot userDocumentSnapshot = task.getResult();
+              User currentUser = userDocumentSnapshot.toObject(User.class);
+              List<String> myContactsIds = currentUser.getContacts();
+              if (myContactsIds != null && !myContactsIds.isEmpty()) {
+                for (String contactId : myContactsIds) {
+                  db.collection("users")
+                    .document(contactId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+                      @Override
+                      public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot contactUserDocumentSnapshot = task.getResult();
+                        if (contactUserDocumentSnapshot.exists()) {
+                          User contactUser = contactUserDocumentSnapshot.toObject(User.class);
+                          Log.d(TAG, "onComplete: " + contactUser.getId());
+                          contactList.add(contactUser);
+
+                        }
+
+                      }
+                    });
+                }
+
+                setData(contactList);
+                setupRecyclerView(getView(), R.id.recyclerView_fragment_tab_contacts);
+              }
+            }
+          }
+        });
+
+    }
+  }
+ /* private void getContactsData() {
     setData(new ArrayList<User>());
     //initDataset();
     //List<User> loadedContacts = new ArrayList<>();
@@ -90,51 +176,20 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
                         }
                       });
                   }
+
                   setupRecyclerView(getView(), R.id.recyclerView_fragment_tab_contacts);
                 }
               }
             }
           });
-  }
+  }*/
 
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
   }
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
-      savedInstanceState) {
-    View rootView = inflater.inflate(R.layout.fragment_tab_contacts, container, false);
 
-    ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
-        Context.CONNECTIVITY_SERVICE);
-    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-
-    if (!isConnected) {
-      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
-    } else {
-      FirebaseAuth auth = FirebaseAuth.getInstance();
-      FirebaseUser firebaseUser = auth.getCurrentUser();
-      FirebaseFirestore db = FirebaseFirestore.getInstance();
-      db.collection("users")
-        .document(firebaseUser.getUid())
-        .addSnapshotListener(getActivity(), new EventListener<DocumentSnapshot>() {
-          @Override
-          public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot,
-                              @javax.annotation.Nullable FirebaseFirestoreException e) {
-            Log.d(TAG, "onEvent: ");
-            if (e != null) {
-              Log.w(TAG, "onEvent: ", e);
-              return;
-            }
-            getContactsData();
-          }
-        });
-    }
-    return rootView;
-  }
 
   @Override
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -165,7 +220,7 @@ public class ContactsTabFragment extends BaseTabFragment<ContactsRecyclerAdapter
 
     LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
     recyclerView.setLayoutManager(mLayoutManager);
-
+    recyclerView.setAdapter(getRecyclerAdapter());
     setRecyclerAdapter(new ContactsRecyclerAdapter(getData(), new OnDeleteItemListener() {
       @Override
       public void onDelete(int position) {

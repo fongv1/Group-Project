@@ -387,6 +387,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView
               Toast.makeText(getApplicationContext(), "Not connected", Toast.LENGTH_SHORT).show();
             } else {
               homeTabsAdapter.getContactsTabFragment().saveNewContactToRemote(myUser, contact);
+              dataset = homeTabsAdapter.getContactsTabFragment().getRecyclerAdapter().getDataset();
+              dataset.add(contact);
+              int position = dataset.size() - 1;
+              homeTabsAdapter.getContactsTabFragment()
+                             .getRecyclerAdapter()
+                             .notifyItemInserted(position);
             }
           }
 
