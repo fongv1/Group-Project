@@ -29,6 +29,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize" />
 
+            <Button
+                android:id="@+id/settleupButton"
+                style="@style/FirebaseUI.Button"
+                android:background="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                android:text="@string/settleup_button_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
 
         </android.support.design.widget.CollapsingToolbarLayout>
 

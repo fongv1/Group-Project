@@ -22,8 +22,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.*;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -55,6 +54,11 @@ public class GroupDetailActivity extends BaseDetailActivity {
   private Group group;
   private User selectedMember;
 
+  // Settleup
+  Button popupSettleupButton;
+  TextView summaryTextView;
+
+
   /**
    * The {@link android.support.v4.view.PagerAdapter} that will provide
    * fragments for each of the sections. We use a
@@ -83,6 +87,17 @@ public class GroupDetailActivity extends BaseDetailActivity {
       group = (Group) bundle.get("Group");
       setTitle(group.getName());
     }
+
+    popupSettleupButton = findViewById(R.id.settleupButton);
+    popupSettleupButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // TODO popup dialog for settle up
+        // TODO give the summary of how much each person of the group owes
+        //settleupPopupDialog();
+        showPopup(v);
+      }
+    });
 
     // add member and expense
     memberName = (EditText) findViewById(R.id.editText_dialog_add_member);
@@ -455,6 +470,70 @@ public class GroupDetailActivity extends BaseDetailActivity {
       }
     } else
       return 0;
+  }
+
+
+  private void settleupPopupDialog() {
+    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+    final View view = getLayoutInflater().inflate(R.layout.dialog_settleup, null);
+    dialogBuilder.setView(view);
+    dialog = dialogBuilder.create();
+
+
+    summaryTextView = (TextView) findViewById(R.id.textView_dialog_settleup);
+    summaryTextView.setText("Summary");
+
+    Button doneSettleupButton = (Button) view.findViewById(R.id.button_done_dialog_settleup);
+    doneSettleupButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+
+        //TODO populate summaryTextView with the summary of expenses
+
+
+        dialog.dismiss();
+      }
+    });
+
+    dialog.show();
+  }
+
+  private void showPopup(View view) {
+
+    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+    dialogBuilder.setView(view);
+    dialog = dialogBuilder.create();
+
+
+    LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+    View layout = inflater.inflate(R.layout.dialog_settleup, (ViewGroup) findViewById(R.id.popup_element_settleup), false);
+
+    final PopupWindow pwindo = new PopupWindow(layout, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+    //get txt view from "layout" which will be added into popup window
+    //before it you tried to find view in activity container
+    TextView txt = (TextView) layout.findViewById(R.id.textView_dialog_settleup);
+    txt.setText(getSummary());
+
+    //init your button
+    Button btnClosePopupSettleup = (Button) layout.findViewById(R.id.button_done_dialog_settleup);
+    btnClosePopupSettleup.setOnClickListener(new View.OnClickListener() {
+      public void onClick(View v) {
+        pwindo.dismiss();
+      }
+    });
+
+    //show popup window after you have done initialization of views
+    pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
+  }
+
+  public String getSummary() {
+    String summary = "";
+    for (Expense e : group.getExpenses()) {
+      summary += e.getPayerName() + " " + e.getPaymentAmount() + " \n";
+    }
+    return summary;
   }
 
 }
