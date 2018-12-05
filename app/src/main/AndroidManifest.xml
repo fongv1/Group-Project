@@ -16,7 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
         <!-- ACTIVITY -->
         <activity
             android:name=".ui.activity.HomeActivity"
@@ -38,30 +37,29 @@
         <!-- ACTIVITY -->
         <activity
             android:name=".ui.detailactivity.GroupDetailActivity"
-            android:label="@string/title_activity_group"
-            android:launchMode="singleTop"
             android:parentActivityName=".ui.activity.HomeActivity"
+            android:launchMode="singleTop"
+            android:label="@string/title_activity_group"
             android:theme="@style/AppTheme.NoActionBar" />
         <!-- ACTIVITY -->
         <activity
             android:name=".ui.detailactivity.ExpensesDetailActivity"
-            android:label="@string/title_activity_expense"
             android:parentActivityName=".ui.detailactivity.GroupDetailActivity"
+            android:label="@string/title_activity_expense"
             android:theme="@style/AppTheme.NoActionBar" />
         <!-- ACTIVITY -->
         <activity
             android:name=".ui.detailactivity.MembersDetailActivity"
-            android:label="@string/title_activity_member"
             android:parentActivityName=".ui.detailactivity.GroupDetailActivity"
+            android:label="@string/title_activity_member"
             android:theme="@style/AppTheme.NoActionBar" />
         <!-- ACTIVITY -->
         <activity
             android:name=".ui.detailactivity.ContactDetailActivity"
-            android:label="@string/title_activity_contact"
             android:parentActivityName=".ui.activity.HomeActivity"
+            android:label="@string/title_activity_contact"
             android:theme="@style/AppTheme.NoActionBar" />
         <!-- ACTIVITY -->
-        <activity android:name=".ui.activity.SettleUpActivity"></activity>
     </application>
 
 </manifest>

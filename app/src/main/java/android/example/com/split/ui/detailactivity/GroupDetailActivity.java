@@ -1,6 +1,5 @@
 package android.example.com.split.ui.detailactivity;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,13 +25,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
-import android.view.*;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-
-import java.io.Serializable;
-import java.util.*;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,12 +53,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
   private static final String TAG = "GroupDetailActivity";
 
   private Group group;
-  private Double sum = 0.0;
-  private Double share = 0.0;
-  private TextView textView;
-
-  private HashMap<String, Double> baseHashMap = new HashMap<>();
-
   private User selectedMember;
 
   /**
@@ -84,7 +70,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
    * The {@link ViewPager} that will host the section contents.
    */
   private ViewPager mViewPager;
-  private Button sButton;
 
   public GroupDetailActivity() {
     init(R.string.title_activity_group, R.layout.activity_detail_group, R.menu.menu_group);
@@ -98,15 +83,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
       group = (Group) bundle.get("Group");
       setTitle(group.getName());
     }
-
-    sButton = (Button) findViewById(R.id.sButton);
-    sButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-
-        showPopup();
-      }
-    });
 
     // add member and expense
     memberName = (EditText) findViewById(R.id.editText_dialog_add_member);
@@ -288,14 +264,13 @@ public class GroupDetailActivity extends BaseDetailActivity {
     saveButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        User user = new User();
+        Log.d(TAG, "onItemSelected: " + group.getGroupId());
         // takes the name user input from the text field
         memberName = (EditText) view.findViewById(R.id.editText_dialog_add_member);
         String newName = memberName.getText().toString();
 
         if (!newName.trim().isEmpty()) {
-          baseHashMap.put(newName, 0.0);
-
+          User user = new User();
           user.setFirstName(newName);
           membersTabFragment.saveNewMemberInGroupToRemoteDb(group, user);
           // add the new user to the dataset in the MembersRecyclerAdapter
@@ -377,8 +352,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
     return loadedContacts;
   }
 
-  private Map<String, Double> addExpensePopupDialog() {
-
+  private void addExpensePopupDialog() {
     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
     final View view = getLayoutInflater().inflate(R.layout.dialog_add_expense, null);
     dialogBuilder.setView(view);
@@ -409,9 +383,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
         if (!newTitle.trim().isEmpty() && newAmount > 0.0) {
 
-          sum += newAmount;
-          baseHashMap.put(member.getFirstName(), baseHashMap.get(member.getFirstName()) + newAmount);
-
           expense.setTittle(newTitle);
           expense.setPaymentAmount(newAmount);
           expense.setPayerId(member.getId());
@@ -433,8 +404,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
       }
     });
     dialog.show();
-
-    return baseHashMap;
   }
 
   private List<User> getMembersData(final ArrayAdapter<User> spinnerAdapter) {
@@ -486,61 +455,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
       }
     } else
       return 0;
-  }
-
-  public Double getShare() {
-    if (group.getMembers().size() != 0) {
-      share = sum / group.getUserMembers().size();
-    }
-    return share;
-  }
-
-  public HashMap<String, Double> calculator() {
-    for (String s : baseHashMap.keySet()) {
-      baseHashMap.put(s, baseHashMap.get(s));
-    }
-    return baseHashMap;
-  }
-
-  public String getResultString(){
-    String result = "";
-    Iterator it = baseHashMap.entrySet().iterator();
-    while (it.hasNext()) {
-      Map.Entry pair = (Map.Entry)it.next();
-      Double d = (Double) pair.getValue() - getShare();
-      result = result + pair.getKey() + " = " + d;
-      it.remove(); // avoids a ConcurrentModificationException
-    }
-    return result;
-
-  }
-
-
-  private void showPopup() {
-    //if you call this method correctly then you do not need to wrap
-    // this method by try-catch block which affects performance
-
-    LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-    View layout = inflater.inflate(R.layout.dialog_settle_up, (ViewGroup) findViewById(R.id.popup_element), false);
-
-    final PopupWindow pwindo = new PopupWindow(layout, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-
-    //get txt view from "layout" which will be added into popup window
-    //before it you tried to find view in activity container
-    TextView txt = (TextView) layout.findViewById(R.id.textView_dialog_settle_up);
-    txt.setText(getResultString());
-
-    //init your button
-    Button btnClosePopup = (Button) layout.findViewById(R.id.btn_close_popup);
-    btnClosePopup.setOnClickListener(new View.OnClickListener() {
-      public void onClick(View v) {
-        pwindo.dismiss();
-      }
-    });
-
-    //show popup window after you have done initialization of views
-    pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
   }
 
 }
