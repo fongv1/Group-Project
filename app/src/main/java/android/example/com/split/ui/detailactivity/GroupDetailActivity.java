@@ -35,6 +35,7 @@ import java.io.Serializable;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.*;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,7 +67,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
   private Double sum = 0.0;
   private Double share = 0.0;
 
-  private HashMap<String, Double> baseHashMap = new HashMap<>();
+  private HashMap<String, Double> baseHashMap;
 
   private User selectedMember;
 
@@ -99,6 +100,9 @@ public class GroupDetailActivity extends BaseDetailActivity {
       group = (Group) bundle.get("Group");
       setTitle(group.getName());
     }
+
+    baseHashMap = new HashMap<>();
+    baseHashMap.put(group.getMembers().get(0), 0.0);
 
     sButton = (Button) findViewById(R.id.sButton);
     sButton.setOnClickListener(new View.OnClickListener() {
@@ -269,7 +273,8 @@ public class GroupDetailActivity extends BaseDetailActivity {
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     contactsSpinner.setAdapter(adapter);
 
-    // final EditText memberEditText = (EditText) view.findViewById(R.id.editText_dialog_add_member);
+    // final EditText memberEditText = (EditText) view.findViewById(R.id
+    // .editText_dialog_add_member);
     contactsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -295,17 +300,17 @@ public class GroupDetailActivity extends BaseDetailActivity {
         String newName = memberName.getText().toString();
 
         if (!newName.trim().isEmpty()) {
-          baseHashMap.put(newName, 0.0);
 
           user.setFirstName(newName);
           membersTabFragment.saveNewMemberInGroupToRemoteDb(group, user);
           // add the new user to the dataset in the MembersRecyclerAdapter
           List<User> dataset = membersTabFragment.getRecyclerAdapter().getDataset();
           dataset.add(user);
+          baseHashMap.put(user.getFirstName(), 0.0);
+
           int position = dataset.size() - 1;
           membersTabFragment.getRecyclerAdapter().notifyItemInserted(position);
-        }
-        else {
+        } else {
           // add the selected user to the dataset in the MembersRecyclerAdapter
           membersTabFragment.saveNewMemberInGroupToRemoteDb(group, selectedMember);
           List<User> dataset = membersTabFragment.getRecyclerAdapter().getDataset();
@@ -315,7 +320,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
         }
 
 
-          // add the new user to the dataset in the MembersRecyclerAdapter
+        // add the new user to the dataset in the MembersRecyclerAdapter
          /* List<User> dataset = membersTabFragment.getRecyclerAdapter().getDataset();
           dataset.add(user);
 
@@ -378,7 +383,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
     return loadedContacts;
   }
 
-  private Map<String, Double> addExpensePopupDialog() {
+  private void addExpensePopupDialog() {
 
     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
     final View view = getLayoutInflater().inflate(R.layout.dialog_add_expense, null);
@@ -407,11 +412,13 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
         // takes the selected member from the spinner
         User member = (User) expenseSpinner.getSelectedItem();
+        expense.setPayerName(member.getFirstName());
 
         if (!newTitle.trim().isEmpty() && newAmount > 0.0) {
 
           sum += newAmount;
-          baseHashMap.put(member.getFirstName(), baseHashMap.get(member.getFirstName()) + newAmount);
+          baseHashMap.put(expense.getPayerName(), baseHashMap.get(expense.getPayerName()) + newAmount);
+
 
           expense.setTittle(newTitle);
           expense.setPaymentAmount(newAmount);
@@ -434,8 +441,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
       }
     });
     dialog.show();
-
-    return baseHashMap;
   }
 
   private List<User> getMembersData(final ArrayAdapter<User> spinnerAdapter) {
@@ -492,7 +497,6 @@ public class GroupDetailActivity extends BaseDetailActivity {
   public Double getShare() {
     if (group.getMembers().size() != 0) {
       share = sum / group.getUserMembers().size();
-
     }
     return share;
   }
@@ -504,32 +508,49 @@ public class GroupDetailActivity extends BaseDetailActivity {
     return baseHashMap;
   }
 
-  public String getResultString(){
+  public String getResultString() {
     String result = "";
 
     //String.format("%.0f", doubleValue)
 
-    if(!getShare().isNaN()) {
+//    if (!getShare().isNaN()) {
+//
+//      result =
+//          result + "The share for each person is " + String.format("%.0f", getShare()) + " SEK \n";
+//
+//      Iterator it = baseHashMap.entrySet().iterator();
+//      while (it.hasNext()) {
+//        Map.Entry pair = (Map.Entry) it.next();
+//
+//        Double rest = (Double) pair.getValue() - getShare();
+//
+//        if (rest > 0) {
+//          result = result + pair.getKey() + " should get paid " + String.format("%.0f", rest)
+//              + " SEK \n";
+//        } else if (rest < 0) {
+//          result = result + pair.getKey() + " should pay " + String.format("%.0f", rest * -1)
+//              + " SEK \n";
+//        } else {
+//          result = result + pair.getKey() + " should pay nothing \n \n";
+//        }
+//
+//        it.remove(); // avoids a ConcurrentModificationException
+//      }
+//    }
+//    for(User user : group.getUserMembers()) {
+//      result += user.getLastName();
+//    }
 
-      result = result + "The share for each person is " + String.format("%.0f",getShare()) + " SEK \n";
-
-      Iterator it = baseHashMap.entrySet().iterator();
-      while (it.hasNext()) {
-        Map.Entry pair = (Map.Entry)it.next();
-
-        Double rest = (Double) pair.getValue() - getShare();
-
-        if(rest > 0) {
-          result = result + pair.getKey() + " should get paid " + String.format("%.0f",rest) + " SEK \n";
-        } else if (rest < 0) {
-          result = result + pair.getKey() + " should pay " + String.format("%.0f",rest * -1) + " SEK \n";
-        } else {
-          result = result + pair.getKey() + " should pay nothing \n \n";
-        }
-
-        it.remove(); // avoids a ConcurrentModificationException
-      }
+    for(String user : group.getMembers()) {
+      result += user;
     }
+
+
+//    Map.Entry<String,Double> entry = baseHashMap.entrySet().iterator().next();
+//    String key= entry.getKey().toString();
+//    String value=entry.getValue().toString();
+//    result += key + " ";
+//    result += value;
 
     return result;
 
@@ -545,11 +566,14 @@ public class GroupDetailActivity extends BaseDetailActivity {
     dialogBuilder.setView(v);
     dialog = dialogBuilder.create();
 
-    LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    LayoutInflater inflater = (LayoutInflater) this.getSystemService(
+        Context.LAYOUT_INFLATER_SERVICE);
 
-    View layout = inflater.inflate(R.layout.dialog_settle_up, (ViewGroup) findViewById(R.id.popup_element), false);
+    View layout = inflater.inflate(R.layout.dialog_settle_up,
+                                   (ViewGroup) findViewById(R.id.popup_element), false);
 
-    final PopupWindow pwindo = new PopupWindow(layout, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+    final PopupWindow pwindo = new PopupWindow(layout, ViewGroup.LayoutParams.WRAP_CONTENT,
+                                               ViewGroup.LayoutParams.WRAP_CONTENT, true);
 
     //get txt view from "layout" which will be added into popup window
     //before it you tried to find view in activity container
@@ -566,6 +590,14 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
     //show popup window after you have done initialization of views
     pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
+  }
+
+  public Double getSumOfExpenses(Group group) {
+    Double sum = 0.0;
+    for(Expense e : group.getExpenses()) {
+      sum += e.getPaymentAmount();
+    }
+    return sum;
   }
 
 
