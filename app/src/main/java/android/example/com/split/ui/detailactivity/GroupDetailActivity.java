@@ -53,6 +53,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
   private static final String TAG = "GroupDetailActivity";
 
   private Group group;
+  private User selectedMember;
 
   /**
    * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -247,10 +248,10 @@ public class GroupDetailActivity extends BaseDetailActivity {
     contactsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
       @Override
       public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        User user = (User) parent.getSelectedItem();
+        selectedMember = (User) parent.getSelectedItem();
         // memberEditText.setText(user.toString());
         // Toast.makeText(getBaseContext(),user.getId(),Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onItemSelected: " + position);
+        Log.d(TAG, "onItemSelected: " + selectedMember.getId());
       }
 
       @Override
@@ -263,24 +264,39 @@ public class GroupDetailActivity extends BaseDetailActivity {
     saveButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        User user = new User();
+        Log.d(TAG, "onItemSelected: " + group.getGroupId());
         // takes the name user input from the text field
         memberName = (EditText) view.findViewById(R.id.editText_dialog_add_member);
         String newName = memberName.getText().toString();
 
         if (!newName.trim().isEmpty()) {
+          User user = new User();
           user.setFirstName(newName);
-
           membersTabFragment.saveNewMemberInGroupToRemoteDb(group, user);
-
           // add the new user to the dataset in the MembersRecyclerAdapter
           List<User> dataset = membersTabFragment.getRecyclerAdapter().getDataset();
+          dataset.add(user);
+          int position = dataset.size() - 1;
+          membersTabFragment.getRecyclerAdapter().notifyItemInserted(position);
+        }
+        else {
+          // add the selected user to the dataset in the MembersRecyclerAdapter
+          membersTabFragment.saveNewMemberInGroupToRemoteDb(group, selectedMember);
+          List<User> dataset = membersTabFragment.getRecyclerAdapter().getDataset();
+          dataset.add(selectedMember);
+          int position = dataset.size() - 1;
+          membersTabFragment.getRecyclerAdapter().notifyItemInserted(position);
+        }
+
+
+          // add the new user to the dataset in the MembersRecyclerAdapter
+         /* List<User> dataset = membersTabFragment.getRecyclerAdapter().getDataset();
           dataset.add(user);
 
           // Notifies that the item at the last position is created
           int position = dataset.size() - 1;
-          membersTabFragment.getRecyclerAdapter().notifyItemInserted(position);
-        }
+          membersTabFragment.getRecyclerAdapter().notifyItemInserted(position); */
+
 
         dialog.dismiss();
       }

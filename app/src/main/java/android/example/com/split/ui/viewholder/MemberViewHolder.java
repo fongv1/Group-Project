@@ -10,10 +10,15 @@ import android.example.com.split.data.entity.User;
 import android.example.com.split.ui.detailactivity.MembersDetailActivity;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 // Provides reference to the views for each data item
 // When create more complex group view, it should be removed in a separate java file
@@ -52,7 +57,8 @@ public class MemberViewHolder extends BaseViewHolder<User> {
         if (!isConnected) {
           Toast.makeText(getItemView().getContext(), "Not connected", Toast.LENGTH_SHORT).show();
         } else {
-          deleteItem(position);
+
+  //        deleteMember(group , );
         }
       }
     });
@@ -64,6 +70,33 @@ public class MemberViewHolder extends BaseViewHolder<User> {
     AlertDialog dialog = builder.create();
     dialog.show();
 
+  }
+
+  public void deleteMember(Group group, String memberId, final int position) {
+    ConnectivityManager connectivityManager = (ConnectivityManager) getItemView().getContext()
+                                                                                 .getSystemService(
+                                                                                     Context.CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      String groupId = group.getGroupId();
+      FirebaseFirestore db = FirebaseFirestore.getInstance();
+      db.collection("groups").document(groupId).update("members", FieldValue.arrayRemove(memberId)).addOnSuccessListener(new OnSuccessListener<Void>() {
+        @Override
+        public void onSuccess(Void aVoid) {
+          Toast.makeText(getContext(), "Member deleted", Toast.LENGTH_SHORT).show();
+          deleteItem(position);
+        }
+      }).addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+          Toast.makeText(getContext(), "Failed to delete member", Toast.LENGTH_SHORT).show();
+        }
+      });
+    }
   }
 
   @Override
