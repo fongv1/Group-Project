@@ -31,7 +31,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GroupDetailActivity extends BaseDetailActivity {
 
@@ -53,6 +55,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
   private Group group;
   private User selectedMember;
+  private List<User> loadedUsers;
 
   // Settleup
   Button popupSettleupButton;
@@ -95,7 +98,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
         // TODO popup dialog for settle up
         // TODO give the summary of how much each person of the group owes
         //settleupPopupDialog();
-        showPopup(v);
+        showPopup();
       }
     });
 
@@ -254,7 +257,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
     // set the spinner to show all the contacts
     final Spinner contactsSpinner = (Spinner) view.findViewById(R.id.spinner_choose_contact);
     ArrayAdapter<User> adapter = new ArrayAdapter<User>(this, android.R.layout.simple_spinner_item);
-    getContactsData(adapter);
+    loadedUsers = getContactsData(adapter);
 
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     contactsSpinner.setAdapter(adapter);
@@ -472,38 +475,12 @@ public class GroupDetailActivity extends BaseDetailActivity {
       return 0;
   }
 
+  private void showPopup() {
 
-  private void settleupPopupDialog() {
     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
     final View view = getLayoutInflater().inflate(R.layout.dialog_settleup, null);
     dialogBuilder.setView(view);
     dialog = dialogBuilder.create();
-
-
-    summaryTextView = (TextView) findViewById(R.id.textView_dialog_settleup);
-    summaryTextView.setText("Summary");
-
-    Button doneSettleupButton = (Button) view.findViewById(R.id.button_done_dialog_settleup);
-    doneSettleupButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-
-        //TODO populate summaryTextView with the summary of expenses
-
-
-        dialog.dismiss();
-      }
-    });
-
-    dialog.show();
-  }
-
-  private void showPopup(View view) {
-
-    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-    dialogBuilder.setView(view);
-    dialog = dialogBuilder.create();
-
 
     LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -513,7 +490,7 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
     //get txt view from "layout" which will be added into popup window
     //before it you tried to find view in activity container
-    TextView txt = (TextView) layout.findViewById(R.id.textView_dialog_settleup);
+    TextView txt = layout.findViewById(R.id.textView_dialog_settleup);
     txt.setText(getSummary());
 
     //init your button
@@ -530,10 +507,45 @@ public class GroupDetailActivity extends BaseDetailActivity {
 
   public String getSummary() {
     String summary = "";
-    for (Expense e : group.getExpenses()) {
-      summary += e.getPayerName() + " " + e.getPaymentAmount() + " \n";
+    double sumOfExpenses = 0.0;
+    Map<String, Double> personExpenseSum = new HashMap<>();
+    for (String member: group.getMembers()) {
+      personExpenseSum.put(member, 0.0);
     }
+
+
+    List<Expense> dataset = expensesTabFragment.getData();
+
+    for (Expense e : dataset) {
+      sumOfExpenses += e.getPaymentAmount();
+      personExpenseSum.put(e.getPayerId(), personExpenseSum.get(e.getPayerId()) + e.getPaymentAmount());
+
+      //summary += e.getPayerName() + " " + e.getPaymentAmount() + " \n";
+    }
+
+    int persons = group.getMembers().size();
+
+    double amount = sumOfExpenses / persons;
+
+    for (String key: personExpenseSum.keySet()) {
+
+      String name = getName(key);
+      summary += name + " " + (personExpenseSum.get(key) - amount) + " \n";
+    }
+
     return summary;
+  }
+
+  private String getName(String id) {
+    for (User user : membersTabFragment.getRecyclerAdapter().getDataset()) {
+      if (user.getId().equals(id)) {
+        if (user.getLastName() != null) {
+          return user.getFirstName() + " " + user.getLastName();
+        }
+        return user.getFirstName();
+      }
+    }
+    return id;
   }
 
 }
