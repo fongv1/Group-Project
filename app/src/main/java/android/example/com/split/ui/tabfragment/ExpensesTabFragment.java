@@ -47,7 +47,7 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
     if (!isConnected) {
       Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
     } else {
-      setupRecyclerView(rootView, R.id.recyclerView_fragment_tab_expenses);
+      fetchExpensesListFromRemote(group);
     }
     return rootView;
   }
@@ -58,10 +58,8 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
     recyclerView.setHasFixedSize(true);
     LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
     recyclerView.setLayoutManager(mLayoutManager);
-    setData(group.getExpenses());
     setRecyclerAdapter(new ExpensesRecyclerAdapter(getData(), group));
     recyclerView.setAdapter(getRecyclerAdapter());
-    //fetchExpensesListFromRemote(group);
   }
 
   @Override
@@ -111,7 +109,7 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
   }
 
   @Override
-  public void writeExpenseToRemote(Group group, Expense expense) {
+  public void writeExpenseToRemote(Group group, final Expense expense) {
     ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
         Context.CONNECTIVITY_SERVICE);
     NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
@@ -127,6 +125,7 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
         public boolean handleMessage(Message msg) {
 
           if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS)) {
+            expense.setId(msg.getData().getString(ExpensesDataRepository.EXPENSE_ID));
             Toast.makeText(getContext(), "Expense saved in remote", Toast.LENGTH_SHORT).show();
           } else {
             Toast.makeText(getContext(), "Failed to save expense in remote", Toast.LENGTH_SHORT)
@@ -215,9 +214,9 @@ public class ExpensesTabFragment extends BaseTabFragment<ExpensesRecyclerAdapter
         @Override
         public boolean handleMessage(Message msg) {
           if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS)) {
-            Toast.makeText(getContext(), "Expense saved in remote", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Expense deleted", Toast.LENGTH_SHORT).show();
           } else {
-            Toast.makeText(getContext(), "Failed to save expense in remote", Toast.LENGTH_SHORT)
+            Toast.makeText(getContext(), "Failed to delete expense", Toast.LENGTH_SHORT)
                  .show();
           }
           return false;

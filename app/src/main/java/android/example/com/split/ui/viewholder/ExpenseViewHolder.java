@@ -9,9 +9,12 @@ import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
+import android.example.com.split.data.repository.ExpensesDataRepository;
 import android.example.com.split.ui.detailactivity.ExpensesDetailActivity;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
@@ -19,6 +22,8 @@ import android.widget.*;
 // Provides reference to the views for each data item
 // When create more complex group view, it should be removed in a separate java file
 public class ExpenseViewHolder extends BaseViewHolder<Expense> {
+
+  private Group group;
 
   public TextView payerTextView;
   // Each group data item is just a String presented as a textView in this case
@@ -29,10 +34,11 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
 
   // Initializes the ViewHolder TextView from the item_group XML resource
   public ExpenseViewHolder(View itemView, OnDeleteItemListener deleteListener, OnEditItemListener
-      editListener) {
+      editListener, Group group) {
     super(itemView, ExpensesDetailActivity.class, "Expense", false);
     setOnDeleteItemListener(deleteListener);
     setOnEditItemListener(editListener);
+    this.group = group;
   }
 
   private void editExpensePopupDialog(final Group group, final Expense expense, final int
@@ -112,41 +118,19 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
     dialog.show();
   }
 
-  private void deleteExpensePopupDialog(final int position) {
+  private void deleteExpensePopupDialog(final Expense expense, final int position) {
     AlertDialog.Builder builder = new AlertDialog.Builder(getItemView().getContext());
     // Add the buttons
     builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
       public void onClick(DialogInterface dialog, int id) {
         // User cancelled the dialog
-        ConnectivityManager connectivityManager = (ConnectivityManager) getItemView().getContext()
-                                                                                     .getSystemService(
-                                                                                         Context
-                                                                                             .CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-
-        if (!isConnected) {
-          Toast.makeText(getItemView().getContext(), "Not connected", Toast.LENGTH_SHORT).show();
-        } else {
-        }
       }
     });
 
     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
       public void onClick(DialogInterface dialog, int id) {
         // User clicked OK button
-        ConnectivityManager connectivityManager = (ConnectivityManager) getItemView().getContext()
-                                                                                     .getSystemService(
-                                                                                         Context
-                                                                                             .CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-
-        if (!isConnected) {
-          Toast.makeText(getItemView().getContext(), "Not connected", Toast.LENGTH_SHORT).show();
-        } else {
-          deleteItem(position);
-        }
+        deleteExpense(group, expense.getId(), position);
       }
     });
 
@@ -157,6 +141,35 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
     AlertDialog dialog = builder.create();
     dialog.show();
 
+  }
+
+  public void deleteExpense(Group group, String expenseId, final int position) {
+    ConnectivityManager connectivityManager = (ConnectivityManager) getItemView().getContext()
+                                                                                 .getSystemService(
+                                                                                     Context
+                                                                                         .CONNECTIVITY_SERVICE);
+    NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+    boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+    if (!isConnected) {
+      Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
+    } else {
+      String groupId = group.getGroupId();
+      ExpensesDataRepository expensesDataRepository = new ExpensesDataRepository();
+      expensesDataRepository.removeExpense(groupId, expenseId, new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+          if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS)) {
+            Toast.makeText(getContext(), "Expense deleted", Toast.LENGTH_SHORT).show();
+            deleteItem(position);
+          } else {
+            Toast.makeText(getContext(), "Failed to delete expense", Toast.LENGTH_SHORT)
+                 .show();
+          }
+          return false;
+        }
+      });
+    }
   }
 
   @Override
@@ -193,7 +206,7 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
     deleteButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        deleteExpensePopupDialog(position);
+        deleteExpensePopupDialog(expense, position);
       }
     });
   }
