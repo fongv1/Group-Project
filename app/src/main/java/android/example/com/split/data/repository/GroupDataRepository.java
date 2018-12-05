@@ -26,7 +26,7 @@ public class GroupDataRepository  {
   private FirebaseFirestore db;
 
   // create new group
-  public void addGroup(Group group, final Handler.Callback listener) {
+  public void addGroup(final Group group, final Handler.Callback listener) {
     db = FirebaseFirestore.getInstance();
     final String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
     db.collection("groups").add(group)
@@ -36,6 +36,8 @@ public class GroupDataRepository  {
           if (task.isSuccessful()) {
             DocumentReference documentReference = task.getResult();
             String documentId = documentReference.getId();
+            group.setGroupId(documentId);
+            updateGroupId(documentId);
 
             // add the created user to the group
            // addCurrentMember(documentId, user);
@@ -60,6 +62,12 @@ public class GroupDataRepository  {
           }
         }
       });
+  }
+
+  private void updateGroupId (String groupId) {
+    db = FirebaseFirestore.getInstance();
+    db.collection("groups").document(groupId).update("groupId",groupId);
+
   }
 
   private void addCurrentMember(String documentId, String user) {

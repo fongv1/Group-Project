@@ -212,7 +212,7 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
   }
 
   @Override
-  public void saveNewGroupToRemoteDb(User currentUser, Group group) {
+  public void saveNewGroupToRemoteDb(User currentUser, final Group group) {
     ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(
         Context.CONNECTIVITY_SERVICE);
     NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
@@ -226,7 +226,10 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
         @Override
         public boolean handleMessage(Message msg) {
           if (msg.getData().getBoolean(GroupDataRepository.SUCCESS)) {
+            String groupId = msg.getData().getString(GroupDataRepository.GROUP_ID);
+            group.setGroupId(groupId);
             Toast.makeText(getContext(), "Saved group in remote", Toast.LENGTH_SHORT).show();
+
           } else {
             Toast.makeText(getContext(), "Failed to save group in remote", Toast.LENGTH_SHORT)
                  .show();
