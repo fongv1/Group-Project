@@ -6,6 +6,7 @@ import android.example.com.split.R;
 import android.example.com.split.data.entity.Expense;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
+import android.example.com.split.data.repository.ExpensesDataRepository;
 import android.example.com.split.data.repository.GroupDataRepository;
 import android.example.com.split.ui.recycleradapter.GroupsRecyclerAdapter;
 import android.net.ConnectivityManager;
@@ -109,7 +110,7 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
     if (!isConnected) {
       Toast.makeText(getContext(), "Not connected", Toast.LENGTH_SHORT).show();
     } else {
-      GroupDataRepository repository = new GroupDataRepository();
+      final GroupDataRepository repository = new GroupDataRepository();
       repository.getGroupList(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                               new Handler.Callback() {
                                 @Override
@@ -124,9 +125,34 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
                                   }
                                   setData(groups);
                                   setupRecyclerView(getView(), R.id.recyclerView_fragment_tab_expenses);
+
+                                  getGroupsExpenses();
+
                                   return false;
                                 }
                               });
+    }
+  }
+
+  private void getGroupsExpenses() {
+    final ExpensesDataRepository repository = new ExpensesDataRepository();
+    for (final Group group : getData()) {
+      repository.getExpensesList(group.getGroupId(), new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+          if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS, false)) {
+            List<Expense> expenseList = (List<Expense>) msg.getData()
+                                                           .getSerializable(
+                                                               ExpensesDataRepository.EXPENSE_LIST);
+            if (expenseList == null) {
+              expenseList = new ArrayList<>();
+            }
+            group.setExpenses(expenseList);
+            recyclerView.getAdapter().notifyDataSetChanged();
+          }
+          return false;
+        }
+      });
     }
   }
 

@@ -45,7 +45,7 @@ public class MembersRecyclerAdapter extends BaseRecyclerAdapter<MemberViewHolder
   public void onBindViewHolder(@NonNull MemberViewHolder holder, int position) {
     // - get element from your dataset at this position
     // - replace the contents of the view with that element
-    holder.bind(getDataset().get(position), position);
+    holder.bind(group, getDataset().get(position), position);
   }
 
   @Override
