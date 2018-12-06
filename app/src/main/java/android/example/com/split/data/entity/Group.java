@@ -118,4 +118,9 @@ public class Group implements Serializable {
   public void addUserMember(User user) {
     userMembers.add(user);
   }
+
+  @com.google.firebase.firestore.Exclude
+  public void setExpenses(List<Expense> expenseList) {
+    expenses = expenseList;
+  }
 }

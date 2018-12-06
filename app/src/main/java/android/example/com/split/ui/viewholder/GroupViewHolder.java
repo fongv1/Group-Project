@@ -3,6 +3,7 @@ package android.example.com.split.ui.viewholder;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.example.com.split.Calculator;
 import android.example.com.split.OnDeleteItemListener;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Group;
@@ -66,7 +67,7 @@ public class GroupViewHolder extends BaseViewHolder<Group> {
     });
 
     //Set other dialog properties
-    builder.setMessage("Delete group?" + group.getGroupId());
+    builder.setMessage("Delete group " + group.getName() + "?");
 
     // Create the AlertDialog
     AlertDialog dialog = builder.create();
@@ -125,9 +126,7 @@ public class GroupViewHolder extends BaseViewHolder<Group> {
   public void bind(final Group group, Group expense, final int position) {
     super.bind(group);
     mTextView.setText(getItemData().getName());
-    if (group.getExpenses().size() > 0) {
-      expenseTextView.setText("" + getItemData().getExpenses().get(0).getPaymentAmount());
-    }
+    expenseTextView.setText("" + Calculator.getTotalGroupExpenses(group));
     deleteButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {

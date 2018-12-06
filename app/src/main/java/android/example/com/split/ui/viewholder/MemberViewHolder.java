@@ -3,6 +3,8 @@ package android.example.com.split.ui.viewholder;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.example.com.split.Calculator;
 import android.example.com.split.OnDeleteItemListener;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Group;
@@ -28,6 +30,8 @@ public class MemberViewHolder extends BaseViewHolder<User> {
   public ImageView deleteButton;
   // Each group data item is just a String presented as a textView in this case
   private TextView itemTextView;
+
+  private TextView memberBalanceTextView;
 
   // Initializes the ViewHolder TextView from the item_group XML resource
   public MemberViewHolder(View itemView, OnDeleteItemListener onDeleteListener, Group group) {
@@ -94,6 +98,7 @@ public class MemberViewHolder extends BaseViewHolder<User> {
   protected void findAllViews(View itemView) {
     itemTextView = (TextView) itemView.findViewById(R.id.textView_item_group_member);
     deleteButton = (ImageView) itemView.findViewById(R.id.imageView_delete_member_item);
+    memberBalanceTextView = (TextView) itemView.findViewById(R.id.textView_member_balance);
   }
 
   @Override
@@ -103,9 +108,16 @@ public class MemberViewHolder extends BaseViewHolder<User> {
 
   @Override
   public void bind(final User user, final int position) {
+
+  }
+
+  @Override
+  public void bind(Group group, final User user, final int position) {
     super.bind(user);
     //mTextView.setText(getItemData().getFirstName() + " " + getItemData().getLastName());
     itemTextView.setText(user.getFirstName() + "");
+    double balance = Calculator.getMemberBalance(group, user);
+    memberBalanceTextView.setText(String.format("%.2f", balance));
     deleteButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -115,7 +127,10 @@ public class MemberViewHolder extends BaseViewHolder<User> {
   }
 
   @Override
-  public void bind(Group group, User expense, int position) {
-
+  protected void startDetailActivity() {
+    Intent intent = new Intent(getContext(), getDetailActivityClass());
+    intent.putExtra("Member", getItemData());
+    intent.putExtra("Group", group);
+    getContext().startActivity(intent);
   }
 }

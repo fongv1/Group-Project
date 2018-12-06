@@ -1,6 +1,8 @@
 package android.example.com.split.ui.detailactivity;
 
+import android.example.com.split.Calculator;
 import android.example.com.split.R;
+import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 public class MembersDetailActivity extends BaseDetailActivity {
 
   private User user;
+  private Group group;
   private TextView firstName;
   private TextView lastName;
   private TextView email;
@@ -35,6 +38,7 @@ public class MembersDetailActivity extends BaseDetailActivity {
 
     if (bundle != null) {
       user = (User) bundle.get("Member");
+      group = (Group) bundle.get("Group");
       setTitle(user.getFirstName());
     }
 
@@ -49,11 +53,11 @@ public class MembersDetailActivity extends BaseDetailActivity {
 
     share = findViewById(R.id.member_detail_share);
     //TODO replace the share
-    share.setText("Share");
+    share.setText("Share: " + Calculator.getExpensesPerMember(group) + "SEK");
 
     balance = findViewById(R.id.member_detail_balance);
     //TODO replace the real value from calculator
-    balance.setText("Balance");
+    balance.setText("Balance: " + Calculator.getMemberBalance(group, user) + "SEK");
 
 
     //balance = (TextView) findViewById()
