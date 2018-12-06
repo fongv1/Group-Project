@@ -1,8 +1,11 @@
 package android.example.com.split.ui.viewholder;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.example.com.split.OnDeleteItemListener;
 import android.example.com.split.OnEditItemListener;
 import android.example.com.split.R;
@@ -163,6 +166,9 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
             Toast.makeText(getContext(), "Expense deleted", Toast.LENGTH_SHORT).show();
             group.getExpenses().remove(position);
             deleteItem(position);
+            Intent intent = new Intent("update-balance");
+            getActivity().sendBroadcast(intent);
+
           } else {
             Toast.makeText(getContext(), "Failed to delete expense", Toast.LENGTH_SHORT)
                  .show();
@@ -210,5 +216,16 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
         deleteExpensePopupDialog(expense, position);
       }
     });
+  }
+
+  private Activity getActivity() {
+    Context context = getContext();
+    while (context instanceof ContextWrapper) {
+      if (context instanceof Activity) {
+        return (Activity)context;
+      }
+      context = ((ContextWrapper)context).getBaseContext();
+    }
+    return null;
   }
 }

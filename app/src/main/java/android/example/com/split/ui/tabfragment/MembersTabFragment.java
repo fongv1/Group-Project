@@ -1,6 +1,9 @@
 package android.example.com.split.ui.tabfragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.example.com.split.R;
 import android.example.com.split.data.entity.Group;
 import android.example.com.split.data.entity.User;
@@ -28,6 +31,8 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
 
   private static final String TAG = "MembersTabFragment";
   private Group group;
+
+  private BroadcastReceiver updateBalanceBroadcast;
 
   @Nullable
   @Override
@@ -83,6 +88,13 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
           }
         });
     }
+
+    updateBalanceBroadcast = new BroadcastReceiver() {
+      @Override
+      public void onReceive(Context context, Intent intent) {
+        getRecyclerAdapter().notifyDataSetChanged();
+      }
+    };
 
     return rootView;
   }
@@ -288,5 +300,11 @@ public class MembersTabFragment extends BaseTabFragment<MembersRecyclerAdapter, 
   @Override
   public void updateUiAfterRemovingGroupMember() {
 
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    getActivity().registerReceiver(updateBalanceBroadcast, new IntentFilter("update-balance"));
   }
 }

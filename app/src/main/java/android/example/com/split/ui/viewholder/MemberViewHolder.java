@@ -67,7 +67,7 @@ public class MemberViewHolder extends BaseViewHolder<User> {
 
   }
 
-  public void deleteMember(Group group, String memberId, final int position) {
+  public void deleteMember(final Group group, String memberId, final int position) {
     ConnectivityManager connectivityManager = (ConnectivityManager) getItemView().getContext()
                                                                                  .getSystemService(
                                                                                      Context.CONNECTIVITY_SERVICE);
@@ -83,6 +83,7 @@ public class MemberViewHolder extends BaseViewHolder<User> {
         @Override
         public void onSuccess(Void aVoid) {
           Toast.makeText(getContext(), "Member deleted", Toast.LENGTH_SHORT).show();
+          group.getMembers().remove(position);
           deleteItem(position);
         }
       }).addOnFailureListener(new OnFailureListener() {
