@@ -16,7 +16,6 @@ public class MembersDetailActivity extends BaseDetailActivity {
   private User user;
   private Group group;
   private TextView firstName;
-  private TextView lastName;
   private TextView email;
   private TextView balance;
   private TextView share;
@@ -43,21 +42,18 @@ public class MembersDetailActivity extends BaseDetailActivity {
     }
 
     firstName = findViewById(R.id.member_detail_first_name);
-    firstName.setText(user.getFirstName());
-
-    lastName = findViewById(R.id.member_detail_last_name);
-    lastName.setText(user.getLastName());
+    firstName.setText(user.getFirstName() + " " + user.getLastName());
 
     //email = findViewById(R.id.member_detail_email);
     //email.setText(user.getEmail());
 
     share = findViewById(R.id.member_detail_share);
-    //TODO replace the share
-    share.setText("Share: " + Calculator.getExpensesPerMember(group) + "SEK");
+    String shareBalance = String.format("%.2f", Calculator.getExpensesPerMember(group));
+    share.setText("Share: " +  shareBalance + " SEK");
 
     balance = findViewById(R.id.member_detail_balance);
-    //TODO replace the real value from calculator
-    balance.setText("Balance: " + Calculator.getMemberBalance(group, user) + "SEK");
+    String memberBalance = String.format("%.2f", Calculator.getMemberBalance(group, user));
+    balance.setText("Balance: " + memberBalance + " SEK");
 
 
     //balance = (TextView) findViewById()
