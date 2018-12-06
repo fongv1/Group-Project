@@ -97,17 +97,6 @@
                         android:background="@drawable/rounded"/>
 
                     <TextView
-                        android:id="@+id/member_detail_last_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:text="@string/member_row_view_lastname"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textStyle="bold"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/rounded"/>
-
-                    <TextView
                         android:id="@+id/member_detail_share"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
