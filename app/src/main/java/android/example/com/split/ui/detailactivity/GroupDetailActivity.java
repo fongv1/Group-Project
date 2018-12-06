@@ -294,17 +294,17 @@ public class GroupDetailActivity extends BaseDetailActivity {
           // add the new user to the dataset in the MembersRecyclerAdapter
           List<User> dataset = membersTabFragment.getRecyclerAdapter().getDataset();
           dataset.add(user);
-          int position = dataset.size() - 1;
-          membersTabFragment.getRecyclerAdapter().notifyItemInserted(position);
+          group.addMember(user.getId());
         }
         else {
           // add the selected user to the dataset in the MembersRecyclerAdapter
           membersTabFragment.saveNewMemberInGroupToRemoteDb(group, selectedMember);
           List<User> dataset = membersTabFragment.getRecyclerAdapter().getDataset();
           dataset.add(selectedMember);
-          int position = dataset.size() - 1;
-          membersTabFragment.getRecyclerAdapter().notifyItemInserted(position);
+          group.addMember(selectedMember.getId());
         }
+
+        membersTabFragment.getRecyclerAdapter().notifyDataSetChanged();
 
 
           // add the new user to the dataset in the MembersRecyclerAdapter
