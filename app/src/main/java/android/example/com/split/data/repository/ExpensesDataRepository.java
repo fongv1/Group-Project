@@ -1,6 +1,7 @@
 package android.example.com.split.data.repository;
 
 import android.example.com.split.data.entity.Expense;
+import android.example.com.split.data.entity.Group;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,7 +26,7 @@ public class ExpensesDataRepository {
   private FirebaseFirestore db;
 
     // add expense to a group
-    public void addExpenses(final String groupId , Expense expense , final Handler.Callback listener){
+    public void addExpenses(final String groupId , final Expense expense , final Handler.Callback listener){
      db = FirebaseFirestore.getInstance();
      db.collection("groups").document(groupId).collection("expenses").add(expense)
        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -37,6 +38,8 @@ public class ExpensesDataRepository {
                  // save doc id into the share document
                   db.collection("groups").document(groupId).collection("expenses").document(documentId)
                     .update("id",documentId);
+                  // update group balance
+                 updateGroupBalance(groupId ,expense);
                  // After adding new expense by default a new share will be added !!
 
 
@@ -59,6 +62,22 @@ public class ExpensesDataRepository {
 
            }
        });
+    }
+
+    private void updateGroupBalance(final String groupId , final Expense expense){
+      db = FirebaseFirestore.getInstance();
+      db.collection("groups").document(groupId).get()
+        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+          @Override
+          public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            if(task.isSuccessful()){
+              Group group = task.getResult().toObject(Group.class);
+              double balance = group.getGroupBalance();
+              db.collection("groups").document(groupId).update("groupBalance",balance + expense.getPaymentAmount());
+            }
+          }
+        });
+
     }
 
     // get the list of expenses in a group
