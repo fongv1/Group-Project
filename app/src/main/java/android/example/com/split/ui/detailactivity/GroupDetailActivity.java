@@ -533,7 +533,9 @@ public class GroupDetailActivity extends BaseDetailActivity {
     for (String key: personExpenseSum.keySet()) {
 
       String name = getName(key);
-      summary += name + " " + (personExpenseSum.get(key) - amount) + " \n";
+      double balance = personExpenseSum.get(key) - amount;
+      String balanceString = String.format("%.2f", balance);
+      summary += name + " " + balanceString + " \n";
     }
 
     return summary;

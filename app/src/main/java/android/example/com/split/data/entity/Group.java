@@ -35,6 +35,7 @@ public class Group implements Serializable {
   @com.google.firebase.firestore.Exclude
   private List<Expense> expenses;
 
+
   public List<Double> getMembersBalance() {
     return membersBalance;
   }
