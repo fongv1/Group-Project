@@ -124,9 +124,8 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
                                     groups = new ArrayList<>();
                                   }
                                   setData(groups);
-                                  setupRecyclerView(getView(), R.id.recyclerView_fragment_tab_expenses);
-
                                   getGroupsExpenses();
+                                  setupRecyclerView(getView(), R.id.recyclerView_fragment_tab_expenses);
 
                                   return false;
                                 }
@@ -337,6 +336,14 @@ public class GroupsTabFragment extends BaseTabFragment<GroupsRecyclerAdapter, Gr
           return false;
         }
       });
+    }
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    if (recyclerView != null && recyclerView.getAdapter() != null) {
+      getGroupsData();
     }
   }
 }
