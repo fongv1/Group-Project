@@ -143,7 +143,7 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
 
   }
 
-  public void deleteExpense(Group group, String expenseId, final int position) {
+  public void deleteExpense(final Group group, String expenseId, final int position) {
     ConnectivityManager connectivityManager = (ConnectivityManager) getItemView().getContext()
                                                                                  .getSystemService(
                                                                                      Context
@@ -161,6 +161,7 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
         public boolean handleMessage(Message msg) {
           if (msg.getData().getBoolean(ExpensesDataRepository.SUCCESS)) {
             Toast.makeText(getContext(), "Expense deleted", Toast.LENGTH_SHORT).show();
+            group.getExpenses().remove(position);
             deleteItem(position);
           } else {
             Toast.makeText(getContext(), "Failed to delete expense", Toast.LENGTH_SHORT)

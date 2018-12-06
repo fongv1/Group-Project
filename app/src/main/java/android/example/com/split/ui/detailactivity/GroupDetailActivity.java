@@ -412,6 +412,9 @@ public class GroupDetailActivity extends BaseDetailActivity {
           List<Expense> dataset = expensesTabFragment.getData();
           dataset.add(expense);
 
+          group.addExpense(expense);
+          membersTabFragment.getRecyclerAdapter().notifyDataSetChanged();
+
           // Notifies that the item at the last position is created
           int position = dataset.size() - 1;
           expensesTabFragment.getRecyclerAdapter().notifyItemInserted(position);
