@@ -29,12 +29,24 @@ public class Group implements Serializable {
   @com.google.firebase.firestore.Exclude
   private List<User> userMembers;
 
+  private double groupBalance;
+
+  public double getGroupBalance() {
+    return groupBalance;
+  }
+
+  public void setGroupBalance(double groupBalance) {
+    this.groupBalance = groupBalance;
+  }
+
   /**
    * {@link Expense}s in the group
    */
   @com.google.firebase.firestore.Exclude
   private List<Expense> expenses;
 
+
+  @com.google.firebase.firestore.Exclude
   public List<Double> getMembersBalance() {
     return membersBalance;
   }
@@ -53,6 +65,7 @@ public class Group implements Serializable {
     membersBalance = new ArrayList<>();
     expenses = new ArrayList<>();
     userMembers = new ArrayList<>();
+    groupBalance = 0 ;
   }
 
   public Group(String groupId, String name) {
@@ -62,6 +75,7 @@ public class Group implements Serializable {
     membersBalance = new ArrayList<>();
     expenses = new ArrayList<>();
     userMembers = new ArrayList<>();
+    groupBalance = 0 ;
   }
 
   @com.google.firebase.firestore.Exclude

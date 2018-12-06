@@ -52,6 +52,7 @@ public class User implements Serializable {
 
     contactsUsers = new ArrayList<>();
     this.contacts = new ArrayList<>();
+    lastName = "";
 
   }
 
@@ -146,7 +147,13 @@ public class User implements Serializable {
   }
 
   public String toString() {
-    return firstName + " " + lastName;
+    if(lastName == null) {
+      return firstName + " ";
+    }
+    else {
+      return firstName + " " + lastName;
+    }
+
   }
 
   public List<String> getContacts() {

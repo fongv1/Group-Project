@@ -127,6 +127,7 @@ public class GroupViewHolder extends BaseViewHolder<Group> {
     super.bind(group);
     mTextView.setText(getItemData().getName());
     expenseTextView.setText("" + Calculator.getTotalGroupExpenses(group));
+   // expenseTextView.setText(String.format("%.2f",group.getGroupBalance()));
     deleteButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
