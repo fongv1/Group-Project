@@ -61,27 +61,14 @@
                     android:textStyle="bold"
                     android:text="Balance" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/textView_group_item_expense_total"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:paddingEnd="5dp"
-                        android:textStyle="bold"
-                        android:text="@string/amount" />
-
-                    <TextView
-                        android:id="@+id/textView_group_item_currency"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textStyle="bold"
-                        android:text="@string/sek" />
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/textView_group_item_expense_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:paddingEnd="5dp"
+                    android:textStyle="bold"
+                    android:text="@string/amount" />
 
             </LinearLayout>
 

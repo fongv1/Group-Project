@@ -77,7 +77,7 @@ public class ContactViewHolder extends BaseViewHolder<User> {
   @Override
   public void bind(Group group, User contact, final int position) {
     super.bind(contact);
-    contactTextView.setText(getItemData().getFirstName());
+    contactTextView.setText(getItemData().getFirstName() + " " + getItemData().getLastName());
     deleteButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {

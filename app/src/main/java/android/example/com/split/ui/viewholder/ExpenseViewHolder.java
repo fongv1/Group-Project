@@ -201,7 +201,7 @@ public class ExpenseViewHolder extends BaseViewHolder<Expense> {
   public void bind(final Group group, final Expense expense, final int position) {
     super.bind(expense);
     expenseTextView.setText(getItemData().getTittle());
-    amountTextView.setText("" + getItemData().getPaymentAmount());
+    amountTextView.setText("" + getItemData().getPaymentAmount() + " SEK");
     payerTextView.setText(getItemData().getPayerName());
     //payerTextView.setText(getItemData().getUser().getFirstName());
     editButton.setOnClickListener(new View.OnClickListener() {

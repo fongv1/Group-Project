@@ -27,61 +27,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/edit_expense_button"
-                android:paddingRight="20dp"
+                android:paddingRight="10dp"
                 android:scaleType="center"
                 android:layout_weight="0"
                 app:srcCompat="@drawable/money_expenses" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView_expense_item"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textStyle="bold"
-                    android:text="@string/textView_expense_item" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/textView_amount_item"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textStyle="bold"
-                        android:paddingEnd="5dp"
-                        android:text="@string/textView_amount_item" />
-
-                    <TextView
-                        android:id="@+id/textView_group_item_currency"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textStyle="bold"
-                        android:text="@string/sek" />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView_payer_item"
+                android:id="@+id/textView_expense_item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:text="@string/textView_expense_item" />
+
+            <TextView
+                android:id="@+id/textView_payer_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
                 android:layout_gravity="left"
-                android:layout_marginRight="30dp"
-                android:layout_marginLeft="10dp"
                 android:textStyle="bold"
                 android:text="@string/textView_payer_item" />
+        </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView_amount_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:paddingEnd="20dp"
+                android:text="@string/textView_amount_item" />
 
             <ImageView
                 android:id="@+id/imageView_edit_expense_item"
