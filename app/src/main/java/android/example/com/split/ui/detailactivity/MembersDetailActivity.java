@@ -48,11 +48,11 @@ public class MembersDetailActivity extends BaseDetailActivity {
     //email.setText(user.getEmail());
 
     share = findViewById(R.id.member_detail_share);
-    String shareBalance = String.format("%.2f", Calculator.getExpensesPerMember(group));
+    String shareBalance = String.format("%.1f", Calculator.getExpensesPerMember(group));
     share.setText("Share: " +  shareBalance + " SEK");
 
     balance = findViewById(R.id.member_detail_balance);
-    String memberBalance = String.format("%.2f", Calculator.getMemberBalance(group, user));
+    String memberBalance = String.format("%.1f", Calculator.getMemberBalance(group, user));
     balance.setText("Balance: " + memberBalance + " SEK");
 
 

@@ -30,11 +30,12 @@
                 android:id="@+id/textView_dialog_info"
                 android:layout_width="match_parent"
                 android:textStyle="bold"
-                android:textSize="17sp"
+                android:textSize="16sp"
                 android:text="@string/dialog_info_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/imageView_logo_info"
-                android:textColor="@color/colorPrimaryDark" />
+                android:textColor="@color/colorPrimaryDark"
+                android:textAlignment="center" />
 
             <Button
                 android:id="@+id/button_dialog_info_exit"

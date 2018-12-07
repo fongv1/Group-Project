@@ -118,7 +118,7 @@ public class MemberViewHolder extends BaseViewHolder<User> {
     //mTextView.setText(getItemData().getFirstName() + " " + getItemData().getLastName());
     itemTextView.setText(user.getFirstName() + "");
     double balance = Calculator.getMemberBalance(group, user);
-    memberBalanceTextView.setText(String.format("%.2f", balance));
+    memberBalanceTextView.setText(String.format("%.1f", balance));
     deleteButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
